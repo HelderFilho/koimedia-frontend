@@ -1,4 +1,4 @@
-const ROOT = 'http://https://koimedia-backend.herokuapp.com/api/'
+const ROOT = 'https://koimedia-backend.herokuapp.com/api/'
 const ENDPOINTS = {
     USER : ROOT + 'user',
     VEHICLE : ROOT + 'vehicle',
