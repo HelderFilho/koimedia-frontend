@@ -1,0 +1,10 @@
+.header {
+    color: #fff;
+    height: 120px;
+    display: flex;
+    background: linear-gradient(to right, #252f3e 0%, #1b2330 100%);
+    min-height: 120px;
+    background-size: cover;
+     background-color: #1b2330;
+     border-radius: 0%;
+}

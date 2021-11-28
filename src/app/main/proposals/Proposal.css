@@ -1,0 +1,59 @@
+.table_input input{
+    margin-left: auto;
+    margin-right: auto;
+    height: 35px;
+    border-radius: 5px;
+    width: 90%;
+    margin-left: 5%;
+    text-align: center;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.table_td{
+    
+    margin-left: auto;
+    margin-right: auto;
+    height: 35px;
+    border-radius: 5px;
+    width: 8%;
+    margin-left: 2%;
+    text-align: center;
+}
+
+
+.label_values{
+    margin: auto;
+    height: 35px;
+    border-radius: 5px;
+    width: 22%;
+    margin-left: 5%;
+    font-size: large;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.button {
+    color: white;
+    background-color: #252f3e ;
+    width: 10px;
+    height: 10px;
+    max-width: 20px;
+    border-radius: 55px;
+    margin-left: 20%;
+    text-align: center;
+}
+.button button {
+    font-weight: bolder;
+}
+.input{
+    margin-left: auto;
+    margin-right: auto;
+    height: 35px;
+    border-radius: 5px;
+    width: 25%;
+    text-align: center;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+   
+}

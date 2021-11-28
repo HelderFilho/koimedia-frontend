@@ -1,0 +1,44 @@
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    width: '100%';
+    text-align: right;
+    height: 80px;
+    border-bottom: 1px solid rgb(194, 190, 190);
+}
+.title_mailings {
+    font-size: 14px;
+    font-weight: 600;
+    width: '100%';
+    text-align: center;
+    height: 60px;
+    border-bottom: 1px solid rgb(194, 190, 190);
+}
+
+.value {
+    font-size: 20px;
+    margin-top: 10px;
+    font-weight: 400;
+    width: '100%';
+    text-align: right;
+
+}
+
+.value_mailings {
+    font-size: 12px;
+    margin-top: 10px;
+    font-weight: 400;
+    width: '100%';
+    text-align: center;
+
+}
+
+
+.card {
+    display : inline-grid;
+    box-shadow: rgba(12, 2, 100, 0.2) 0px 8px 24px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 10px 20px;
+}
