@@ -18,7 +18,6 @@ export default function CommonView({ data, title, onBack, dialog }) {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={1}>
           {Object.entries(data).map(d => {
-            console.log('dd',d[1].isMulti)
             return(
             <Grid item xs={d[1].col}>
               {d[1].isMulti ? (

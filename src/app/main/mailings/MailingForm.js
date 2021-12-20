@@ -3,8 +3,15 @@ import CommonHeader from "app/components/table/CommonHeader";
 import CommonForm from "app/components/form/CommonForm";
 import axios from "axios";
 import Constants from "app/utils/Constants";
+import moment from 'moment'
 export default function MailingForm({ values, setPage, getData }) {
+
+  if (values){
+    values.dt_birthday = values.dt_birthday ? moment(values.dt_birthday).format('YYYY-MM-DD') : ''
+    values.dt_start_company = values.dt_start_company ? moment(values.dt_start_company).format('YYYY-MM-DD') : ''
+  }
   const [valuesForm, setValuesForm] = useState(values)
+  console.log('vvv', valuesForm)
   let fields = [
     {
       col: 12,

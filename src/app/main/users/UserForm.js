@@ -8,7 +8,10 @@ function UserForm({ values, setPage, getData }) {
   const [valuesForm, setValuesForm] = useState(values)
   const [vehicles, setVehicles] = useState([])
 
-console.log('vvv', values)
+  if (values){
+    values.dt_birthday = values.dt_birthday ? moment(values.dt_birthday).format('YYYY-MM-DD') : ''
+
+  }
 
   useEffect(() => {
     axios

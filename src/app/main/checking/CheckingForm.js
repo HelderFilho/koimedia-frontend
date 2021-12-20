@@ -11,6 +11,9 @@ import Store from 'app/utils/Store'
 
 export default function CheckingForm({ values, setPage, getData }) {
   let logged_user = Store.USER
+  if (values){
+    values.dt_emission = values.dt_emission ? moment(values.dt_emission).format('YYYY-MM-DD') : ''
+  }
 
   const [valuesForm, setValuesForm] = useState(values);
   const [productsSelected, setProductsSelected] = useState([]);
@@ -31,7 +34,6 @@ export default function CheckingForm({ values, setPage, getData }) {
   const [squares, setSquares] = useState([])
   const [products, setProducts] = useState([])
   const [status, setStatus] = useState([])
-console.log('vvv', values)
   const [selectedVehicle, setSelectedVehicle] = useState(0)
   useEffect(() => {
     axios

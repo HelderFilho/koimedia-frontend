@@ -11,6 +11,12 @@ import Store from 'app/utils/Store'
 
 export default function OpecForm({ values, setPage, getData }) {
   let logged_user = Store.USER
+  if (values){
+    values.dt_emission = values.dt_emission ? moment(values.dt_emission).format('YYYY-MM-DD') : ''
+    values.dt_start = values.dt_start ? moment(values.dt_start).format('YYYY-MM-DD') : ''
+    values.dt_end = values.dt_end ? moment(values.dt_end).format('YYYY-MM-DD') : ''
+
+  }
 
   const [valuesForm, setValuesForm] = useState(values);
   const [productsSelected, setProductsSelected] = useState([]);

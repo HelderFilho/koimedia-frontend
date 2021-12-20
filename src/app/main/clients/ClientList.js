@@ -32,8 +32,9 @@ function ClientList(props) {
   useEffect(() => {
     axios
     .get(
-      Constants.APIEndpoints.AGENCY + "/getAllAgencies")
+      Constants.APIEndpoints.CLIENT + "/getAllClients")
      .then((res) => {
+       console.log('rrr', res.data[0])
       agencies_ = res.data[0]
 
     })
@@ -97,7 +98,7 @@ function ClientList(props) {
            
             <IconButton
               onClick={(ev) => {
-                deleteClient({ id_user: row.original.id_user });
+                deleteClient({ id_client: row.original.id_client });
               }}
             >
               <Icon>delete</Icon>
@@ -119,8 +120,8 @@ function ClientList(props) {
     getData();
   }, []);
 
-  const deleteClient = (id) => {
-    axios.post(Constants.APIEndpoints.CLIENT + "/deleteClient", id).then((res) => {
+  const deleteClient = (id_client) => {
+    axios.post(Constants.APIEndpoints.CLIENT + "/deleteClient", id_client).then((res) => {
       getData();
     });
   };

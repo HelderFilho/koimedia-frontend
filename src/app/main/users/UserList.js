@@ -118,13 +118,13 @@ function UserList(props) {
 
 
   const viewUser = (user) => {
-
+console.log('uuu', user)
     setUserDialog(true)
     let data = [
     {
       col: 12,
       label :'NOME',
-      value : user.name
+      value : user.name || ''
     },
     {col : 12,
       label : 'EMAIL',
@@ -138,7 +138,7 @@ function UserList(props) {
     
     {col : 12,
       label : 'LOCAL',
-      value : user.place
+      value : user.place != "undefined" ? user.place : ''
     },
     {
       col: 12,

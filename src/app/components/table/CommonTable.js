@@ -80,6 +80,13 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
     }
   );
     useEffect(() => {
+      data.map(d => {
+       Object.keys(d).forEach((item) => {
+         if (d[item] == "undefined"){
+          d[item] = ''
+         }
+       })
+      })
       setDataTable(data)
     }, [data])
 
