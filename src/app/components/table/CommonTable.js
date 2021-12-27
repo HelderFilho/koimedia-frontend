@@ -19,7 +19,8 @@ import {
 import clsx from "clsx";
 import CommonTablePaginationActions from "./CommonTablePaginationActions";
 import CommonHeader from "./CommonHeader";
-import FuseUtils from "@fuse/utils/FuseUtils";
+
+import './index.css'
 const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
   const defaultRef = useRef();
   const resolvedRef = ref || defaultRef;
@@ -115,7 +116,7 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
        newText = {newText}
        onBack = {onBack}/>
 
-      <div className="flex flex-col min-h-full sm:border-1 sm:rounded-16 overflow-hidden">
+      <div className="flex flex-col min-h-full sm:border-1 sm:rounded-16 overflow-hidden table">
         <TableContainer className="flex flex-1">
           <Table
             {...getTableProps()}
@@ -131,6 +132,7 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
                       {...(!column.sortable
                         ? column.getHeaderProps()
                         : column.getHeaderProps(column.getSortByToggleProps()))}
+                        style = {{fontSize: 18, fontWeight: 'bold'}}
                     >
                       {column.render("Header")}
                       {column.sortable ? (
