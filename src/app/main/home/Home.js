@@ -42,6 +42,7 @@ export default function Home() {
         .get(
           Constants.APIEndpoints.MAILING + "/getNextBirthdays")
          .then((res) => {
+             console.log('rrrr', res.data[0])
              setMailings(res.data[0])
         })
         
@@ -156,16 +157,19 @@ export default function Home() {
         proposals_filter = proposals_filter.filter(p => p.dt_emission >= selectedStartDate && p.dt_emission <= selectedEndDate)
         
     }
-    let total_proposals = proposals_filter.reduce((current, next) => {
-        return current + next.proposal_values[0].gross_value_proposal
+    let total_proposals = proposals_filter && proposals_filter.reduce((current, next) => {
+        let value = next.proposal_values != null && next.proposal_values[0] ? next.proposal_values[0].gross_value_proposal : 0
+        return current + value
     }, 0)
-
-    let total_proposals_approved = proposals_filter.filter(p => p.fk_id_status ==  1).reduce((current, next) => {
-        return current + next.proposal_values[0].gross_value_proposal
+    //ID DO STATUS APROVADA É 3
+    let total_proposals_approved = proposals_filter && proposals_filter.filter(p => p.fk_id_status ==  3).reduce((current, next) => {
+        let value = next.proposal_values != null && next.proposal_values[0] ? next.proposal_values[0].gross_value_proposal : 0
+        return current + value
     },0)
 
-    let total_proposals_open = proposals_filter.filter(p => p.fk_id_status !=  1).reduce((current, next) => {
-        return current + next.proposal_values[0].gross_value_proposal
+    let total_proposals_open =proposals_filter && proposals_filter.filter(p => p.fk_id_status !=  3).reduce((current, next) => {
+        let value = next.proposal_values != null && next.proposal_values[0] ? next.proposal_values[0].gross_value_proposal : 0
+        return current + value
     },0)
 
 
