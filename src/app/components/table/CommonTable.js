@@ -188,7 +188,7 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
           rowsPerPage={pageSize}
           page={pageIndex}
           SelectProps={{
-            inputProps: { "aria-label": "rows per page" },
+            inputProps: { "aria-label": "Itens por página" },
             native: false,
           }}
           onPageChange={handleChangePage}
