@@ -8,6 +8,7 @@ import "./Proposal.css";
 import { Button } from "@material-ui/core";
 import Input from 'app/components/input/Input'
 import Store from 'app/utils/Store'
+import moment from 'moment'
 
 export default function ProposalForm({ values, setPage, getData }) {
   let logged_user = Store.USER
@@ -122,18 +123,21 @@ console.log('vvv', values)
       name: "month_sell",
       label: "Mês de venda",
       options: monthList,
+      required : true,
     },
     {
       col: 5,
       type: "text",
       name: "number",
       label: "Nº PI/PP",
+      required : true,
     },
     {
       col: 5,
       type: "date",
       name: "dt_emission",
       label: "Data de emissão",
+      required : true
     },
 
     {
@@ -165,6 +169,7 @@ console.log('vvv', values)
       type: "text",
       name: "campaign",
       label: "Campanha",
+      required : true
     },
     {
       col: 6,
@@ -196,6 +201,7 @@ console.log('vvv', values)
       name: "month_placement",
       label: "Mês de Veiculação",
       options: monthList,
+      required : true
     },
     {
       col: 10,

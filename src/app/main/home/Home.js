@@ -25,9 +25,10 @@ export default function Home() {
     const [selectedClient, setSelectedClient] = useState(0)
     const [selectedAgency, setSelectedAgency] = useState(0)
     const [selectedVehicle, setSelectedVehicle] = useState(0)
-    const [selectedStartDate, setSelectedStartDate] = useState(null)
-    const [selectedEndDate, setSelectedEndDate] = useState(null)
-    
+    const [selectedStartDate, setSelectedStartDate] = useState(moment().format('YYYY-MM-01'))
+    const [selectedEndDate, setSelectedEndDate] = useState(moment().format('YYYY-MM-DD'))
+    values.start_date = moment().format('YYYY-MM-01')
+    values.end_date = moment().format('YYYY-MM-DD')
     const [Mailings, setMailings] = useState([])
 
     useEffect(() => {
@@ -157,6 +158,8 @@ export default function Home() {
         proposals_filter = proposals_filter.filter(p => p.dt_emission >= selectedStartDate && p.dt_emission <= selectedEndDate)
         
     }
+    console.log('ppppppp', proposals_filter)
+
     let total_proposals = proposals_filter && proposals_filter.reduce((current, next) => {
         let value = next.proposal_values != null && next.proposal_values[0] ? next.proposal_values[0].gross_value_proposal : 0
         return current + value

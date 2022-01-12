@@ -114,6 +114,7 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
        search = {true} 
        icon = {icon} 
        newText = {newText}
+       isList = {true}
        onBack = {onBack}/>
 
       <div className="flex flex-col min-h-full sm:border-1 sm:rounded-16 overflow-hidden table">
@@ -181,7 +182,7 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
             5,
             10,
             25,
-            { label: "All", value: data.length + 1 },
+            { label: "Todos", value: data.length + 1 },
           ]}
           colSpan={5}
           count={data.length}

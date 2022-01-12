@@ -11,12 +11,12 @@ import { selectMainTheme } from "app/store/fuse/settingsSlice";
 import Button from "@material-ui/core/Button";
 
 import "./index.css";
-function CommonHeader({ title, filterData, onAdd, search, icon, newText, onBack }) {
+function CommonHeader({ title, filterData, onAdd, search, icon, newText, onBack, isList }) {
   const dispatch = useDispatch();
   const mainTheme = useSelector(selectMainTheme);
 
   return (
-    <div className="flex flex-1 items-center justify-between p-4 sm:p-24 header">
+    <div className="flex flex-1 items-center justify-between p-4 sm:p-24 header" >
       <div className="flex flex-shrink items-center sm:w-224">
         {onBack ? (
           <IconButton

@@ -134,7 +134,8 @@ export default forwardRef(
                 changeValue(field.name, evt);
               }}
               disabled = {field.disabled}
-              
+              value={values[field.name] || ""} // recomendo colocar o ||<formato do campo -> string|array|boolean/> caso contrário esse componente pode apresentar falhas; errado: value={values[field.name]}; certo: value={values[field.name] || []}
+
               />
               <span style={{ color: "red" }}>{errors[field.name]}</span>
             </div>

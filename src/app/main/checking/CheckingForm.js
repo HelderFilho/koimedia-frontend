@@ -8,7 +8,7 @@ import "./Checking.css";
 import { Button } from "@material-ui/core";
 import Input from 'app/components/input/Input'
 import Store from 'app/utils/Store'
-
+import moment from 'moment'
 export default function CheckingForm({ values, setPage, getData }) {
   let logged_user = Store.USER
   if (values){

@@ -12,6 +12,7 @@ export default function SquareForm({ values, setPage, getData }) {
       type: "text",
       name: "cod_uf",
       label: "Código UF",
+      required : true
 
     },
     {
