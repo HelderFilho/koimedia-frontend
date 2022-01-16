@@ -13,6 +13,7 @@ import CommonView from '../../components/commonView/CommonView'
 import CommonDialog from "app/components/dialog/CommonDialog";
 import moment from "moment";
 import "./Opec.css";
+import ConfirmDialog from "app/components/dialog/ConfirmDialog";
 
 let logged_user = Store.USER
 export default function OpecList(props) {
@@ -27,6 +28,9 @@ export default function OpecList(props) {
   const [clients, setClients] = useState([])
   const [vehicles, setVehicles] = useState([])
   const [squares, setSquares] = useState([])
+  const [deleteDialog, setDeleteDialog] = useState(false)
+
+
 
   let agencies_ = []
   let clients_ = []
@@ -179,8 +183,9 @@ useEffect(() => {
 <IconButton
 
             onClick={(ev) => {
-                deleteProposal({ id_proposal: row.original.id_proposal });
-              }}
+              setProposalSelected(row.original)
+              setDeleteDialog(true)
+             }}
             >
               <Icon>delete</Icon>
             </IconButton>
@@ -202,7 +207,9 @@ useEffect(() => {
   }, []);
 
   const deleteProposal = (id) => {
-    axios.post(Constants.APIEndpoints.PROPOSAL + "/deleteProposal", id).then((res) => {
+    const data = {id_proposals : proposalSelected.id_proposals}
+
+    axios.post(Constants.APIEndpoints.PROPOSAL + "/deleteProposal", data).then((res) => {
       getData();
     });
   };
@@ -341,6 +348,9 @@ useEffect(() => {
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
     >
+{deleteDialog ? (
+  <ConfirmDialog  title = "Deseja deletar essa Opec?" cancel={() => setDeleteDialog(false)} confirm={deleteProposal} />
+):null}
 
 <CommonDialog
         open={proposalDialog}

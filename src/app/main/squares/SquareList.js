@@ -9,6 +9,7 @@ import SquareForm from "./SquareForm";
 import axios from "axios";
 import Constants from "app/utils/Constants";
 import Store from 'app/utils/Store'
+import ConfirmDialog from "app/components/dialog/ConfirmDialog";
 
 let logged_user = Store.USER
 
@@ -23,7 +24,9 @@ export default function SquareList(props) {
   const [values, setValues] = useState({});
   const [singleSquare, setSingleSquare] = useState([])
   const [squareDialog, setSquareDialog] = useState(false)
- 
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  let [squareSelected, setSquareSelected] = useState([])
+
   const columns = useMemo(
     () => [
       
@@ -71,8 +74,9 @@ export default function SquareList(props) {
 
 <IconButton
               onClick={(ev) => {
-                deleteSquare({ id_square: row.original.id_square });
-              }}
+                setSquareSelected(row.original)
+                setDeleteDialog(true)
+                   }}
             >
               <Icon>delete</Icon>
             </IconButton>
@@ -94,7 +98,9 @@ export default function SquareList(props) {
   }, []);
 
   const deleteSquare = (id) => {
-    axios.post(Constants.APIEndpoints.SQUARE + "/deleteSquare", id).then((res) => {
+    const data = {id_square : squareSelected.id_square}
+
+    axios.post(Constants.APIEndpoints.SQUARE + "/deleteSquare", data).then((res) => {
       getData();
     });
   };
@@ -146,6 +152,10 @@ export default function SquareList(props) {
         width = "xl"
         print = {true}
       >
+
+{deleteDialog ? (
+  <ConfirmDialog  title = "Deseja deletar essa Praça?" cancel={() => setDeleteDialog(false)} confirm={deleteSquare} />
+):null}
         <CommonView  dialog = {true} data = {singleSquare} title = "Ver Praça" onBack = {() => setPage('list')}/>
 
       </CommonDialog>

@@ -12,6 +12,7 @@ import Constants from "app/utils/Constants";
 import CommonView from '../../components/commonView/CommonView'
 import CommonDialog from "app/components/dialog/CommonDialog";
 import Store from 'app/utils/Store'
+import ConfirmDialog from "app/components/dialog/ConfirmDialog";
 
 let logged_user = Store.USER
 
@@ -26,7 +27,9 @@ export default function ProductList(props) {
  
   const [singleProduct, setSingleProduct] = useState([])
   const [productDialog, setProductDialog] = useState(false)
- 
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  let [productSelected, setProductSelected] = useState([])
+
   let vehicles_ = []
 
   let middleList = [
@@ -127,8 +130,9 @@ useEffect(() => {
 {!['checking', 'opec', 'financeiro', 'comercial', 'subadmin' ].includes(logged_user.role) ? (   
             <IconButton
               onClick={(ev) => {
-                deleteProduct({ id_product: row.original.id_product });
-              }}
+                setProductSelected(row.original)
+                setDeleteDialog(true)
+                    }}
             >
               <Icon>delete</Icon>
             </IconButton>
@@ -151,7 +155,9 @@ useEffect(() => {
 
 
   const deleteProduct = (id) => {
-    axios.post(Constants.APIEndpoints.PRODUCT + "/deleteProduct", id).then((res) => {
+    const data = {id_product : productSelected.id_product}
+
+    axios.post(Constants.APIEndpoints.PRODUCT + "/deleteProduct", data).then((res) => {
       getData();
     });
   };
@@ -222,6 +228,11 @@ useEffect(() => {
         width = "xl"
         print = {true}
       >
+
+{deleteDialog ? (
+  <ConfirmDialog  title = "Deseja deletar esse Produto?" cancel={() => setDeleteDialog(false)} confirm={deleteProduct} />
+):null}
+
         <CommonView  dialog = {true} data = {singleProduct} title = "Ver Produto" onBack = {() => setPage('list')}/>
 
       </CommonDialog>

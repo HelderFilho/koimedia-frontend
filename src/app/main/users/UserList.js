@@ -13,6 +13,7 @@ import CommonView from '../../components/commonView/CommonView'
 import CommonDialog from "app/components/dialog/CommonDialog";
 import moment from "moment";
 import Store from 'app/utils/Store'
+import ConfirmDialog from "app/components/dialog/ConfirmDialog";
 
 let logged_user = Store.USER
 
@@ -28,6 +29,10 @@ function UserList(props) {
   const [singleUser, setSingleUser] = useState([])
   const [userDialog, setUserDialog] = useState(false)
  
+
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  let [userSelected, setUserSelected] = useState([])
+
   const columns = useMemo(
     () => [
       {
@@ -102,8 +107,9 @@ function UserList(props) {
            {logged_user.role != 'subadmin' ?(
             <IconButton
               onClick={(ev) => {
-                deleteUser({ id_user: row.original.id_user });
-              }}
+                setUserSelected(row.original)
+                setDeleteDialog(true)
+                   }}
             >
               <Icon>delete</Icon>
             </IconButton>
@@ -169,8 +175,8 @@ console.log('uuu', user)
   }, []);
 
   const deleteUser = (id) => {
-    console.log('iiidd', id)
-    axios.post(Constants.APIEndpoints.USER + "/deleteUser", id).then((res) => {
+    const data = {id_user : userSelected.id_user}
+    axios.post(Constants.APIEndpoints.USER + "/deleteUser", data).then((res) => {
       getData();
     });
   };
@@ -191,6 +197,9 @@ console.log('ddd', data)
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
     >
+{deleteDialog ? (
+  <ConfirmDialog  title = "Deseja deletar esse Usuário?" cancel={() => setDeleteDialog(false)} confirm={deleteUser} />
+):null}
 
 <CommonDialog
         open={userDialog}

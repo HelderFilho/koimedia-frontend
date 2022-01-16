@@ -17,3 +17,9 @@
     margin-top: 120px;
     width: 100%;
 }
+
+.searchColumn {
+    border: 1px solid rgba(163, 157, 157, 0.4);
+    border-radius: 20px;
+    max-width: 90%;
+}

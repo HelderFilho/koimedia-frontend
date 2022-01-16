@@ -13,6 +13,7 @@ import CommonView from '../../components/commonView/CommonView'
 import CommonDialog from "app/components/dialog/CommonDialog";
 import Constants from "app/utils/Constants";
 import Store from 'app/utils/Store'
+import ConfirmDialog from "app/components/dialog/ConfirmDialog";
 
 let logged_user = Store.USER
 
@@ -25,7 +26,9 @@ export default function AgencyList(props) {
   const [values, setValues] = useState({});
   const [singleAgency, setSingleAgency] = useState([])
   const [agencyDialog, setAgencyDialog] = useState(false)
- 
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  let [agencySelected, setAgencySelected] = useState([])
+
   let clients_ = []
 
 
@@ -97,7 +100,9 @@ export default function AgencyList(props) {
          
          <IconButton
               onClick={(ev) => {
-                deleteAgency({ id_agency: row.original.id_agency });
+                setAgencySelected(row.original)
+                setDeleteDialog(true)
+    
               }}
             >
               <Icon>delete</Icon>
@@ -120,7 +125,9 @@ export default function AgencyList(props) {
   }, []);
 
   const deleteAgency = (id) => {
-    axios.post(Constants.APIEndpoints.AGENCY + "/deleteAgency", id).then((res) => {
+    const data = {id_agency : agencySelected.id_agency}
+
+    axios.post(Constants.APIEndpoints.AGENCY + "/deleteAgency", data).then((res) => {
       getData();
     });
   };
@@ -199,6 +206,9 @@ export default function AgencyList(props) {
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
     >
+{deleteDialog ? (
+  <ConfirmDialog title = "Deseja deletar essa Agência?" cancel={() => setDeleteDialog(false)} confirm={deleteAgency} />
+):null}
 
 <CommonDialog
         open={agencyDialog}

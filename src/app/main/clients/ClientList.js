@@ -12,6 +12,7 @@ import Constants from "app/utils/Constants";
 import CommonView from '../../components/commonView/CommonView'
 import CommonDialog from "app/components/dialog/CommonDialog";
 import Store from 'app/utils/Store'
+import ConfirmDialog from "app/components/dialog/ConfirmDialog";
 
 let logged_user = Store.USER
 
@@ -25,7 +26,9 @@ function ClientList(props) {
 
   const [singleClient, setSingleClient] = useState([])
   const [clientDialog, setClientDialog] = useState(false)
- 
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  let [clientSelected, setClientSelected] = useState([])
+
   let agencies_ = []
 
 
@@ -98,8 +101,9 @@ function ClientList(props) {
            
             <IconButton
               onClick={(ev) => {
-                deleteClient({ id_client: row.original.id_client });
-              }}
+                setClientSelected(row.original)
+                setDeleteDialog(true)
+                    }}
             >
               <Icon>delete</Icon>
             </IconButton>
@@ -121,7 +125,9 @@ function ClientList(props) {
   }, []);
 
   const deleteClient = (id_client) => {
-    axios.post(Constants.APIEndpoints.CLIENT + "/deleteClient", id_client).then((res) => {
+    const data = {id_client : clientSelected.id_client}
+
+    axios.post(Constants.APIEndpoints.CLIENT + "/deleteClient", data).then((res) => {
       getData();
     });
   };
@@ -200,6 +206,10 @@ function ClientList(props) {
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
     >
+{deleteDialog ? (
+  <ConfirmDialog  title = "Deseja deletar esse Cliente?" cancel={() => setDeleteDialog(false)} confirm={deleteClient} />
+):null}
+
 
 <CommonDialog
         open={clientDialog}

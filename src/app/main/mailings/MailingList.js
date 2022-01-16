@@ -13,6 +13,7 @@ import Constants from "app/utils/Constants";
 import CommonView from '../../components/commonView/CommonView'
 import CommonDialog from "app/components/dialog/CommonDialog";
 import Store from 'app/utils/Store'
+import ConfirmDialog from "app/components/dialog/ConfirmDialog";
 
 let logged_user = Store.USER
 export default function MailingList(props) {
@@ -26,6 +27,9 @@ export default function MailingList(props) {
   const [singleMailing, setSingleMailing] = useState([])
   const [mailingDialog, setMailingDialog] = useState(false)
  
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  let [mailingSelected, setMailingSelected] = useState([])
+
   let typeList =  [
     "Veículo",
     "Agência",
@@ -97,8 +101,9 @@ export default function MailingList(props) {
 
 <IconButton
               onClick={(ev) => {
-                deleteMailing({ id_mailing: row.original.id_mailing });
-              }}
+                setMailingSelected(row.original)
+                setDeleteDialog(true)
+                      }}
             >
               <Icon>delete</Icon>
             </IconButton>
@@ -120,7 +125,9 @@ export default function MailingList(props) {
   }, []);
 
   const deleteMailing = (id) => {
-    axios.post(Constants.APIEndpoints.MAILING + "/deleteMailing", id).then((res) => {
+    const data = {id_mailing : mailingSelected.id_mailing}
+
+    axios.post(Constants.APIEndpoints.MAILING + "/deleteMailing", data).then((res) => {
       getData();
     });
   };
@@ -204,6 +211,11 @@ export default function MailingList(props) {
         width = "xl"
         print = {true}
       >
+{deleteDialog ? (
+  <ConfirmDialog  title = "Deseja deletar esse Mailing?" cancel={() => setDeleteDialog(false)} confirm={deleteMailing} />
+):null}
+
+
         <CommonView  dialog = {true} data = {singleMailing} title = "Ver Mailing" onBack = {() => setPage('list')}/>
 
       </CommonDialog>

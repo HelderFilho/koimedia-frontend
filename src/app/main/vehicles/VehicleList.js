@@ -13,6 +13,7 @@ import CommonView from '../../components/commonView/CommonView'
 import CommonDialog from "app/components/dialog/CommonDialog";
 import Constants from "app/utils/Constants";
 import Store from 'app/utils/Store'
+import ConfirmDialog from "app/components/dialog/ConfirmDialog";
 
 let logged_user = Store.USER
 
@@ -25,6 +26,9 @@ function VehicleList(props) {
   const [values, setValues] = useState({});
   const [singleVehicle, setSingleVehicle] = useState([])
   const [vehicleDialog, setVehicleDialog] = useState(false)
+
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  let [vehicleSelected, setVehicleSelected] = useState([])
 
   const [squares, setSquares] = useState([])
   let squares_ = []
@@ -98,8 +102,9 @@ function VehicleList(props) {
 
             <IconButton
               onClick={(ev) => {
-                deleteUser({ id_user: row.original.id_user });
-              }}
+                setVehicleSelected(row.original)
+                setDeleteDialog(true)
+                     }}
             >
               <Icon>delete</Icon>
             </IconButton>
@@ -176,8 +181,10 @@ function VehicleList(props) {
     getData();
   }, []);
 
-  const deleteUser = (id) => {
-    axios.post(Constants.APIEndpoints.VEHICLE + "/deleteVehicle", id).then((res) => {
+  const deleteVehicle = (id) => {
+    const data = {id_vehicle : vehicleSelected.id_vehicle}
+
+    axios.post(Constants.APIEndpoints.VEHICLE + "/deleteVehicle", data).then((res) => {
       getData();
     });
   };
@@ -204,6 +211,10 @@ function VehicleList(props) {
         width = "xl"
         print = {true}
       >
+        {deleteDialog ? (
+  <ConfirmDialog  title = "Deseja deletar esse Veículo?" cancel={() => setDeleteDialog(false)} confirm={deleteVehicle} />
+):null}
+
         <CommonView  dialog = {true} data = {singleVehicle} title = "Ver Veiculo" onBack = {() => setPage('list')}/>
 
       </CommonDialog>

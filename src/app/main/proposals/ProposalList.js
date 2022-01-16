@@ -206,15 +206,15 @@ useEffect(() => {
   }, []);
 
   const deleteProposal = (id) => {
- console.log('entrou')
- /*   axios.post(Constants.APIEndpoints.PROPOSAL + "/deleteProposal", id).then((res) => {
+ const data = {id_proposals : proposalSelected.id_proposals}
+    axios.post(Constants.APIEndpoints.PROPOSAL + "/deleteProposal", data).then((res) => {
+      setDeleteDialog(false)
       getData();
     });
- */
+ 
   };
 
   const viewProposal = (proposal) => {
-    console.log('vvv', proposal)
 
     setProposalDialog(true)
     let data = [
@@ -349,7 +349,7 @@ useEffect(() => {
       animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
     >
 {deleteDialog ? (
-  <ConfirmDialog cancel={() => setDeleteDialog(false)} confirm={deleteProposal} />
+  <ConfirmDialog  title = "Deseja deletar essa Proposta?" cancel={() => setDeleteDialog(false)} confirm={deleteProposal} />
 ):null}
 
 

@@ -11,6 +11,7 @@ import Constants from "app/utils/Constants";
 import CommonView from '../../components/commonView/CommonView'
 import CommonDialog from "app/components/dialog/CommonDialog";
 import Store from 'app/utils/Store'
+import ConfirmDialog from "app/components/dialog/ConfirmDialog";
 
 let logged_user = Store.USER
 export default function StatusList(props) {
@@ -24,6 +25,8 @@ export default function StatusList(props) {
 
   const [singleStatus, setSingleStatus] = useState([])
   const [statusDialog, setStatusDialog] = useState(false)
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  let [statusSelected, setStatusSelected] = useState([])
 
   const columns = useMemo(
     () => [
@@ -66,8 +69,9 @@ export default function StatusList(props) {
 
             <IconButton
               onClick={(ev) => {
-                deleteStatus({ id_status: row.original.id_status });
-              }}
+                setStatusSelected(row.original)
+                setDeleteDialog(true)
+                   }}
             >
               <Icon>delete</Icon>
             </IconButton>
@@ -89,7 +93,9 @@ export default function StatusList(props) {
   }, []);
 
   const deleteStatus = (id) => {
-    axios.post(Constants.APIEndpoints.STATUS + "/deleteStatus", id).then((res) => {
+    const data = {id_status : statusSelected.id_status}
+
+    axios.post(Constants.APIEndpoints.STATUS + "/deleteStatus", data).then((res) => {
       getData();
     });
   };
@@ -137,6 +143,11 @@ export default function StatusList(props) {
         width = "xl"
         print = {true}
       >
+
+{deleteDialog ? (
+  <ConfirmDialog  title = "Deseja deletar esse Status?" cancel={() => setDeleteDialog(false)} confirm={deleteStatus} />
+):null}
+
         <CommonView  dialog = {true} data = {singleStatus} title = "Ver Status" onBack = {() => setPage('list')}/>
 
       </CommonDialog>

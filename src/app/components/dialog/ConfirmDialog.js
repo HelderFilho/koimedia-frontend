@@ -3,7 +3,7 @@ import CommonDialog from "app/components/dialog/CommonDialog";
 import Button from "@material-ui/core/Button";
 
 import './index.css'
-export default function ConfirmDialog({cancel, confirm}) {
+export default function ConfirmDialog({title, cancel, confirm}) {
     const [deleteDialog, setDeleteDialog] = useState(true)
 console.log()
     return (
@@ -11,7 +11,7 @@ console.log()
 <CommonDialog
 open = {deleteDialog}
 onCLose = {() => setDeleteDialog(false)}
-title = "Você deseja deletar essa proposta?"
+title = {title}
 width = "sm"
 >
 <div className='confirmDialogButtons'> 

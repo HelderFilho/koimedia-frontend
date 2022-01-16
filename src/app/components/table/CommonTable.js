@@ -19,6 +19,7 @@ import {
 import clsx from "clsx";
 import CommonTablePaginationActions from "./CommonTablePaginationActions";
 import CommonHeader from "./CommonHeader";
+import Input from "@material-ui/core/Input";
 
 import './index.css'
 const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -38,6 +39,7 @@ const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
 
 const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, headerTitle }) => {
   const [dataTable, setDataTable] = useState(data);
+  const [filters, setFilters] = useState([])
   const {
     getTableProps,
     headerGroups,
@@ -67,7 +69,7 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
           ),
           Cell: ({ row }) => (
             <div>
-         {/*
+              {/*
               <IndeterminateCheckbox
                 {...row.getToggleRowSelectedProps()}
                 onClick={(ev) => ev.stopPropagation()}
@@ -80,16 +82,17 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
       ]);
     }
   );
-    useEffect(() => {
-      data.map(d => {
-       Object.keys(d).forEach((item) => {
-         if (d[item] == "undefined"){
+  useEffect(() => {
+    data.map(d => {
+      Object.keys(d).forEach((item) => {
+        if (d[item] == "undefined") {
           d[item] = ''
-         }
-       })
+        }
       })
-      setDataTable(data)
-    }, [data])
+    })
+    setDataTable(data)
+  }, [data])
+
 
   const handleChangePage = (event, newPage) => {
     gotoPage(newPage);
@@ -100,22 +103,35 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
   };
 
   const filteringData = (text) => {
-      const newData = data.filter((obj) =>
-        JSON.stringify(obj).toLowerCase().includes(text.toLowerCase())
-      );
-      setDataTable(newData);
+    const newData = data.filter((obj) =>
+      JSON.stringify(obj).toLowerCase().includes(text.toLowerCase())
+    );
+    setDataTable(newData);
   };
+
+  const filterColumn = (column, text) => {
+    filters[column] = text
+    setFilters(filters)
+    const newData = data.filter(function(element) {
+      return Object.keys(filters).every(filter => {
+        return element[filter] && element[filter].toLowerCase().includes(filters[filter] && filters[filter].toLowerCase())
+      })
+    })
+
+    setDataTable(newData)
+  }
+
   return (
     <div>
       <CommonHeader
-       title={headerTitle} 
-       filterData={filteringData} 
-       onAdd={onAdd} 
-       search = {true} 
-       icon = {icon} 
-       newText = {newText}
-       isList = {true}
-       onBack = {onBack}/>
+        title={headerTitle}
+        filterData={filteringData}
+        onAdd={onAdd}
+        search={true}
+        icon={icon}
+        newText={newText}
+        isList={true}
+        onBack={onBack} />
 
       <div className="flex flex-col min-h-full sm:border-1 sm:rounded-16 overflow-hidden table">
         <TableContainer className="flex flex-1">
@@ -128,14 +144,15 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
               {headerGroups.map((headerGroup) => (
                 <TableRow {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                    <TableCell
+                    <td>
+                      <TableCell
                       className="whitespace-nowrap p-4 md:p-12"
                       {...(!column.sortable
                         ? column.getHeaderProps()
                         : column.getHeaderProps(column.getSortByToggleProps()))}
-                        style = {{fontSize: 18, fontWeight: 'bold'}}
+                      style={{ fontSize: 18, fontWeight: 'bold' }}
                     >
-                      {column.render("Header")}
+                    {column.render("Header")}
                       {column.sortable ? (
                         <TableSortLabel
                           active={column.isSorted}
@@ -143,7 +160,21 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
                           direction={column.isSortedDesc ? "desc" : "asc"}
                         />
                       ) : null}
-                    </TableCell>
+                   </TableCell>
+                   {!['selection', 'action'].includes(column.id) ? (
+                      <Input
+                        placeholder="Buscar"
+                        className="flex flex-1 px-16 searchColumn"
+                        disableUnderline
+                        fullWidth
+                        //  value={searchText}
+                        inputProps={{
+                          "aria-label": "Search",
+                        }}
+                        onChange={(evt) => filterColumn(column.id, evt.target.value)}
+                      />
+                     ): null}
+                     </td>
                   ))}
                 </TableRow>
               ))}
