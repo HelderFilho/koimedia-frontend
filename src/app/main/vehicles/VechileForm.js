@@ -3,16 +3,20 @@ import CommonHeader from "app/components/table/CommonHeader";
 import CommonForm from "app/components/form/CommonForm";
 import axios from "axios";
 import Constants from "app/utils/Constants";
+import { useResizeDetector } from 'react-resize-detector';
+
 function VehicleForm({ values, setPage, getData }) {
   const [valuesForm, setValuesForm] = useState(values)
   const [squares, setSquares] = useState([])
+  const { width, height, ref } = useResizeDetector();
+
   useEffect(() => {
     axios
-    .get(
-      Constants.APIEndpoints.SQUARE + "/getAllSquares")
-     .then((res) => {
-      setSquares(res.data[0])
-    })
+      .get(
+        Constants.APIEndpoints.SQUARE + "/getAllSquares")
+      .then((res) => {
+        setSquares(res.data[0])
+      })
 
 
   }, [])
@@ -23,7 +27,7 @@ function VehicleForm({ values, setPage, getData }) {
       type: "text",
       name: "fancy_name",
       label: "Nome Fantasia",
-      required : true
+      required: true
 
     },
     {
@@ -31,14 +35,14 @@ function VehicleForm({ values, setPage, getData }) {
       type: "text",
       name: "company_name",
       label: "Razão Social",
-      required : true
+      required: true
     },
     {
       col: 6,
       type: "text",
       name: "cnpj",
       label: "CNPJ",
-      format:'##.###.###/#####-##',
+      format: '##.###.###/#####-##',
 
     },
 
@@ -74,8 +78,8 @@ function VehicleForm({ values, setPage, getData }) {
       label: "Praça",
       options: squares.map(v => {
         return {
-        value: v.id_square,
-        label: v.uf
+          value: v.id_square,
+          label: v.uf
         }
       }),
 
@@ -86,24 +90,26 @@ function VehicleForm({ values, setPage, getData }) {
       label: "Representante",
       name: "sponsor",
       type: "text",
-    }   
+    }
   ];
 
 
-const onSubmit = () => {
- axios.post(Constants.APIEndpoints.VEHICLE + (values.id_vehicle ? '/updateVehicle' : '/createVehicle'), valuesForm).then(res => {
-  setPage('list')
-  getData();
-}).catch(error => {
-  console.log(error)
-})
+  const onSubmit = () => {
+    axios.post(Constants.APIEndpoints.VEHICLE + (values.id_vehicle ? '/updateVehicle' : '/createVehicle'), valuesForm).then(res => {
+      setPage('list')
+      getData();
+    }).catch(error => {
+      console.log(error)
+    })
 
- 
-}
- 
+
+  }
+
   return (
-    <div>
-      <CommonHeader title="Criar Veículo" onBack = {() => setPage('list')}/>
+    <div ref={ref}>
+      <CommonHeader title="Criar Veículo"
+        width={width}
+        onBack={() => setPage('list')} />
       <CommonForm
         values={valuesForm}
         fields={fields}
@@ -111,9 +117,9 @@ const onSubmit = () => {
           values[f.name] = v;
           setValuesForm(values)
         }}
-         onSubmit={onSubmit}
+        onSubmit={onSubmit}
       />
-     
+
     </div>
   );
 }

@@ -9,15 +9,17 @@ import { Button } from "@material-ui/core";
 import Input from 'app/components/input/Input'
 import Store from 'app/utils/Store'
 import moment from 'moment'
+import { useResizeDetector } from 'react-resize-detector';
 
 export default function ProposalForm({ values, setPage, getData }) {
   let logged_user = Store.USER
-  if (values){
+  if (values) {
     values.dt_emission = values.dt_emission ? moment(values.dt_emission).format('YYYY-MM-DD') : ''
     values.dt_start = values.dt_start ? moment(values.dt_start).format('YYYY-MM-DD') : ''
     values.dt_end = values.dt_end ? moment(values.dt_end).format('YYYY-MM-DD') : ''
 
   }
+  const { width, height, ref } = useResizeDetector();
 
   const [valuesForm, setValuesForm] = useState(values);
   const [productsSelected, setProductsSelected] = useState([]);
@@ -31,64 +33,63 @@ export default function ProposalForm({ values, setPage, getData }) {
   const [approvedGrossValue, setApprovedGrossValue] = useState(0)
   const [standardDiscountApproved, setStandardDiscountApproved] = useState(0)
   const [netValueApproved, setNetValueApproved] = useState(0)
-  
+
   const [agencies, setAgencies] = useState([])
   const [clients, setClients] = useState([])
   const [vehicles, setVehicles] = useState([])
   const [squares, setSquares] = useState([])
   const [products, setProducts] = useState([])
   const [status, setStatus] = useState([])
-console.log('vvv', values)
   const [selectedVehicle, setSelectedVehicle] = useState(0)
   useEffect(() => {
     axios
-    .get(
-      Constants.APIEndpoints.AGENCY + "/getAllAgencies")
-     .then((res) => {
-      setAgencies(res.data[0])
-    })
+      .get(
+        Constants.APIEndpoints.AGENCY + "/getAllAgencies")
+      .then((res) => {
+        setAgencies(res.data[0])
+      })
 
     axios
-    .get(
-      Constants.APIEndpoints.CLIENT + "/getAllClients")
-     .then((res) => {
-      setClients(res.data[0])
-    })
+      .get(
+        Constants.APIEndpoints.CLIENT + "/getAllClients")
+      .then((res) => {
+        setClients(res.data[0])
+      })
 
     axios
-    .get(
-      Constants.APIEndpoints.VEHICLE + "/getAllVehicles")
-     .then((res) => {
-      setVehicles(res.data[0])
-    })
+      .get(
+        Constants.APIEndpoints.VEHICLE + "/getAllVehicles")
+      .then((res) => {
+        setVehicles(res.data[0])
+      })
 
     axios
-    .get(
-      Constants.APIEndpoints.SQUARE + "/getAllSquares")
-     .then((res) => {
-      setSquares(res.data[0])
-    })
-
-
-    axios
-    .get(
-      Constants.APIEndpoints.PRODUCT + "/getAllProducts")
-     .then((res) => {
-      setProducts(res.data[0])
-    })
+      .get(
+        Constants.APIEndpoints.SQUARE + "/getAllSquares")
+      .then((res) => {
+        setSquares(res.data[0])
+      })
 
 
     axios
-    .get(
-      Constants.APIEndpoints.STATUS + "/getAllStatus")
-     .then((res) => {
-      setStatus(res.data[0])
-    })
+      .get(
+        Constants.APIEndpoints.PRODUCT + "/getAllProducts")
+      .then((res) => {
+        setProducts(res.data[0])
+      })
 
-    if (values.products){
+
+    axios
+      .get(
+        Constants.APIEndpoints.STATUS + "/getAllStatus")
+      .then((res) => {
+        setStatus(res.data[0])
+      })
+
+    if (values.products) {
       setProductsSelected(values.products)
     }
-    if (values.proposal_values){
+    if (values.proposal_values) {
       setGrossValueProposal(values.proposal_values[0].gross_value_proposal)
       setApprovedGrossValue(values.proposal_values[0].approved_gross_value)
       setNetValueApproved(values.proposal_values[0].net_value_approved)
@@ -97,7 +98,7 @@ console.log('vvv', values)
       setStandardDiscountApproved(values.proposal_values[0].standard_discount_approved)
       setStandardDiscountProposal(values.proposal_values[0].standard_discount_proposal)
     }
-    if (values.fk_id_vehicle){
+    if (values.fk_id_vehicle) {
       setSelectedVehicle(values.fk_id_vehicle)
     }
 
@@ -123,21 +124,21 @@ console.log('vvv', values)
       name: "month_sell",
       label: "Mês de venda",
       options: monthList,
-      required : true,
+      required: true,
     },
     {
       col: 5,
       type: "text",
       name: "number",
       label: "Nº PI/PP",
-      required : true,
+      required: true,
     },
     {
       col: 5,
       type: "date",
       name: "dt_emission",
       label: "Data de emissão",
-      required : true
+      required: true
     },
 
     {
@@ -147,8 +148,8 @@ console.log('vvv', values)
       label: "Cliente",
       options: clients.map(c => {
         return {
-        value: c.id_client,
-        label: c.fancy_name
+          value: c.id_client,
+          label: c.fancy_name
         }
       }),
     },
@@ -159,8 +160,8 @@ console.log('vvv', values)
       label: "Agência",
       options: agencies.map(ag => {
         return {
-        value: ag.id_agency,
-        label: ag.fancy_name
+          value: ag.id_agency,
+          label: ag.fancy_name
         }
       }),
     },
@@ -169,7 +170,7 @@ console.log('vvv', values)
       type: "text",
       name: "campaign",
       label: "Campanha",
-      required : true
+      required: true
     },
     {
       col: 6,
@@ -178,8 +179,8 @@ console.log('vvv', values)
       label: "Praça de venda",
       options: squares.map(sq => {
         return {
-        value: sq.id_square,
-        label: sq.uf
+          value: sq.id_square,
+          label: sq.uf
         }
       }),
     },
@@ -190,8 +191,8 @@ console.log('vvv', values)
       label: "Status",
       options: status.map(st => {
         return {
-        value: st.id_status,
-        label: st.name
+          value: st.id_status,
+          label: st.name
         }
       }),
     },
@@ -201,7 +202,7 @@ console.log('vvv', values)
       name: "month_placement",
       label: "Mês de Veiculação",
       options: monthList,
-      required : true
+      required: true
     },
     {
       col: 10,
@@ -210,8 +211,8 @@ console.log('vvv', values)
       label: "Veículo",
       options: vehicles.map(v => {
         return {
-        value: v.id_vehicle,
-        label: v.fancy_name
+          value: v.id_vehicle,
+          label: v.fancy_name
         }
       }),
     },
@@ -243,7 +244,7 @@ console.log('vvv', values)
       type: "file",
       name: "file_material",
       label: "Arquivo Material",
-      
+
     },
     {
       col: 12,
@@ -251,7 +252,7 @@ console.log('vvv', values)
       name: "observation",
       label: "Anotações Propostas",
     },
-   ];
+  ];
 
 
 
@@ -261,7 +262,7 @@ console.log('vvv', values)
       type: "select",
       name: "fk_id_product",
       label: "Produto",
-      options: products.filter(p => p.fk_id_vehicle == selectedVehicle).map(p=> {
+      options: products.filter(p => p.fk_id_vehicle == selectedVehicle).map(p => {
         return {
           value: p.id_product,
           label: p.name
@@ -308,7 +309,7 @@ console.log('vvv', values)
 
   const addProduct = (product) => {
     productsSelected.push(product);
-  updateValues();
+    updateValues();
     setOpenModalProduct(false);
     setProductsSelected(productsSelected);
     setValuesProduct([]);
@@ -320,14 +321,14 @@ console.log('vvv', values)
     updateValues();
   };
 
-  const updateValues = () =>{
+  const updateValues = () => {
     console.log('pppproductselected', productsSelected)
     let gross_value = productsSelected.reduce((sum, item) => {
-      return sum + (item.price * item.quantity_hired) - (item.negociation > 0 ? item.price * item.quantity_hired/item.negociation : 0) 
+      return sum + (item.price * item.quantity_hired) - (item.negociation > 0 ? item.price * item.quantity_hired / item.negociation : 0)
     }, 0)
     let discount_proposal = gross_value * standardDiscount / 100
     let net_proposal = gross_value - discount_proposal
-    
+
     setGrossValueProposal(gross_value)
     setStandardDiscountProposal(discount_proposal)
     setNetValueProposal(net_proposal)
@@ -341,22 +342,22 @@ console.log('vvv', values)
 
   const onSubmit = () => {
     let valuesProposal = {
-      standardDiscount : standardDiscount,
+      standardDiscount: standardDiscount,
       grossValueProposal: grossValueProposal,
-      standardDiscountProposal : standardDiscountProposal,
-      netValueProposal : netValueProposal,
-      approvedGrossValue : approvedGrossValue,
-      standardDiscountApproved : standardDiscountApproved,
-      netValueApproved : netValueApproved
+      standardDiscountProposal: standardDiscountProposal,
+      netValueProposal: netValueProposal,
+      approvedGrossValue: approvedGrossValue,
+      standardDiscountApproved: standardDiscountApproved,
+      netValueApproved: netValueApproved
     }
     valuesForm.fk_id_user = logged_user.id_user
     let values = [valuesForm, productsSelected, valuesProposal]
-    
-console.log('v no subtmi', values)
+
+    console.log('v no subtmi', values)
     axios
       .post(
         Constants.APIEndpoints.PROPOSAL +
-          (valuesForm.id_proposals ? "/updateProposal" : "/createProposal"),
+        (valuesForm.id_proposals ? "/updateProposal" : "/createProposal"),
         values
       )
       .then((res) => {
@@ -375,8 +376,10 @@ console.log('v no subtmi', values)
   }
 
   return (
-    <div>
-      <CommonHeader title="Criar Proposta" onBack={() => setPage("list")} />
+    <div ref={ref}>
+      <CommonHeader title="Criar Proposta" onBack={() => setPage("list")}
+        width={width}
+      />
       <CommonForm
         values={valuesForm}
         fields={fieldsProposal}
@@ -410,15 +413,15 @@ console.log('v no subtmi', values)
           values={valuesProduct[0]}
           fields={fieldsProduct}
           onChangeField={(f, v) => {
-           if (f.name == 'fk_id_product'){
-         
-             let product =products.filter(p => p.id_product == v)[0] 
+            if (f.name == 'fk_id_product') {
+
+              let product = products.filter(p => p.id_product == v)[0]
               valuesProduct.objective = product.objective
               valuesProduct.price = parseFloat(product.value)
             }
-           
+
             valuesProduct[f.name] = v;
-          
+
             setValuesProduct([valuesProduct])
           }}
           onSubmit={addProduct}
@@ -445,12 +448,12 @@ console.log('v no subtmi', values)
 
             <tbody style={{ backgroundColor: "var(--purple)", width: "100%" }}>
               {productsSelected.map((p) => (
-                <tr key = {p.fk_id_product} style={{ color: "black" }}>
+                <tr key={p.fk_id_product} style={{ color: "black" }}>
                   <td style={{ textAlign: "center", height: 40 }}>
                     {products.length > 0 && products.filter(pr => pr.id_product == p.fk_id_product)[0].name}
                   </td>
-                  <td className="table_input"><input name="objective_" onChange={(evt) =>changeProduct("objective", p.fk_id_product, evt.target.value)}value={p.objective}></input></td>
-                  <td className="table_input"><input name="price_" onChange={(evt) =>changeProduct("price", p.fk_id_product, evt.target.value)} value={p.price}></input></td>
+                  <td className="table_input"><input name="objective_" onChange={(evt) => changeProduct("objective", p.fk_id_product, evt.target.value)} value={p.objective}></input></td>
+                  <td className="table_input"><input name="price_" onChange={(evt) => changeProduct("price", p.fk_id_product, evt.target.value)} value={p.price}></input></td>
                   <td className="table_input"><input name="quantity_hired_" onChange={(evt) => changeProduct("quantity_hired", p.fk_id_product, evt.target.value)} value={p.quantity_hired}></input></td>
                   <td className="table_input"><input name="negociation_" onChange={(evt) => changeProduct("negociation", p.fk_id_product, evt.target.value)} value={p.negociation}></input></td>
                   <td className="table_input"><input type="date" name="dt_start_" onChange={(evt) => changeProduct("dt_start", p.fk_id_product, evt.target.value)} value={p.dt_start}></input></td>
@@ -462,24 +465,24 @@ console.log('v no subtmi', values)
           </table>
         </div>
       ) : null}
-      <div style = {{padding: 20, width: '100%'}}>
-      <div style={{display: 'inline-flex', width: '100%'}}>
-        <Input label = "Desconto padrão" value = {standardDiscount} onchange = {(evt) => setStandardDiscount(evt.target.value)}/>
-       <Input label = "Valor Bruto Proposta" money = {true} value = {(grossValueProposal||0).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} onchange = {(evt) => gross(evt.target.value)}/>
-       <Input label = "Desconto Padrão Proposta" money = {true} value = {(standardDiscountProposal||0).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} onchange = {(evt) => setStandardDiscountProposal(evt.target.value)}/>
-       <Input label = "Valor Líquido Proposta" money = {true} value = {(netValueProposal||0).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} onchange = {(evt) => setNetValueProposal(evt.target.value)}/>
-      
-       </div> 
-       <div style={{display: 'inline-flex', width: '100%'}}>
-      
-       <Input hidden= {true}/>
-      
-       <Input label = "Valor Bruto Aprovado" money = {true} value = {(approvedGrossValue||0).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} onchange = {(evt) => setApprovedGrossValue(evt.target.value)}/>
-       <Input label = "Desconto Padrão Aprovado" money = {true} value = {(standardDiscountApproved||0).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} onchange = {(evt) => setStandardDiscountApproved(evt.target.value)}/>
-       <Input label = "Valor Líquido Aprovado" money = {true} value = {(netValueApproved||0).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} onchange = {(evt) => setNetValueApproved(evt.target.value)}/>
-      
-       </div> 
-      
+      <div style={{ padding: 20, width: '100%' }}>
+        <div style={{ display: 'inline-flex', width: '100%' }}>
+          <Input label="Desconto padrão" value={standardDiscount} onchange={(evt) => setStandardDiscount(evt.target.value)} />
+          <Input label="Valor Bruto Proposta" money={true} value={(grossValueProposal || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => gross(evt.target.value)} />
+          <Input label="Desconto Padrão Proposta" money={true} value={(standardDiscountProposal || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => setStandardDiscountProposal(evt.target.value)} />
+          <Input label="Valor Líquido Proposta" money={true} value={(netValueProposal || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => setNetValueProposal(evt.target.value)} />
+
+        </div>
+        <div style={{ display: 'inline-flex', width: '100%' }}>
+
+          <Input hidden={true} />
+
+          <Input label="Valor Bruto Aprovado" money={true} value={(approvedGrossValue || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => setApprovedGrossValue(evt.target.value)} />
+          <Input label="Desconto Padrão Aprovado" money={true} value={(standardDiscountApproved || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => setStandardDiscountApproved(evt.target.value)} />
+          <Input label="Valor Líquido Aprovado" money={true} value={(netValueApproved || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => setNetValueApproved(evt.target.value)} />
+
+        </div>
+
       </div>
       <CommonForm
         values={valuesForm}
@@ -490,7 +493,7 @@ console.log('v no subtmi', values)
         }}
 
         onSubmit={onSubmit}
-/>
+      />
 
     </div>
   );

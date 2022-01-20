@@ -35,7 +35,7 @@ import CheckingList from 'app/main/checking/CheckingList';
 
 import OpecList from 'app/main/opec/OpecList';
 
-import Home from 'app/main/home/Home'
+import Dashboard from 'app/main/dashboard/DashboardForm'
 
 import Store from 'app/utils/Store'
 
@@ -53,7 +53,7 @@ const routes = [
   {
     exact: true,
     path: '/',
-    component: () => loggedIn ? <Home/> : <Redirect to="/login" />,
+    component: () => loggedIn ? <Dashboard/> : <Redirect to="/login" />,
   },
   {
     path: '/loading',
@@ -61,9 +61,9 @@ const routes = [
     component: () => <FuseLoading />,
   },
   {
-    path: '/home',
+    path: '/dashboard',
     exact: true,
-        component: () => loggedIn ? <Home /> : <Redirect to = "/login" />,
+        component: () => loggedIn ? <Dashboard /> : <Redirect to = "/login" />,
   },
   {
     path: '/users',

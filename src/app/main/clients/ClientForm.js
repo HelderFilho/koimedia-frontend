@@ -3,9 +3,13 @@ import CommonHeader from "app/components/table/CommonHeader";
 import CommonForm from "app/components/form/CommonForm";
 import axios from "axios";
 import Constants from "app/utils/Constants";
+import { useResizeDetector } from 'react-resize-detector';
+
 function ClientForm({ values, setPage, getData }) {
   const [valuesForm, setValuesForm] = useState(values)
   const [agencies, setAgencies] = useState([])
+  const { width, height, ref } = useResizeDetector();
+
   useEffect(() => {
     axios
     .get(
@@ -80,13 +84,6 @@ function ClientForm({ values, setPage, getData }) {
       }),
 
     },
-
-    {
-      col: 6,
-      label: "Representante",
-      name: "sponsor",
-      type: "text",
-    }   
   ];
 
 
@@ -102,8 +99,9 @@ const onSubmit = () => {
 }
  
   return (
-    <div>
-      <CommonHeader title="Criar Cliente" onBack = {() => setPage('list')}/>
+    <div       ref={ref}>
+      <CommonHeader title="Criar Cliente" onBack = {() => setPage('list')}  width = {width}
+/>
       <CommonForm
         values={valuesForm}
         fields={fields}

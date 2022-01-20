@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import Icon from "@material-ui/core/Icon";
-import {} from '@material-ui/data-grid'
+import { } from '@material-ui/data-grid'
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { useMemo, useEffect, useState, useRef } from "react";
@@ -24,7 +24,7 @@ export default function ProductList(props) {
 
   const [values, setValues] = useState({});
   const [vehicles, setVehicles] = useState([])
- 
+
   const [singleProduct, setSingleProduct] = useState([])
   const [productDialog, setProductDialog] = useState(false)
   const [deleteDialog, setDeleteDialog] = useState(false)
@@ -33,41 +33,41 @@ export default function ProductList(props) {
   let vehicles_ = []
 
   let middleList = [
-  "TV",
-  "INTERNET",
-  "RADIO",
-  "OOH",
-  "DOOH",
-  "JORNAL",
-  "REVIST",
-
-]
+    "TV",
+    "INTERNET",
+    "RADIO",
+    "OOH",
+    "DOOH",
+    "JORNAL",
+    "REVIST",
+  ]
 
 
   useEffect(() => {
     axios
-    .get(
-      Constants.APIEndpoints.VEHICLE + "/getAllVehicles")
-     .then((res) => {
-      setVehicles(res.data[0])
-      vehicles_ = res.data[0]
+      .get(
+        Constants.APIEndpoints.VEHICLE + "/getAllVehicles")
+      .then((res) => {
+        setVehicles(res.data[0])
+        vehicles_ = res.data[0]
 
-    })
+      })
   }, [])
 
 
-useEffect(() => {
-  data.map(d => {
-    d.vehicle =vehicles.filter(v => v.id_vehicle == d.fk_id_vehicle)[0] ? vehicles.filter(v => v.id_vehicle ==  d.fk_id_vehicle)[0].fancy_name : '' 
-  })
-}, [data])
+  useEffect(() => {
+    data.map(d => {
+      d.vehicle = vehicles.filter(v => v.id_vehicle == d.fk_id_vehicle)[0] ? vehicles.filter(v => v.id_vehicle == d.fk_id_vehicle)[0].fancy_name : ''
+      d.fk_id_middle =  middleList[d.fk_id_middle]
+    })
+  }, [data])
 
 
 
 
   const columns = useMemo(
     () => [
-      
+
       {
         Header: "Nome",
         accessor: "name",
@@ -105,8 +105,8 @@ useEffect(() => {
         sortable: false,
         Cell: ({ row }) => (
           <div className="flex items-center">
-  
-          <IconButton
+
+            <IconButton
               onClick={(ev) => {
                 viewProduct(row.original);
               }}
@@ -114,29 +114,29 @@ useEffect(() => {
               <Icon>remove_red_eye</Icon>
             </IconButton>
 
-            {!['checking', 'financeiro' ].includes(logged_user.role) ? (   
+            {!['checking', 'financeiro'].includes(logged_user.role) ? (
 
-                <IconButton
-              onClick={(ev) => {
-             
-                setValues(row.original)
-                setPage('form')
-              }}
-            >
-              <Icon>edit</Icon>
-            </IconButton>
-            ):null}
+              <IconButton
+                onClick={(ev) => {
 
-{!['checking', 'opec', 'financeiro', 'comercial', 'subadmin' ].includes(logged_user.role) ? (   
-            <IconButton
-              onClick={(ev) => {
-                setProductSelected(row.original)
-                setDeleteDialog(true)
-                    }}
-            >
-              <Icon>delete</Icon>
-            </IconButton>
-):null}
+                  setValues(row.original)
+                  setPage('form')
+                }}
+              >
+                <Icon>edit</Icon>
+              </IconButton>
+            ) : null}
+
+            {!['checking', 'opec', 'financeiro', 'comercial', 'subadmin'].includes(logged_user.role) ? (
+              <IconButton
+                onClick={(ev) => {
+                  setProductSelected(row.original)
+                  setDeleteDialog(true)
+                }}
+              >
+                <Icon>delete</Icon>
+              </IconButton>
+            ) : null}
           </div>
         ),
       },
@@ -155,7 +155,7 @@ useEffect(() => {
 
 
   const deleteProduct = (id) => {
-    const data = {id_product : productSelected.id_product}
+    const data = { id_product: productSelected.id_product }
 
     axios.post(Constants.APIEndpoints.PRODUCT + "/deleteProduct", data).then((res) => {
       getData();
@@ -169,39 +169,40 @@ useEffect(() => {
 
     setProductDialog(true)
     let data = [
-    {
-      col: 12,
-      label :'NOME',
-      value : product.name
-    },
-    {col : 6,
-      label : 'FORMATO',
-      value : product.format
-    },
-    {
-      col: 6,
-      label: 'OBJETIVO',
-      value : product.objective
-    },
-    {
-      col: 4,
-      label: 'PREÇO',
-      value : (parseFloat(product.value)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
-    },
-    {
-      col: 4,
-      label: 'MEIO',
-      value : middleList[product.fk_id_middle]
-    },
-    
-    {
-      col: 4,
-      label: 'VEÍCULO',
-      value : vehicles_.filter(v => v.id_vehicle == product.fk_id_vehicle)[0] ? vehicles_.filter(v => v.id_vehicle ==  product.fk_id_vehicle)[0].fancy_name : ''
-    },
-    
+      {
+        col: 12,
+        label: 'NOME',
+        value: product.name
+      },
+      {
+        col: 6,
+        label: 'FORMATO',
+        value: product.format
+      },
+      {
+        col: 6,
+        label: 'OBJETIVO',
+        value: product.objective
+      },
+      {
+        col: 4,
+        label: 'PREÇO',
+        value: (parseFloat(product.value)).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+      },
+      {
+        col: 4,
+        label: 'MEIO',
+        value: middleList[product.fk_id_middle]
+      },
+
+      {
+        col: 4,
+        label: 'VEÍCULO',
+        value: vehicles_.filter(v => v.id_vehicle == product.fk_id_vehicle)[0] ? vehicles_.filter(v => v.id_vehicle == product.fk_id_vehicle)[0].fancy_name : ''
+      },
+
     ]
-    
+
     setSingleProduct(data)
   }
 
@@ -221,19 +222,19 @@ useEffect(() => {
       animate={{ y: 0, opacity: 1, transition: { delay: 0.3 } }}
     >
 
-<CommonDialog
+      <CommonDialog
         open={productDialog}
         onClose={() => setProductDialog(false)}
         title="Ver Produto"
-        width = "xl"
-        print = {true}
+        width="xl"
+        print={true}
       >
 
-{deleteDialog ? (
-  <ConfirmDialog  title = "Deseja deletar esse Produto?" cancel={() => setDeleteDialog(false)} confirm={deleteProduct} />
-):null}
+        {deleteDialog ? (
+          <ConfirmDialog title="Deseja deletar esse Produto?" cancel={() => setDeleteDialog(false)} confirm={deleteProduct} />
+        ) : null}
 
-        <CommonView  dialog = {true} data = {singleProduct} title = "Ver Produto" onBack = {() => setPage('list')}/>
+        <CommonView dialog={true} data={singleProduct} title="Ver Produto" onBack={() => setPage('list')} />
 
       </CommonDialog>
 
@@ -246,7 +247,7 @@ useEffect(() => {
           icon="people"
           newText="Adicionar Novo Produto"
           onAdd={!['checking', 'financeiro'].includes(logged_user.role) ? onAdd : null}
-          headerTitle = "Produtos"
+          headerTitle="Produtos"
           onRowClick={(ev, row) => {
             if (row) {
               //            dispatch(openEditContactDialog(row.original));
@@ -256,7 +257,7 @@ useEffect(() => {
       ) : (
         <ProductForm values={values} setPage={setPage} getData={getData} />
       )}
-        </motion.div>
+    </motion.div>
   );
 }
 

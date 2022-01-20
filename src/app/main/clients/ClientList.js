@@ -67,11 +67,7 @@ function ClientList(props) {
         accessor: "contact",
         sortable: true,
       },
-      {
-        Header: "Representante",
-        accessor: "sponsor",
-        sortable: true,
-      },
+      
       {
         id: "action",
         width: 128,
@@ -179,19 +175,12 @@ function ClientList(props) {
         value : agencies_.filter(a => a.id_agency == client.fk_id_agency)[0] ? agencies_.filter(a => a.id_agency ==  client.fk_id_agency)[0].fancy_name : ''
       },
   
-      {
-        col: 6,
-        label: 'REPRESENTANTE',
-        value : client.sponsor
-      },
       ]
     
     setSingleClient(data)
   }
 
-
-
-
+  
   const getData = () => {
     axios.get(Constants.APIEndpoints.CLIENT + "/getAllClients").then((res) => {
       setData(res.data[0]);

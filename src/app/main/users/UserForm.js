@@ -4,23 +4,25 @@ import CommonForm from "app/components/form/CommonForm";
 import axios from "axios";
 import Constants from "app/utils/Constants";
 import moment from 'moment'
+import { useResizeDetector } from 'react-resize-detector';
 
 function UserForm({ values, setPage, getData }) {
   const [valuesForm, setValuesForm] = useState(values)
   const [vehicles, setVehicles] = useState([])
+  const { width, height, ref } = useResizeDetector();
 
-  if (values){
+  if (values) {
     values.dt_birthday = values.dt_birthday ? moment(values.dt_birthday).format('YYYY-MM-DD') : ''
 
   }
 
   useEffect(() => {
     axios
-    .get(
-      Constants.APIEndpoints.VEHICLE + "/getAllVehicles")
-     .then((res) => {
-      setVehicles(res.data[0])
-    })
+      .get(
+        Constants.APIEndpoints.VEHICLE + "/getAllVehicles")
+      .then((res) => {
+        setVehicles(res.data[0])
+      })
 
 
   }, [])
@@ -31,7 +33,7 @@ function UserForm({ values, setPage, getData }) {
       type: "text",
       name: "name",
       label: "Nome",
-      required : true
+      required: true
 
     },
     {
@@ -39,15 +41,15 @@ function UserForm({ values, setPage, getData }) {
       type: "text",
       name: "email",
       label: "Email",
-      required : true
+      required: true
     },
     {
       col: 6,
       type: "password",
       name: "password",
       label: "Senha",
-      required : true,
-      visible : values.id_user ? false : true
+      required: true,
+      visible: values.id_user ? false : true
     },
     {
       col: 4,
@@ -75,8 +77,8 @@ function UserForm({ values, setPage, getData }) {
       label: "Veículos",
       options: vehicles.map(v => {
         return {
-        value: v.id_vehicle,
-        label: v.fancy_name
+          value: v.id_vehicle,
+          label: v.fancy_name
         }
       }),
     },
@@ -93,8 +95,8 @@ function UserForm({ values, setPage, getData }) {
         { value: "mailing", label: "Mailing" },
         { value: "opec", label: "Opec" },
         { value: "subadmin", label: "Subadmin" },
-      
-      
+
+
       ],
     },
 
@@ -114,20 +116,22 @@ function UserForm({ values, setPage, getData }) {
   ];
 
 
-const onSubmit = () => {
- axios.post(Constants.APIEndpoints.USER + (values.id_user ? '/updateUser' : '/createUser'), valuesForm).then(res => {
-  setPage('list')
-  getData();
-}).catch(error => {
-  console.log(error)
-})
+  const onSubmit = () => {
+    axios.post(Constants.APIEndpoints.USER + (values.id_user ? '/updateUser' : '/createUser'), valuesForm).then(res => {
+      setPage('list')
+      getData();
+    }).catch(error => {
+      console.log(error)
+    })
 
- 
-}
- 
+
+  }
+
   return (
-    <div>
-      <CommonHeader title="Criar Usuário" onBack = {() => setPage('list')}/>
+    <div ref={ref}>
+      <CommonHeader title="Criar Usuário"
+        width={width}
+        onBack={() => setPage('list')} />
       <CommonForm
         values={valuesForm}
         fields={fields}
@@ -135,9 +139,9 @@ const onSubmit = () => {
           values[f.name] = v;
           setValuesForm(values)
         }}
-         onSubmit={onSubmit}
+        onSubmit={onSubmit}
       />
-     
+
     </div>
   );
 }

@@ -5,9 +5,9 @@ import axios from "axios";
 import Constants from "app/utils/Constants";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import './Home.css'
+import './Dashboard.css'
 import moment from "moment";
-export default function Home() {
+export default function Dashboard() {
     let logged_user = Store.USER
 
     const [values, setValues] = useState([]);
@@ -158,7 +158,6 @@ export default function Home() {
         proposals_filter = proposals_filter.filter(p => p.dt_emission >= selectedStartDate && p.dt_emission <= selectedEndDate)
         
     }
-    console.log('ppppppp', proposals_filter)
 
     let total_proposals = proposals_filter && proposals_filter.reduce((current, next) => {
         let value = next.proposal_values != null && next.proposal_values[0] ? next.proposal_values[0].gross_value_proposal : 0
@@ -190,6 +189,7 @@ export default function Home() {
             }
             if (f.name == "fk_id_agency"){
                 setSelectedAgency(v)
+           
             }
              if (f.name == "fk_id_vehicle"){
                 setSelectedVehicle(v)

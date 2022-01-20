@@ -20,6 +20,7 @@ import clsx from "clsx";
 import CommonTablePaginationActions from "./CommonTablePaginationActions";
 import CommonHeader from "./CommonHeader";
 import Input from "@material-ui/core/Input";
+import { useResizeDetector } from 'react-resize-detector';
 
 import './index.css'
 const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -40,6 +41,9 @@ const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
 const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, headerTitle }) => {
   const [dataTable, setDataTable] = useState(data);
   const [filters, setFilters] = useState([])
+  const { width, height, ref } = useResizeDetector();
+  console.log('www', width)
+
   const {
     getTableProps,
     headerGroups,
@@ -122,7 +126,8 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
   }
 
   return (
-    <div>
+    <div       ref={ref}>
+    
       <CommonHeader
         title={headerTitle}
         filterData={filteringData}
@@ -131,7 +136,9 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
         icon={icon}
         newText={newText}
         isList={true}
-        onBack={onBack} />
+        onBack={onBack} 
+        width = {width}
+          />
 
       <div className="flex flex-col min-h-full sm:border-1 sm:rounded-16 overflow-hidden table">
         <TableContainer className="flex flex-1">

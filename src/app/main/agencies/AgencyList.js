@@ -67,11 +67,6 @@ export default function AgencyList(props) {
         sortable: true,
       },
       {
-        Header: "Representante",
-        accessor: "sponsor",
-        sortable: true,
-      },
-      {
         id: "action",
         width: 128,
         sortable: false,
@@ -178,11 +173,7 @@ export default function AgencyList(props) {
         value : clients_.filter(c => c.id_client == agency.fk_id_client)[0] ? clients_.filter(s => s.id_client ==  agency.fk_id_client)[0].fancy_name : ''
       },
   
-      {
-        col: 6,
-        label: 'REPRESENTANTE',
-        value : agency.sponsor
-      },
+      
       ]
     
     setSingleAgency(data)

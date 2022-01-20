@@ -4,12 +4,16 @@ import CommonForm from "app/components/form/CommonForm";
 import axios from "axios";
 import Constants from "app/utils/Constants";
 import moment from 'moment'
+import { useResizeDetector } from 'react-resize-detector';
+
 export default function MailingForm({ values, setPage, getData }) {
 
   if (values){
     values.dt_birthday = values.dt_birthday ? moment(values.dt_birthday).format('YYYY-MM-DD') : ''
     values.dt_start_company = values.dt_start_company ? moment(values.dt_start_company).format('YYYY-MM-DD') : ''
   }
+  const { width, height, ref } = useResizeDetector();
+
 
   const [valuesForm, setValuesForm] = useState(values)
   let fields = [
@@ -40,6 +44,7 @@ export default function MailingForm({ values, setPage, getData }) {
       type: "date",
       name: "dt_birthday",
       label: "Data de Nascimento",
+      required : true
     },
     {
       col: 4,
@@ -94,8 +99,11 @@ const onSubmit = () => {
 }
  
   return (
-    <div>
-      <CommonHeader title="Criar Mailing" onBack = {() => setPage('list')}/>
+    <div       ref={ref}>
+      <CommonHeader 
+      title="Criar Mailing" 
+      width = {width}
+      onBack = {() => setPage('list')}/>
       <CommonForm
         values={valuesForm}
         fields={fields}

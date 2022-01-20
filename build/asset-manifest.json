@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/static/css/main.8226e777.chunk.css",
-    "main.js": "/static/js/main.49bfa317.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.2a80d995.js",
+    "main.css": "/static/css/main.54932086.chunk.css",
+    "main.js": "/static/js/main.32477816.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.d5cde987.js",
     "static/css/2.dc12981f.chunk.css": "/static/css/2.dc12981f.chunk.css",
-    "static/js/2.51ff791a.chunk.js": "/static/js/2.51ff791a.chunk.js",
-    "static/js/3.0a91cc1f.chunk.js": "/static/js/3.0a91cc1f.chunk.js",
+    "static/js/2.50b79bc5.chunk.js": "/static/js/2.50b79bc5.chunk.js",
+    "static/js/3.d9adc666.chunk.js": "/static/js/3.d9adc666.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.51ff791a.chunk.js.LICENSE.txt": "/static/js/2.51ff791a.chunk.js.LICENSE.txt",
+    "static/js/2.50b79bc5.chunk.js.LICENSE.txt": "/static/js/2.50b79bc5.chunk.js.LICENSE.txt",
     "static/media/index.css": "/static/media/poppins-latin-900italic.babad407.woff2"
   },
   "entrypoints": [
-    "static/js/runtime-main.2a80d995.js",
+    "static/js/runtime-main.d5cde987.js",
     "static/css/2.dc12981f.chunk.css",
-    "static/js/2.51ff791a.chunk.js",
-    "static/css/main.8226e777.chunk.css",
-    "static/js/main.49bfa317.chunk.js"
+    "static/js/2.50b79bc5.chunk.js",
+    "static/css/main.54932086.chunk.css",
+    "static/js/main.32477816.chunk.js"
   ]
 }

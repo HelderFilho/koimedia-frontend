@@ -3,9 +3,12 @@ import CommonHeader from "app/components/table/CommonHeader";
 import CommonForm from "app/components/form/CommonForm";
 import axios from "axios";
 import Constants from "app/utils/Constants";
+import { useResizeDetector } from 'react-resize-detector';
 export default function ProductForm({ values, setPage, getData }) {
   const [valuesForm, setValuesForm] = useState(values)
   const [vehicles, setVehicles] = useState([])
+  const { width, height, ref } = useResizeDetector();
+
   useEffect(() => {
     axios
     .get(
@@ -91,8 +94,10 @@ const onSubmit = () => {
 }
  
   return (
-    <div>
-      <CommonHeader title="Criar Produto" onBack = {() => setPage('list')}/>
+    <div       ref={ref}>
+      <CommonHeader title="Criar Produto" 
+              width = {width}
+              onBack = {() => setPage('list')}/>
       <CommonForm
         values={valuesForm}
         fields={fields}

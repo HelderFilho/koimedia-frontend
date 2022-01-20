@@ -3,8 +3,12 @@ import CommonHeader from "app/components/table/CommonHeader";
 import CommonForm from "app/components/form/CommonForm";
 import axios from "axios";
 import Constants from "app/utils/Constants";
+import { useResizeDetector } from 'react-resize-detector';
+
 export default function StatusForm({ values, setPage, getData }) {
   const [valuesForm, setValuesForm] = useState(values)
+  const { width, height, ref } = useResizeDetector();
+
   let fields = [
     {
       col: 12,
@@ -36,8 +40,11 @@ const onSubmit = () => {
 }
  
   return (
-    <div>
-      <CommonHeader title="Criar Status" onBack = {() => setPage('list')}/>
+    <div       ref={ref}>
+      <CommonHeader 
+      title="Criar Status" 
+      width = {width}
+      onBack = {() => setPage('list')}/>
       <CommonForm
         values={valuesForm}
         fields={fields}

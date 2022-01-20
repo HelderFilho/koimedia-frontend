@@ -9,11 +9,14 @@ import { Button } from "@material-ui/core";
 import Input from 'app/components/input/Input'
 import Store from 'app/utils/Store'
 import moment from 'moment'
+import { useResizeDetector } from 'react-resize-detector';
+
 export default function CheckingForm({ values, setPage, getData }) {
   let logged_user = Store.USER
   if (values){
     values.dt_emission = values.dt_emission ? moment(values.dt_emission).format('YYYY-MM-DD') : ''
   }
+  const { width, height, ref } = useResizeDetector();
 
   const [valuesForm, setValuesForm] = useState(values);
   const [productsSelected, setProductsSelected] = useState([]);
@@ -311,7 +314,6 @@ export default function CheckingForm({ values, setPage, getData }) {
   };
 
   const updateValues = () =>{
-    console.log('pppproductselected', productsSelected)
     let gross_value = productsSelected.reduce((sum, item) => {
       return sum + (item.price * item.quantity_hired) - (item.negociation > 0 ? item.price * item.quantity_hired/item.negociation : 0) 
     }, 0)
@@ -365,8 +367,10 @@ console.log('v no subtmi', values)
   }
 
   return (
-    <div>
-      <CommonHeader title="Criar Checking" onBack={() => setPage("list")} />
+    <div       ref={ref}>
+      <CommonHeader title="Criar Checking" onBack={() => setPage("list")}
+              width = {width}
+              />
       <CommonForm
         values={valuesForm}
         fields={fieldsProposal}

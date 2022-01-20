@@ -9,24 +9,31 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { selectMainTheme } from "app/store/fuse/settingsSlice";
 import Button from "@material-ui/core/Button";
-
+import { useState } from "react";
 import "./index.css";
-function CommonHeader({ title, filterData, onAdd, search, icon, newText, onBack, isList }) {
+
+function CommonHeader({ title, filterData, onAdd, search, icon, newText, onBack, isList, width }) {
   const dispatch = useDispatch();
   const mainTheme = useSelector(selectMainTheme);
+console.log('wudtg', width)
 
   return (
-    <div className="flex flex-1 items-center justify-between p-4 sm:p-24 header" >
+    <div className="flex flex-1 items-center justify-between p-4 sm:p-24 col-12 
+    header "
+      style={{width: width}}
+      
+      >
+
       <div className="flex flex-shrink items-center sm:w-224">
         {onBack ? (
           <IconButton
             onClick={onBack}
             aria-label="open left sidebar"
-            style = {{color :'white'}}
+            style={{ color: 'white' }}
           >
             <Icon>arrow_back</Icon>
           </IconButton>
-        ):null}
+        ) : null}
         <div className="flex items-center">
           <Icon
             component={motion.span}
