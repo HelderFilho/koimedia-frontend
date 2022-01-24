@@ -37,7 +37,6 @@ function ClientList(props) {
     .get(
       Constants.APIEndpoints.CLIENT + "/getAllClients")
      .then((res) => {
-       console.log('rrr', res.data[0])
       agencies_ = res.data[0]
 
     })

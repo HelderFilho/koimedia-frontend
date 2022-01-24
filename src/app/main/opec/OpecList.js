@@ -215,7 +215,6 @@ useEffect(() => {
   };
 
   const viewProposal = (proposal) => {
-    console.log('vvv', proposal)
 
     setProposalDialog(true)
     let data = [

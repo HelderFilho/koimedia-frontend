@@ -344,7 +344,6 @@ export default function CheckingForm({ values, setPage, getData }) {
     valuesForm.fk_id_user = logged_user.id_user
     let values = [valuesForm, productsSelected, valuesProposal]
     
-console.log('v no subtmi', values)
     axios
       .post(
         Constants.APIEndpoints.PROPOSAL +

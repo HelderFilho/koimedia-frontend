@@ -322,7 +322,6 @@ export default function ProposalForm({ values, setPage, getData }) {
   };
 
   const updateValues = () => {
-    console.log('pppproductselected', productsSelected)
     let gross_value = productsSelected.reduce((sum, item) => {
       return sum + (item.price * item.quantity_hired) - (item.negociation > 0 ? item.price * item.quantity_hired / item.negociation : 0)
     }, 0)
@@ -353,7 +352,6 @@ export default function ProposalForm({ values, setPage, getData }) {
     valuesForm.fk_id_user = logged_user.id_user
     let values = [valuesForm, productsSelected, valuesProposal]
 
-    console.log('v no subtmi', values)
     axios
       .post(
         Constants.APIEndpoints.PROPOSAL +

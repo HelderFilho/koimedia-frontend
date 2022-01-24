@@ -53,12 +53,6 @@ function Login() {
     defaultValues,
     resolver: yupResolver(schema),
   });
-console.log('entrou', Constants.APIEndpoints.USER)
-  axios.get(Constants.APIEndpoints.USER + "/getAllUsers").then(res => {
-    console.log('rrrres', res.data[0])
-  }).catch(e => {
-    console.log('error us', e)
-  })
   
 
 
@@ -73,22 +67,18 @@ console.log('entrou', Constants.APIEndpoints.USER)
   }
 //  signInWithEmailAndPassword(user)
 
-axios.get(Constants.APIEndpoints.USER + "/getAllUsers").then(res => {
-  console.log('rrrres', res.data[0])
-}).catch(e => {
-  console.log('error us', e)
-})
+
   axios.post(Constants.APIEndpoints.AUTH, user).then((res) => {
     if (res.data[0]){
      // dispatch({type :'logou'})
      var user = CryptoJS.AES.encrypt(JSON.stringify(res.data[0]), '%762t8duyg!20').toString();
      remember ? localStorage.setItem('user', user) : sessionStorage.setItem('user', user)
-       window.location =  '/users'    
+       window.location =  '/'    
   
       }
   }).catch(e => {
     
-    console.log('eee', e)
+    console.log( e)
   })
 
 

@@ -84,10 +84,8 @@ class JwtService extends FuseUtils.EventEmitter {
             resolve(res.data[0]);
             
           }
-       //   console.log(res.data[0])
         }).catch(e => {
           reject(e)
-        //  console.log('eee', e)
         })
       
     

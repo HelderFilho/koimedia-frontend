@@ -124,7 +124,6 @@ function UserList(props) {
 
 
   const viewUser = (user) => {
-console.log('uuu', user)
     setUserDialog(true)
     let data = [
     {
@@ -187,7 +186,6 @@ console.log('uuu', user)
     });
   };
 
-console.log('ddd', data)
 
   if (!data) {
     return null;

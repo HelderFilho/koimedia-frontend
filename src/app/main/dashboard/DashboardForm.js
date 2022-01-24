@@ -43,7 +43,6 @@ export default function Dashboard() {
         .get(
           Constants.APIEndpoints.MAILING + "/getNextBirthdays")
          .then((res) => {
-             console.log('rrrr', res.data[0])
              setMailings(res.data[0])
         })
         

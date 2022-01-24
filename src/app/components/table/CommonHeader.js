@@ -15,7 +15,6 @@ import "./index.css";
 function CommonHeader({ title, filterData, onAdd, search, icon, newText, onBack, isList, width }) {
   const dispatch = useDispatch();
   const mainTheme = useSelector(selectMainTheme);
-console.log('wudtg', width)
 
   return (
     <div className="flex flex-1 items-center justify-between p-4 sm:p-24 col-12 

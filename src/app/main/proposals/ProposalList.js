@@ -344,7 +344,6 @@ useEffect(() => {
   const getData = () => {
     axios.get(Constants.APIEndpoints.PROPOSAL + "/getAllProposals").then((res) => {
       setData(res.data[0]);
-      console.log(res.data[0])
     });
   };
 
