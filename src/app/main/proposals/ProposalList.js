@@ -135,7 +135,7 @@ useEffect(() => {
         sortable: true,
       },
       {
-        Header: "Client",
+        Header: "Cliente",
         accessor: "client",
         sortable: true,
       },

@@ -17,7 +17,6 @@ import { motion } from "framer-motion";
 
 export default function CommonDialog(props) {
    let { open, onClose, title, keepMounted, width, fullWidth, keep, print} = props
-
    const componentRef = useRef();
    const handlePrint = useReactToPrint({
      content: () => componentRef.current,

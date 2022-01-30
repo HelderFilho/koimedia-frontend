@@ -74,7 +74,7 @@ export default function ProductForm({ values, setPage, getData }) {
         { value: 4, label: "OOH" },
         { value: 5, label: "DOOH" },
         { value: 6, label: "JORNAL" },
-        { value: 7, label: "REVIST" },
+        { value: 7, label: "REVISTA" },
 
       ],
     },

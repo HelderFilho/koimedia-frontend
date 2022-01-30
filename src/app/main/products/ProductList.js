@@ -39,7 +39,7 @@ export default function ProductList(props) {
     "OOH",
     "DOOH",
     "JORNAL",
-    "REVIST",
+    "REVISTA",
   ]
 
 

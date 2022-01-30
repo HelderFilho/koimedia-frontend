@@ -123,7 +123,10 @@ function ClientList(props) {
     const data = {id_client : clientSelected.id_client}
 
     axios.post(Constants.APIEndpoints.CLIENT + "/deleteClient", data).then((res) => {
+      setDeleteDialog(false)
+
       getData();
+
     });
   };
 
@@ -188,14 +191,13 @@ function ClientList(props) {
   if (!data) {
     return null;
   }
-
   return (
     <motion.div
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
     >
 {deleteDialog ? (
-  <ConfirmDialog  title = "Deseja deletar esse Cliente?" cancel={() => setDeleteDialog(false)} confirm={deleteClient} />
+  <ConfirmDialog  title = "Deseja deletar esse Cliente?" cancel={() => setDeleteDialog(false)} onClose = {() => setDeleteDialog(false)} confirm={deleteClient} />
 ):null}
 
 

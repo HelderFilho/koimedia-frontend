@@ -130,7 +130,6 @@ export default forwardRef(
               <label>{field.label}</label>
               <TextArea
                onBlur={(evt) => {
-                console.log(evt)
                 changeValue(field.name, evt);
               }}
               disabled = {field.disabled}

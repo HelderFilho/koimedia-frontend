@@ -42,7 +42,6 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
   const [dataTable, setDataTable] = useState(data);
   const [filters, setFilters] = useState([])
   const { width, height, ref } = useResizeDetector();
-  console.log('www', width)
 
   const {
     getTableProps,
@@ -116,9 +115,11 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
   const filterColumn = (column, text) => {
     filters[column] = text
     setFilters(filters)
+
     const newData = data.filter(function(element) {
       return Object.keys(filters).every(filter => {
-        return element[filter] && element[filter].toLowerCase().includes(filters[filter] && filters[filter].toLowerCase())
+        console.log('ff',element[filter])
+        return element[filter] && element[filter].toString().toLowerCase().includes(filters[filter] && filters[filter].toLowerCase())
       })
     })
 
