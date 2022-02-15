@@ -133,6 +133,10 @@ const routes = [
     component: () => <Error404Page />,
   },
   {
+    path: '*',
+    component: () => loggedIn ? <CheckingList /> : <Redirect to = "/login" />,
+  },
+  {
     component: () => <Redirect to="/404" />,
   },
 ];

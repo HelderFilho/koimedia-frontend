@@ -323,7 +323,7 @@ export default function ProposalForm({ values, setPage, getData }) {
 
   const updateValues = () => {
     let gross_value = productsSelected.reduce((sum, item) => {
-      return sum + (item.price * item.quantity_hired) - (item.negociation > 0 ? item.price * item.quantity_hired / item.negociation : 0)
+      return sum + (item.price * item.quantity_hired) - (item.negociation > 0 ? item.price  - (item.price * (1 - item.negociation/100))* item.quantity_hired : 0)
     }, 0)
     let discount_proposal = gross_value * standardDiscount / 100
     let net_proposal = gross_value - discount_proposal
@@ -331,7 +331,6 @@ export default function ProposalForm({ values, setPage, getData }) {
     setGrossValueProposal(gross_value)
     setStandardDiscountProposal(discount_proposal)
     setNetValueProposal(net_proposal)
-
   }
 
   const removeProduct = (id_product) => {
@@ -364,7 +363,6 @@ export default function ProposalForm({ values, setPage, getData }) {
       })
       .catch((error) => {
         setPage("list");
-
         console.log(error);
       });
   };

@@ -83,6 +83,8 @@ export default function MailingForm({ values, setPage, getData }) {
       label: "Local",
       name: "place",
       type: "text",
+      required : true
+
     }   
   ];
 

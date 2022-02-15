@@ -11,6 +11,7 @@ import clsx from 'clsx';
 import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { selectToolbarTheme } from 'app/store/fuse/settingsSlice';
+import NotificationPanelToggleButton from '../../shared-components/notificationPanel/NotificationPanelToggleButton';
 
 
 //HEADER
@@ -63,6 +64,8 @@ function ToolbarLayout1(props) {
           </div>
 
           <div className="flex items-center px-8 h-full overflow-x-auto">
+          <NotificationPanelToggleButton />
+
             <UserMenu />
           </div>
 

@@ -122,7 +122,17 @@ export default function MailingList(props) {
 
   useEffect(() => {
     getData();
+    if (props.fk_id_mailing){
+      const data = {id_mailing : props.fk_id_mailing}
+
+      axios.post(Constants.APIEndpoints.MAILING + "/getMailingById", data).then((res) => {
+        viewMailing(res.data[0]);
+      });
+    }
   }, []);
+
+
+
 
   const deleteMailing = (id) => {
     const data = {id_mailing : mailingSelected.id_mailing}
