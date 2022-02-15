@@ -85,7 +85,7 @@ function NotificationPanel(props) {
 
 
   setInterval(function () {
-    axios.post(Constants.APIEndpoints.NOTIFICATION + '/getNotificationsByUser', { id_user: logged_user.id_user, notified: false }).then(res => {
+    axios.post(Constants.APIEndpoints.NOTIFICATION + '/getNotificationsByUser', { id_user: logged_user? logged_user.id_user : 0, notified: false }).then(res => {
       res.data.map(not => {
         dispatch(addNotification(NotificationModel({
           message: not.text,
@@ -102,7 +102,7 @@ function NotificationPanel(props) {
 
   useEffect(() => {
     let notifications_ = []
-    axios.post(Constants.APIEndpoints.NOTIFICATION + '/getNotificationsByUser', { id_user: logged_user.id_user, notified: true }).then(res => {
+    axios.post(Constants.APIEndpoints.NOTIFICATION + '/getNotificationsByUser', { id_user: logged_user ? logged_user.id_user : 0, notified: true }).then(res => {
       res.data.map(not => {
         notifications_.push({
           id: not.id_notification,
@@ -198,7 +198,7 @@ function NotificationPanel(props) {
   function handleDismiss(id) {
     let notifications_ = []
 
-    axios.post(Constants.APIEndpoints.NOTIFICATION + '/markNotificationAsRead', { id_user: logged_user.id_user, id_notification: id }).then(res => {
+    axios.post(Constants.APIEndpoints.NOTIFICATION + '/markNotificationAsRead', { id_user: logged_user? logged_user.id_user : 0, id_notification: id }).then(res => {
       res.data.map(not => {
         notifications_.push({
           id: not.id_notification,
@@ -216,7 +216,7 @@ function NotificationPanel(props) {
   }
   function handleDismissAll() {
 
-    axios.post(Constants.APIEndpoints.NOTIFICATION + '/markNotificationAsRead', { id_user: logged_user.id_user, id_notification: 0 }).then(res => {
+    axios.post(Constants.APIEndpoints.NOTIFICATION + '/markNotificationAsRead', { id_user: logged_user? logged_user.id_user : 0, id_notification: 0 }).then(res => {
       setNotifications([])
     })
 
