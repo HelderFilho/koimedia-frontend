@@ -33,7 +33,7 @@ export default function MailingList(props) {
 
   
   let typeList =  [
-    '',
+    'Indefinido',
     "Veículo",
     "Agência",
     "Cliente",
