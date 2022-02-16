@@ -30,7 +30,7 @@ function UserMenu(props) {
   const logout = () => {
     sessionStorage.removeItem('user')
     localStorage.removeItem('user')
-    window.location = '/login'
+    window.location = '/'
   }
 
   let user_ = Store.USER

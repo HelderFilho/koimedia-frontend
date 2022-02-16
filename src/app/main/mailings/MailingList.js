@@ -30,7 +30,10 @@ export default function MailingList(props) {
   const [deleteDialog, setDeleteDialog] = useState(false)
   let [mailingSelected, setMailingSelected] = useState([])
 
+
+  
   let typeList =  [
+    '',
     "Veículo",
     "Agência",
     "Cliente",
@@ -144,7 +147,6 @@ export default function MailingList(props) {
 
 
   const viewMailing = (mailing) => {
-
     setMailingDialog(true)
     let data = [
       {
@@ -170,7 +172,7 @@ export default function MailingList(props) {
       {
         col: 6,
         label: 'DATA DE INGRESSO NA EMPRESA',
-        value : moment(mailing.dt_start_company).format('DD/MM/YYYY')
+        value : mailing.dt_start_company ? moment(mailing.dt_start_company).format('DD/MM/YYYY') : '-'
       },
       {
         col: 4,
@@ -192,7 +194,7 @@ export default function MailingList(props) {
       {
         col: 6,
         label: 'LOCAL',
-        value : mailing.fk_id_type
+        value : mailing.place
       },
       ]
     

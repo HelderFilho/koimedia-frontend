@@ -56,6 +56,7 @@ function NotificationCard(props) {
       }
     }
   }
+  console.log(item.children)
   return (
     <Card
       className={clsx(
@@ -67,10 +68,10 @@ function NotificationCard(props) {
         className
       )}
       elevation={0}
-        onClick={handleClick}
     >
       <ItemIcon />
-      <Typography component="div">{item.message}</Typography>
+      <Typography component="div" onClick={handleClick}
+      > {item.message}</Typography>
       <IconButton
         disableRipple
         className="top-0 right-0 absolute p-8"
