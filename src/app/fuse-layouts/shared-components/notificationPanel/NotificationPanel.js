@@ -65,7 +65,7 @@ function NotificationPanel(props) {
       res.data[0].map(async mailing => {
         let now = moment().add(5, 'days')
         let dt_birthday = moment(moment().format('YYYY') + '-' + moment(mailing.dt_birthday).format('MM-DD'))
-        if (now.isSameOrAfter(dt_birthday) && dt_birthday.isSameOrAfter(moment())) {
+        if (now.isSameOrAfter(dt_birthday) && dt_birthday.isSameOrAfter(moment().format('YYYY-MM-DD'))) {
           if (!notifications.data.filter(n => n.fk_id_mailing == mailing.id_mailing)[0]) {
             let data = {
               fk_id_mailing: mailing.id_mailing,
@@ -190,7 +190,6 @@ function NotificationPanel(props) {
   }
 
   function handleClick (notification) {
-    console.log('no', notification)
     setMailingDialog(true)
     setFk_id_mailing(notification.fk_id_mailing)
   }
