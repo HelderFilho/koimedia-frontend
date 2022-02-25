@@ -50,6 +50,13 @@ export default forwardRef(
           ),
         },
         {
+          type : 'content',
+          contentProps: {},
+          content: (field) => (
+            field.content
+          )
+        },
+        {
           type: "file",
           contentProps: {}, // passo props para a tag pai desse campo, nesse caso, é uma grid coluna
           content: (field) => (

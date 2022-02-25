@@ -56,7 +56,6 @@ function NotificationCard(props) {
       }
     }
   }
-  console.log(item.children)
   return (
     <Card
       className={clsx(

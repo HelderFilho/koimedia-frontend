@@ -322,12 +322,13 @@ export default function ProposalForm({ values, setPage, getData }) {
   };
 
   const updateValues = () => {
+  
     let gross_value = productsSelected.reduce((sum, item) => {
-      return sum + (item.price * item.quantity_hired) - (item.negociation > 0 ? item.price  - (item.price * (1 - item.negociation/100))* item.quantity_hired : 0)
+      return sum + item.negociation > 0 ? ((item.price - item.price * item.negociation/100) * item.quantity_hired): (item.price * item.quantity_hired)
     }, 0)
+    
     let discount_proposal = gross_value * standardDiscount / 100
     let net_proposal = gross_value - discount_proposal
-
     setGrossValueProposal(gross_value)
     setStandardDiscountProposal(discount_proposal)
     setNetValueProposal(net_proposal)
@@ -371,6 +372,7 @@ export default function ProposalForm({ values, setPage, getData }) {
     setGrossValueProposal(v)
   }
 
+  console.log('********', valuesProduct)
   return (
     <div ref={ref}>
       <CommonHeader title="Criar Proposta" onBack={() => setPage("list")}
@@ -406,19 +408,21 @@ export default function ProposalForm({ values, setPage, getData }) {
         keep={true}
       >
         <CommonForm
-          values={valuesProduct[0]}
+          values={valuesProduct}
           fields={fieldsProduct}
           onChangeField={(f, v) => {
+            let newProduct = []
             if (f.name == 'fk_id_product') {
-
+              setValuesProduct([])
               let product = products.filter(p => p.id_product == v)[0]
-              valuesProduct.objective = product.objective
-              valuesProduct.price = parseFloat(product.value)
+              newProduct.objective = product.objective
+              newProduct.price = parseFloat(product.value)
+
             }
 
-            valuesProduct[f.name] = v;
+            newProduct[f.name] = v;
 
-            setValuesProduct([valuesProduct])
+            setValuesProduct(newProduct)
           }}
           onSubmit={addProduct}
         />

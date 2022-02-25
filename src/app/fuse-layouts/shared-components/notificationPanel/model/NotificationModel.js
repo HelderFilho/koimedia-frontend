@@ -7,6 +7,7 @@ function NotificationModel(data) {
   return _.defaults(data, {
     id: FuseUtils.generateGUID(),
     message: '',
+    link: '',
     options: {
       variant: 'default',
     },
