@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { motion } from 'framer-motion';
 import { Controller, useForm } from 'react-hook-form';
@@ -42,9 +42,10 @@ const defaultValues = {
 
 
 function Login() {
-  let [email, setEmail] = useState('')
-  let [pass, setPass] = useState('')
-  let [remember, setRemember] = useState(false);
+  const [email, setEmail] = useState('')
+  const [pass, setPass] = useState('')
+  const [remember, setRemember] = useState(false);
+  const [wrongPass, setWrongPass] = useState(false)
   const classes = useStyles();
   const dispatch = useDispatch()
 
@@ -53,36 +54,37 @@ function Login() {
     defaultValues,
     resolver: yupResolver(schema),
   });
-  
+
 
 
   const { isValid, dirtyFields, errors } = formState;
 
   function onSubmit() {
-  let email = control.fieldsRef.current.email._f.value
-  let pass = control.fieldsRef.current.password._f.value
-  let user = {
-    email : email,
-    password : pass
-  }
-//  signInWithEmailAndPassword(user)
+    let email = control.fieldsRef.current.email._f.value
+    let pass = control.fieldsRef.current.password._f.value
+    let user = {
+      email: email,
+      password: pass
+    }
+    //  signInWithEmailAndPassword(user)
 
 
-  axios.post(Constants.APIEndpoints.AUTH, user).then((res) => {
-    if (res.data[0]){
-     // dispatch({type :'logou'})
-     var user = CryptoJS.AES.encrypt(JSON.stringify(res.data[0]), '%762t8duyg!20').toString();
-     remember ? localStorage.setItem('user', user) : sessionStorage.setItem('user', user)
-       window.location =  '/'    
-  
+    axios.post(Constants.APIEndpoints.AUTH, user).then((res) => {
+      if (res.data[0]) {
+        // dispatch({type :'logou'})
+        setWrongPass(false)
+        var user = CryptoJS.AES.encrypt(JSON.stringify(res.data[0]), '%762t8duyg!20').toString();
+        remember ? localStorage.setItem('user', user) : sessionStorage.setItem('user', user)
+        window.location = '/'
+
       }
-  }).catch(e => {
-    
-    console.log( e)
-  })
+    }).catch(e => {
+      setWrongPass(true)
+      console.log(e)
+    })
 
 
-}
+  }
 
   return (
     <div
@@ -143,11 +145,13 @@ function Login() {
                     />
                   )}
                 />
+                {wrongPass ? (
+                <label style={{ color: 'red', fontSize: 10, textAlign: 'center', marginTop: -8, marginBottom: 6 }}>Login e/ou senha inválidos</label>
+                ): null}
+               <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start">
 
-                <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start">
-                
-<input type="checkbox" onChange = {() => setRemember(!remember)}/>
-<label style={{marginLeft: 10}}>Lembre de mim</label>
+                  <input type="checkbox" onChange={() => setRemember(!remember)} />
+                  <label style={{ marginLeft: 10 }}>Lembre de mim</label>
                 </div>
 
                 <Button
@@ -162,7 +166,7 @@ function Login() {
                 </Button>
               </form>
 
-            {/*
+              {/*
               <div className="my-24 flex items-center justify-center">
                 <Divider className="w-32" />
                 <span className="mx-8 font-semibold">OR</span>
@@ -184,7 +188,7 @@ function Login() {
                 </Link>
               </div>
             */}
-              </CardContent>
+            </CardContent>
           </Card>
         </motion.div>
       </div>
