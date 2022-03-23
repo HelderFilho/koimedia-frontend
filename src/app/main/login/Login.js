@@ -70,13 +70,15 @@ function Login() {
 
 
     axios.post(Constants.APIEndpoints.AUTH, user).then((res) => {
-      if (res.data[0]) {
+      if (res.data && res.data[0]) {
         // dispatch({type :'logou'})
         setWrongPass(false)
         var user = CryptoJS.AES.encrypt(JSON.stringify(res.data[0]), '%762t8duyg!20').toString();
         remember ? localStorage.setItem('user', user) : sessionStorage.setItem('user', user)
         window.location = '/'
 
+      }else{
+        setWrongPass(true)
       }
     }).catch(e => {
       setWrongPass(true)
