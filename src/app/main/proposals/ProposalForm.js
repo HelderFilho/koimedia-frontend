@@ -87,7 +87,7 @@ export default function ProposalForm({ values, setPage, getData }) {
       })
 
     if (values.products) {
-      setProductsSelected(values.products)
+      setProductsSelected(JSON.parse(values.products))
     }
     if (values.proposal_values) {
       setGrossValueProposal(values.proposal_values[0].gross_value_proposal)
@@ -372,7 +372,8 @@ export default function ProposalForm({ values, setPage, getData }) {
     setGrossValueProposal(v)
   }
 
-  console.log('********', valuesProduct)
+  console.log('********', productsSelected)
+  console.log('typeof', typeof(productsSelected))
   return (
     <div ref={ref}>
       <CommonHeader title="Criar Proposta" onBack={() => setPage("list")}
