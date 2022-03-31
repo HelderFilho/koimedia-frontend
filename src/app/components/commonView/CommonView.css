@@ -1,12 +1,12 @@
-.title {
-    font-size: 30px;
+.text_label {
+    font-size: 20px;
     font-weight: 600;
     width: '100%';
     text-align: center;
 }
 
-.value {
-    font-size: 20px;
+.text_value {
+    font-size: 14px;
     width: '100%';
     text-align: left;
 
@@ -16,14 +16,17 @@
     display : inline-grid;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     width: 100%;
-    padding: 30px;
+    padding: 20px;
     border-radius: 10px;
-    margin: 10px 20px;
+    margin: 5px 10px;
+    min-height: 110px;
 }
 .card_multiple {
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     width: 100%;
-    padding: 30px;
+    padding: 20px;
     border-radius: 10px;
-    margin: 10px 20px;
+    margin: 5px 20px;
+    min-height: 150px;
+
 }

@@ -18,27 +18,34 @@ export default function CommonView({ data, title, onBack, dialog }) {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={1}>
           {Object.entries(data).map(d => {
-            return(
-            <Grid item xs={d[1].col}>
-              {d[1].isMulti ? (
-              <div className="card_multiple">
-                  {d[1].values.map(v => (
-                    <div>
-                <label className="title"> {v.label}</label>
-                <label className="value">{v.value}</label>
-                      
+            return (
+              <Grid item xs={d[1].col}>
+                {d[1].isMulti ? (
+                  <div className="card_multiple">
+                    {d[1].values.map(v => (
+                      <div>
+                        <label className="text_label"> {v.label}</label>
+                        {v.isHTML ? (
+                          <div className="text_value" dangerouslySetInnerHTML={{ __html: v.value }} />
+                        ) : (
+                          <label className="text_value">{v.value}</label>
+                        )}
                       </div>
-                  ))}
-              </div>
-              ):(
-                <div className="card">
-                <label className="title"> {d[1].label}</label>
-                <label className="value">{d[1].value}</label>
-              </div>
-            
-              )
-              }
-            </Grid>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="card">
+                    <label className="text_label"> {d[1].label}</label>
+                    {d[1].isHTML ? (
+                      <div className="text_value" dangerouslySetInnerHTML={{ __html: d[1].value }} />
+                    ) : (
+                      <label className="text_value">{d[1].value}</label>
+                    )}
+                  </div>
+
+                )
+                }
+              </Grid>
             )
           })}
 

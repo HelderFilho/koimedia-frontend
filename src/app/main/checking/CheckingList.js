@@ -323,7 +323,8 @@ useEffect(() => {
         {
           col : 12,
           label : 'Anotações',
-          value : proposal.observation.replace(/<\/?[^>]+(>|$)/g, "")
+          value : proposal.observation,
+          isHTML: true
         },
     
       ]
