@@ -87,7 +87,7 @@ export default function ProposalForm({ values, setPage, getData }) {
       })
 
     if (values.products) {
-      setProductsSelected(JSON.parse(values.products))
+      setProductsSelected(values.products)
     }
     if (values.proposal_values) {
       setGrossValueProposal(values.proposal_values[0].gross_value_proposal)
