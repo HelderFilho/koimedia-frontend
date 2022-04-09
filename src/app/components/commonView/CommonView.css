@@ -12,6 +12,20 @@
 
 }
 
+
+.text_value_files {
+    font-size: 14px;
+    width: '100%';
+    text-align: left;
+    padding: 5px;
+    margin-top: 10px;
+}
+.text_value_files:hover {
+    font-size: 14px;
+    width: '100%';
+    text-align: left;
+    color: lightblue;
+}
 .card {
     display : inline-grid;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;

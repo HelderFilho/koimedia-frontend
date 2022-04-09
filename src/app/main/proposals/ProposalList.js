@@ -336,8 +336,22 @@ useEffect(() => {
           isHTML : true
 
         },
+        {
+          col : 12,
+          label : 'Arquivos Material',
+          values : proposal.file_material || [],
+          isFile : true,
+        },
+        {
+          col : 12,
+          label : 'Arquivos PI/PP',
+          values : proposal.file_pp || [],
+          isFile : true,
+
+        }
     
       ]
+      console.log('proposals', proposal)
       setSingleProposal2(data2)
 
   }

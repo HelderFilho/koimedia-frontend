@@ -29,3 +29,25 @@
     border-radius: 10px;
     height: 40px;
 }
+
+.divFile {
+    padding: 5px;
+    background-color: #ECEBEA;
+    margin: 5px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttonFile {
+    border-radius: 20px !important;
+    width: 40px;
+    font-weight: bolder;
+    background-color: #1b2330;
+    color: white;
+    cursor: pointer;
+}
+
+.labelFile {
+    cursor: pointer;
+}

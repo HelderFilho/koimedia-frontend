@@ -2,7 +2,7 @@
 import Form from "../../components/form/Form.config";
 import './CommonForm.css'
 
-function UserForm({ values, fields, onSubmit, onChangeField }) {
+function UserForm({ values, fields, onSubmit, onChangeField, removeFile }) {  
   return (
     <div className='form'>
         <Form
@@ -11,8 +11,9 @@ function UserForm({ values, fields, onSubmit, onChangeField }) {
           fields={fields}
           onChangeField = {onChangeField}
           onSubmit={onSubmit}
+          removeFile = {removeFile}
         />
-      </div>
+      </div>  
   );
 }
 

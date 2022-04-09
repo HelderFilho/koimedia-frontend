@@ -4,10 +4,11 @@ import Select from "react-select";
 import TextArea from "./TextArea";
 var base64Img = require("base64-img");
 
+
 //forwardRef é opcional
 export default forwardRef(
   Form.bind(
-    ({ props, errors, values, changeValue, submit, clean, getAllFields }) => ({
+    ({ props, errors, values, changeValue, submit }) => ({
       breakpoints: {
         xs: 0,
         sm: 600,
@@ -26,7 +27,6 @@ export default forwardRef(
       ],
       onError: (err) => console.log(err),
 
-      //      onChange :  console.log('fff', values),
       components: [
         {
           type: "default",
@@ -65,12 +65,10 @@ export default forwardRef(
                 <label>{field.label}</label>
                 <input
                   type={field.type}
-                  //    value={values[field.name] || ""} // recomendo colocar o ||<formato do campo -> string|array|boolean/> caso contrário esse componente pode apresentar falhas; errado: value={values[field.name]}; certo: value={values[field.name] || []}
                   disabled= {field.disabled}
 
                   onChange={(evt) => {
                     Array.from(evt.target.files).map(async (e) => {
-                      console.log(e)
 
                       let reader = new FileReader();
                       reader.readAsDataURL(e);
@@ -78,54 +76,28 @@ export default forwardRef(
                         e.data = reader.result;
                         e.filename = e.name;
                         e.filetype = e.type;
-                        //      changeValue(field.name, e);
                       };
                     });
                     changeValue(field.name, evt.target.files);
                   }}
-                  /*   onChange={async (evt) => {
-                    function readFileAsync(file) {
-                      return new Promise((resolve, reject) => {
-                        if (!file) {
-                          return;
-                        }
-                        const reader = new FileReader();
-
-                        reader.onload = () => {
-                          resolve({
-                            data: `base64,${btoa(reader.result)}`,
-                          });
-                        };
-
-                        reader.onerror = reject;
-
-                        reader.readAsBinaryString(file);
-                      });
-                    }
-
-                    Array.from(evt.target.files).map(async (e) => {
-                      let data= await readFileAsync(e) 
-                      e.data = data.data;
-                    });
-                    evt.target.files[0].file ='dsadas'
-                    changeValue(field.name, evt.target.files);
-                  }}
-                 */
+                 
                   multiple
                   name={field.name}
                   placeholder={field.placeholder}
                   style={{ width: "100%" }}
                 />
-
                 <span style={{ color: "red" }}>{errors[field.name]}</span>
               </Fragment>
-              {/*values[field.name]
-                ? Array.from(values[field.name])
-                .map((v) => <h1>{v.name}</h1>
+              {props.values[field.name] && props.values[field.name].length > 0
+                ?  Array.from(props.values[field.name])
+                .map((f) => <div className="divFile">
+                  <label className="labelFile" onClick={() => window.open(f.webContentLink, '_blank')}>{f.name}</label>
+                  {f.id ? (<input type="button" className="buttonFile" onClick={() => props.removeFile(field.name, f)} value="x"/> ): null}
+                </div>
                 )
               :
               null
-              */}
+              }
             </div>
           ),
         },

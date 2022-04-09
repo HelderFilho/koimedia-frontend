@@ -41,6 +41,8 @@ export default function ProposalForm({ values, setPage, getData }) {
   const [products, setProducts] = useState([])
   const [status, setStatus] = useState([])
   const [selectedVehicle, setSelectedVehicle] = useState(0)
+
+  const [filesToRemove, setFilesToRemove] = useState([])
   useEffect(() => {
     axios
       .get(
@@ -350,7 +352,7 @@ export default function ProposalForm({ values, setPage, getData }) {
       netValueApproved: netValueApproved
     }
     valuesForm.fk_id_user = logged_user.id_user
-    let values = [valuesForm, productsSelected, valuesProposal]
+    let values = [valuesForm, productsSelected, valuesProposal, filesToRemove]
 
     axios
       .post(
@@ -372,8 +374,14 @@ export default function ProposalForm({ values, setPage, getData }) {
     setGrossValueProposal(v)
   }
 
-  console.log('********', productsSelected)
-  console.log('typeof', typeof(productsSelected))
+  const removeFile = (field, file) => {
+    let files = filesToRemove
+    files.push(file)
+    setFilesToRemove(files)
+    valuesForm[field] = valuesForm[field].filter(v => v.id != file.id)
+     setValuesForm({...valuesForm})
+    }
+
   return (
     <div ref={ref}>
       <CommonHeader title="Criar Proposta" onBack={() => setPage("list")}
@@ -492,7 +500,7 @@ export default function ProposalForm({ values, setPage, getData }) {
           values[f.name] = v;
           setValuesForm(values);
         }}
-
+        removeFile = {removeFile}
         onSubmit={onSubmit}
       />
 
