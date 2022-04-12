@@ -44,7 +44,7 @@ export default function CommonView({ data, title, onBack, dialog }) {
                       <div>
                         {d[1].values.map(file => (
                           <div>
-                          <label className="text_value_files" onClick={() => window.open(file.webContentLink, '_blank')} style={{ cursor: 'pointer' }}>{file.name}</label>
+                          <label className="text_value_files" onClick={() => window.open(file.webViewLink, '_blank')} style={{ cursor: 'pointer' }}>{file.name}</label>
                           </div>
                         ))}
                       </div>
@@ -59,21 +59,6 @@ export default function CommonView({ data, title, onBack, dialog }) {
               </Grid>
             )
           })}
-
-          {/*
-        <Grid item xs={8}>
-          <Item>xs=8</Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item>xs=4</Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item>xs=4</Item>
-        </Grid>
-        <Grid item xs={8}>
-          <Item>xs=8</Item>
-        </Grid>
-        */}
         </Grid>
       </Box>{" "}
     </div>

@@ -91,7 +91,7 @@ export default forwardRef(
               {props.values[field.name] && props.values[field.name].length > 0
                 ?  Array.from(props.values[field.name])
                 .map((f) => <div className="divFile">
-                  <label className="labelFile" onClick={() => window.open(f.webContentLink, '_blank')}>{f.name}</label>
+                  <label className="labelFile" onClick={() => window.open(f.webViewLink, '_blank')}>{f.name}</label>
                   {f.id ? (<input type="button" className="buttonFile" onClick={() => props.removeFile(field.name, f)} value="x"/> ): null}
                 </div>
                 )
