@@ -60,6 +60,7 @@ function Login() {
   const { isValid, dirtyFields, errors } = formState;
 
   function onSubmit() {
+    console.log('CONSTANST: ', Constants.APIEndpoints)
     let email = control.fieldsRef.current.email._f.value
     let pass = control.fieldsRef.current.password._f.value
     let user = {
@@ -70,6 +71,7 @@ function Login() {
 
 
     axios.post(Constants.APIEndpoints.AUTH, user).then((res) => {
+
       if (res.data && res.data[0]) {
         // dispatch({type :'logou'})
         setWrongPass(false)
