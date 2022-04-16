@@ -2,23 +2,20 @@ import React, { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { motion } from 'framer-motion';
 import { Controller, useForm } from 'react-hook-form';
-import { Redirect } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Checkbox from '@material-ui/core/Checkbox';
-import Divider from '@material-ui/core/Divider';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import _ from '@lodash';
 import axios from "axios";
+import https from 'https'
+import fs from 'fs'
+
 import Constants from "app/utils/Constants";
 import { useDispatch } from 'react-redux';
 import CryptoJS from 'crypto-js';
@@ -60,6 +57,12 @@ function Login() {
   const { isValid, dirtyFields, errors } = formState;
 
   function onSubmit() {
+
+    const httpsAgent = new https.Agent({
+      rejectUnauthorized: false, // (NOTE: this will disable client verification)
+      })
+    
+    
     console.log('CONSTANST: ', Constants.APIEndpoints)
     let email = control.fieldsRef.current.email._f.value
     let pass = control.fieldsRef.current.password._f.value
@@ -67,10 +70,10 @@ function Login() {
       email: email,
       password: pass
     }
-    //  signInWithEmailAndPassword(user)
 
 
-    axios.post(Constants.APIEndpoints.AUTH, user).then((res) => {
+
+    axios.post(Constants.APIEndpoints.AUTH, user, { httpsAgent: httpsAgent }).then((res) => {
 
       if (res.data && res.data[0]) {
         // dispatch({type :'logou'})

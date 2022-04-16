@@ -39,6 +39,7 @@
         "formsy-react": "2.2.5",
         "framer-motion": "4.1.17",
         "history": "4.10.1",
+        "https": "^1.0.0",
         "i18next": "20.4.0",
         "jodit-react": "^1.1.5",
         "jquery": "^3.6.0",
