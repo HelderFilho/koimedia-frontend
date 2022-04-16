@@ -1,5 +1,5 @@
 //const ROOT = 'http://localhost:3003/api/'
-const ROOT = 'https://www.koimedia.com.br:3003/api/'
+const ROOT = 'https://77.243.85.149:3003/api/'
 
 const ENDPOINTS = {
     USER : ROOT + 'user',
