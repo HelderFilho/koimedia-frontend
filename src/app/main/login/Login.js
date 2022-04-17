@@ -13,8 +13,7 @@ import clsx from 'clsx';
 import * as yup from 'yup';
 import _ from '@lodash';
 import axios from "axios";
-import https from 'https'
-import fs from 'fs'
+
 
 import Constants from "app/utils/Constants";
 import { useDispatch } from 'react-redux';
@@ -58,11 +57,6 @@ function Login() {
 
   function onSubmit() {
 
-    const httpsAgent = new https.Agent({
-      rejectUnauthorized: false, // (NOTE: this will disable client verification)
-      })
-    
-    
     console.log('CONSTANST: ', Constants.APIEndpoints)
     let email = control.fieldsRef.current.email._f.value
     let pass = control.fieldsRef.current.password._f.value
@@ -73,7 +67,9 @@ function Login() {
 
 
 
-    axios.post(Constants.APIEndpoints.AUTH, user, { httpsAgent: httpsAgent }).then((res) => {
+
+    
+    axios.post(Constants.APIEndpoints.AUTH, user).then((res) => {
 
       if (res.data && res.data[0]) {
         // dispatch({type :'logou'})
