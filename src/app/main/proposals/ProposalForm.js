@@ -352,7 +352,8 @@ export default function ProposalForm({ values, setPage, getData }) {
       netValueApproved: netValueApproved
     }
     valuesForm.fk_id_user = logged_user.id_user
-    let values = [valuesForm, productsSelected, valuesProposal, filesToRemove]
+    let values = [valuesForm, productsSelected, valuesProposal, filesToRemove, logged_user
+    ]
 
     axios
       .post(
@@ -382,7 +383,7 @@ export default function ProposalForm({ values, setPage, getData }) {
      setValuesForm({...valuesForm})
     }
 
-  return (
+    return (
     <div ref={ref}>
       <CommonHeader title="Criar Proposta" onBack={() => setPage("list")}
         width={width}
@@ -426,11 +427,9 @@ export default function ProposalForm({ values, setPage, getData }) {
               let product = products.filter(p => p.id_product == v)[0]
               newProduct.objective = product.objective
               newProduct.price = parseFloat(product.value)
-
             }
 
             newProduct[f.name] = v;
-
             setValuesProduct(newProduct)
           }}
           onSubmit={addProduct}

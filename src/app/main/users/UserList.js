@@ -14,6 +14,7 @@ import CommonDialog from "app/components/dialog/CommonDialog";
 import moment from "moment";
 import Store from 'app/utils/Store'
 import ConfirmDialog from "app/components/dialog/ConfirmDialog";
+import CommonForm from "app/components/form/CommonForm";
 
 let logged_user = Store.USER
 
@@ -28,9 +29,13 @@ function UserList(props) {
 
   const [singleUser, setSingleUser] = useState([])
   const [userDialog, setUserDialog] = useState(false)
- 
+
 
   const [deleteDialog, setDeleteDialog] = useState(false)
+
+  const [resetPassDialog, setResetPassDialog]= useState(false)
+  const [password, setPassword] = useState([])
+  
   let [userSelected, setUserSelected] = useState([])
 
   const columns = useMemo(
@@ -87,15 +92,23 @@ function UserList(props) {
         sortable: false,
         Cell: ({ row }) => (
           <div className="flex items-center">
+ <IconButton
+              onClick={(ev) => {
+                setResetPassDialog(true);
+                setUserSelected(row.original)
+              }}
+            >
+              <Icon>security</Icon>
+            </IconButton>
 
-          <IconButton
+            <IconButton
               onClick={(ev) => {
                 viewUser(row.original);
               }}
             >
               <Icon>remove_red_eye</Icon>
             </IconButton>
-            
+
             <IconButton
               onClick={(ev) => {
                 setValues(row.original)
@@ -104,17 +117,17 @@ function UserList(props) {
             >
               <Icon>edit</Icon>
             </IconButton>
-           {logged_user.role != 'subadmin' ?(
-            <IconButton
-              onClick={(ev) => {
-                setUserSelected(row.original)
-                setDeleteDialog(true)
-                   }}
-            >
-              <Icon>delete</Icon>
-            </IconButton>
-           ):null}
-          
+            {logged_user.role != 'subadmin' ? (
+              <IconButton
+                onClick={(ev) => {
+                  setUserSelected(row.original)
+                  setDeleteDialog(true)
+                }}
+              >
+                <Icon>delete</Icon>
+              </IconButton>
+            ) : null}
+
           </div>
         ),
       },
@@ -126,39 +139,41 @@ function UserList(props) {
   const viewUser = (user) => {
     setUserDialog(true)
     let data = [
-    {
-      col: 12,
-      label :'NOME',
-      value : user.name || ''
-    },
-    {col : 12,
-      label : 'EMAIL',
-      value : user.email
-    },
-    {
-      col: 12,
-      label: 'TELEFONE',
-      value : user.phone
-    },
-    
-    {col : 12,
-      label : 'LOCAL',
-      value : user.place != "undefined" ? user.place : ''
-    },
-    {
-      col: 12,
-      label: 'REGRA',
-      value : user.fk_id_role
-    },
       {
-      col: 12,
-      label: 'DATA DE NASCIMENTO',
-      value : moment(user.dt_birthday).format('DD/MM/YYYY')
-    },
+        col: 12,
+        label: 'NOME',
+        value: user.name || ''
+      },
+      {
+        col: 12,
+        label: 'EMAIL',
+        value: user.email
+      },
+      {
+        col: 12,
+        label: 'TELEFONE',
+        value: user.phone
+      },
 
-    
+      {
+        col: 12,
+        label: 'LOCAL',
+        value: user.place != "undefined" ? user.place : ''
+      },
+      {
+        col: 12,
+        label: 'REGRA',
+        value: user.fk_id_role
+      },
+      {
+        col: 12,
+        label: 'DATA DE NASCIMENTO',
+        value: moment(user.dt_birthday).format('DD/MM/YYYY')
+      },
+
+
     ]
-    
+
     setSingleUser(data)
   }
 
@@ -174,7 +189,7 @@ function UserList(props) {
   }, []);
 
   const deleteUser = (id) => {
-    const data = {id_user : userSelected.id_user}
+    const data = { id_user: userSelected.id_user }
     axios.post(Constants.APIEndpoints.USER + "/deleteUser", data).then((res) => {
       getData();
     });
@@ -186,6 +201,16 @@ function UserList(props) {
     });
   };
 
+  const resetPassword = (password) => {
+    console.log(password)
+    console.log(userSelected)
+    const values = {id_user : userSelected.id_user, password : password.password}
+    axios.post(Constants.APIEndpoints.USER + '/resetPassword', values).then(res => {
+      console.log('resdata', res.data)
+      setResetPassDialog(false)
+    })
+  }
+
 
   if (!data) {
     return null;
@@ -195,19 +220,45 @@ function UserList(props) {
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
     >
-{deleteDialog ? (
-  <ConfirmDialog  title = "Deseja deletar esse Usuário?" cancel={() => setDeleteDialog(false)} confirm={deleteUser} />
-):null}
+      {deleteDialog ? (
+        <ConfirmDialog title="Deseja deletar esse Usuário?" cancel={() => setDeleteDialog(false)} confirm={deleteUser} />
+      ) : null}
 
-<CommonDialog
+      <CommonDialog
         open={userDialog}
         onClose={() => setUserDialog(false)}
         title="Ver Usuário"
-        width = "xl"
-        print = {true}
+        width="xl"
+        print={true}
       >
-        <CommonView  dialog = {true} data = {singleUser} title = "Ver Usuário" onBack = {() => setPage('list')}/>
+        <CommonView dialog={true} data={singleUser} title="Ver Usuário" onBack={() => setPage('list')} />
 
+      </CommonDialog>
+
+
+      <CommonDialog
+        open={resetPassDialog}
+        onClose={() => setResetPassDialog(false)}
+        title="Resetar a senha"
+        width="xl"
+      >
+        <CommonForm
+          values={password}
+          fields={[
+            {
+              col: 12,
+              type: "password",
+              name: "password",
+              label: "Senha",
+
+            }
+          ]}
+          onChangeField={(f, v) => {
+            password[f.name] = v;
+            setPassword(values)
+          }}
+          onSubmit={resetPassword}
+        />
       </CommonDialog>
 
       {page == "list" ? (

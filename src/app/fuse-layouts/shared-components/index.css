@@ -1,0 +1,7 @@
+.fileList {
+    padding: 5px;
+}
+
+.fileList:hover{
+    color: lightblue;
+}

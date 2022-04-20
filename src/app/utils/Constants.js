@@ -1,5 +1,5 @@
-const ROOT = 'http://localhost:3003/api/'
-//const ROOT = 'http://77.243.85.149:3003/api/'
+//const ROOT = 'http://localhost:3003/api/'
+const ROOT = 'http://77.243.85.149:3003/api/'
 
 const ENDPOINTS = {
     USER : ROOT + 'user',
@@ -12,7 +12,8 @@ const ENDPOINTS = {
     STATUS : ROOT + 'status',
     PROPOSAL : ROOT + 'proposal',
     AUTH : ROOT + 'login',
-    NOTIFICATION : ROOT + 'notification'
+    NOTIFICATION : ROOT + 'notification',
+    FILES : ROOT + 'files'
 }
 
 export default {
