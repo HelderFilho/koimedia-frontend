@@ -109,7 +109,14 @@ function UserMenu(props) {
           </ListItemIcon>
           <ListItemText primary="Arquivos" />
         </MenuItem>
-
+        <MenuItem
+              onClick={logout}
+            >
+              <ListItemIcon className="min-w-40">
+                <Icon>exit_to_app</Icon>
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </MenuItem>
       </Popover>
     </>
   );

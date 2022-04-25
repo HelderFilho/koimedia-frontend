@@ -40,6 +40,7 @@ export default function ProposalForm({ values, setPage, getData }) {
   const [squares, setSquares] = useState([])
   const [products, setProducts] = useState([])
   const [status, setStatus] = useState([])
+  const [users, setUsers] = useState([])
   const [selectedVehicle, setSelectedVehicle] = useState(0)
 
   const [filesToRemove, setFilesToRemove] = useState([])
@@ -49,6 +50,12 @@ export default function ProposalForm({ values, setPage, getData }) {
         Constants.APIEndpoints.AGENCY + "/getAllAgencies")
       .then((res) => {
         setAgencies(res.data[0])
+      })
+      axios
+      .get(
+        Constants.APIEndpoints.USER + "/getAllUsers")
+      .then((res) => {
+        setUsers(res.data[0])
       })
 
     axios
@@ -220,20 +227,20 @@ export default function ProposalForm({ values, setPage, getData }) {
     },
   ];
 
-
+  console.log('userrrrr', users)
   let fieldsProposal2 = [
-    {
-      col: 6,
-      type: "text",
-      name: "notification_text",
-      label: "Texto da Notificação",
-    },
-    {
-      col: 6,
-      type: "number",
-      name: "notification_frequency",
-      label: "Frequência de notificação",
-    },
+   {
+    col: 12,
+    type: "select",
+    name: "fk_id_responsable",
+    label: "Usuário Responsável",
+    options: users.filter(u => u.fk_id_role == 'admin' || u.fk_id_role == 'commercial' || u.fk_id_role == 'subadmin').map(v => {
+      return {
+        value: v.id_user,
+        label: v.name
+      }
+    }),
+   },
     {
       col: 6,
       type: "file",
