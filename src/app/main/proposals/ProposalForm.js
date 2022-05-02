@@ -227,7 +227,6 @@ export default function ProposalForm({ values, setPage, getData }) {
     },
   ];
 
-  console.log('userrrrr', users)
   let fieldsProposal2 = [
    {
     col: 12,
@@ -317,6 +316,7 @@ export default function ProposalForm({ values, setPage, getData }) {
   ];
 
   const addProduct = (product) => {
+    product.key = productsSelected.length
     productsSelected.push(product);
     updateValues();
     setOpenModalProduct(false);
@@ -325,7 +325,7 @@ export default function ProposalForm({ values, setPage, getData }) {
   };
 
   const changeProduct = (field, id_product, value) => {
-    productsSelected.filter((p) => p.fk_id_product == id_product).map((p) => p[field] = value);
+    productsSelected.filter((p) => p.key == id_product).map((p) => p[field] = value);
     setProductsSelected([...productsSelected]);
     updateValues();
   };
@@ -344,7 +344,8 @@ export default function ProposalForm({ values, setPage, getData }) {
   }
 
   const removeProduct = (id_product) => {
-    let products_filter = productsSelected.filter((p) => p.fk_id_product != id_product);
+    let products_filter = productsSelected.filter((p) => p.key != id_product);
+    products_filter.map((p, i) => p.key = i)
     setProductsSelected(products_filter);
   };
 
@@ -389,7 +390,6 @@ export default function ProposalForm({ values, setPage, getData }) {
     valuesForm[field] = valuesForm[field].filter(v => v.id != file.id)
      setValuesForm({...valuesForm})
     }
-
     return (
     <div ref={ref}>
       <CommonHeader title="Criar Proposta" onBack={() => setPage("list")}
@@ -434,6 +434,7 @@ export default function ProposalForm({ values, setPage, getData }) {
               let product = products.filter(p => p.id_product == v)[0]
               newProduct.objective = product.objective
               newProduct.price = parseFloat(product.value)
+              newProduct.name = product.name
             }
 
             newProduct[f.name] = v;
@@ -462,18 +463,18 @@ export default function ProposalForm({ values, setPage, getData }) {
             </thead>
 
             <tbody style={{ backgroundColor: "var(--purple)", width: "100%" }}>
-              {productsSelected.map((p) => (
+              {productsSelected.map((p, i) => (
                 <tr key={p.fk_id_product} style={{ color: "black" }}>
-                  <td style={{ textAlign: "center", height: 40 }}>
-                    {products.length > 0 && products.filter(pr => pr.id_product == p.fk_id_product)[0].name}
+                  <td className="table_input">
+                  <input name = "product_name" onChange={(evt) => changeProduct('name', i, evt.target.value)} value = {p.name}></input>
                   </td>
-                  <td className="table_input"><input name="objective_" onChange={(evt) => changeProduct("objective", p.fk_id_product, evt.target.value)} value={p.objective}></input></td>
-                  <td className="table_input"><input name="price_" onChange={(evt) => changeProduct("price", p.fk_id_product, evt.target.value)} value={p.price}></input></td>
-                  <td className="table_input"><input name="quantity_hired_" onChange={(evt) => changeProduct("quantity_hired", p.fk_id_product, evt.target.value)} value={p.quantity_hired}></input></td>
-                  <td className="table_input"><input name="negociation_" onChange={(evt) => changeProduct("negociation", p.fk_id_product, evt.target.value)} value={p.negociation}></input></td>
-                  <td className="table_input"><input type="date" name="dt_start_" onChange={(evt) => changeProduct("dt_start", p.fk_id_product, evt.target.value)} value={p.dt_start}></input></td>
-                  <td className="table_input"><input type="date" name="dt_end_" onChange={(evt) => changeProduct("dt_end", p.fk_id_product, evt.target.value)} value={p.dt_end}></input></td>
-                  <td className="button"><button onClick={() => removeProduct(p.fk_id_product)}>X</button></td>
+                  <td className="table_input"><input name="objective_" onChange={(evt) => changeProduct("objective", i, evt.target.value)} value={p.objective}></input></td>
+                  <td className="table_input"><input name="price_" onChange={(evt) => changeProduct("price", i, evt.target.value)} value={p.price}></input></td>
+                  <td className="table_input"><input name="quantity_hired_" onChange={(evt) => changeProduct("quantity_hired", i, evt.target.value)} value={p.quantity_hired}></input></td>
+                  <td className="table_input"><input name="negociation_" onChange={(evt) => changeProduct("negociation", i, evt.target.value)} value={p.negociation}></input></td>
+                  <td className="table_input"><input type="date" name="dt_start_" onChange={(evt) => changeProduct("dt_start", i, evt.target.value)} value={p.dt_start}></input></td>
+                  <td className="table_input"><input type="date" name="dt_end_" onChange={(evt) => changeProduct("dt_end", i, evt.target.value)} value={p.dt_end}></input></td>
+                  <td className="button"><button onClick={() => removeProduct(i)}>X</button></td>
                 </tr>
               ))}
             </tbody>

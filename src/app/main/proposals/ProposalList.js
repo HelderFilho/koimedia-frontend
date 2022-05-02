@@ -231,15 +231,15 @@ export default function ProposalList(props) {
         values: [
           {
             label: 'Cliente: ',
-            value: clients_.filter(c => c.id_client == proposal.fk_id_client)[0].fancy_name
+            value: proposal.fk_id_client ? clients_.filter(c => c.id_client == proposal.fk_id_client)[0].fancy_name : ''
           },
           {
             label: 'Razão Social: ',
-            value: clients_.filter(c => c.id_client == proposal.fk_id_client)[0].company_name
+            value: proposal.fk_id_client ?  clients_.filter(c => c.id_client == proposal.fk_id_client)[0].company_name :''
           },
           {
             label: 'CNPJ: ',
-            value: clients_.filter(c => c.id_client == proposal.fk_id_client)[0].cnpj
+            value: proposal.fk_id_client ?  clients_.filter(c => c.id_client == proposal.fk_id_client)[0].cnpj : ''
           }
 
         ]
@@ -250,15 +250,15 @@ export default function ProposalList(props) {
         values: [
           {
             label: 'Agência: ',
-            value: agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].fancy_name
+            value: proposal.fk_id_agency ? agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].fancy_name : ''
           },
           {
             label: 'Razão Social: ',
-            value: agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].company_name
+            value:  proposal.fk_id_agency ? agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].company_name : ''
           },
           {
             label: 'CNPJ: ',
-            value: agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].cnpj
+            value: proposal.fk_id_agency ? agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].cnpj : ''
           }
         ]
       },
@@ -268,15 +268,15 @@ export default function ProposalList(props) {
         values: [
           {
             label: 'Veículo: ',
-            value: vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].fancy_name
+            value: proposal.fk_id_vehicle ? vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].fancy_name : ''
           },
           {
             label: 'Razão Social: ',
-            value: vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].company_name
+            value:  proposal.fk_id_vehicle ? vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].company_name : ''
           },
           {
             label: 'CNPJ: ',
-            value: vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].cnpj
+            value:  proposal.fk_id_vehicle ? vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].cnpj : ''
           }
         ]
       },
@@ -327,12 +327,12 @@ export default function ProposalList(props) {
       {
         col: 6,
         label: 'Usuário',
-        value: users_.filter(c => c.id_user == proposal.fk_id_user)[0].name
+        value: proposal.fk_id_user ? users_.filter(c => c.id_user == proposal.fk_id_user)[0].name : ''
       },
       {
         col: 6,
         label: 'Responsável',
-        value: users_.filter(c => c.id_user == proposal.fk_id_responsable)[0].name
+        value: proposal.fk_id_responsable ? users_.filter(c => c.id_user == proposal.fk_id_responsable)[0].name : ''
       },
       {
         col: 12,
@@ -356,7 +356,6 @@ export default function ProposalList(props) {
       }
 
     ]
-    console.log('proposals', proposal)
     setSingleProposal2(data2)
 
   }
@@ -409,7 +408,7 @@ export default function ProposalList(props) {
               <tbody style={{ backgroundColor: "var(--purple)", width: "100%" }}>
                 {proposalSelected.products.map((p) => (
                   <tr key={p.fk_id_product} style={{ color: "black" }}>
-                    <td className="table_td">{products.length > 0 && products.filter(pr => pr.id_product == p.fk_id_product)[0].name}</td>
+                    <td className="table_td">{p.name}</td>
                     <td className="table_td">{p.objective}</td>
                     <td className="table_td">{p.price}</td>
                     <td className="table_td">{p.quantity_hired}</td>
