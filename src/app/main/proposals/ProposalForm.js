@@ -333,10 +333,12 @@ export default function ProposalForm({ values, setPage, getData }) {
   const updateValues = () => {
   
     let gross_value = productsSelected.reduce((sum, item) => {
-      return sum + item.negociation > 0 ? ((item.price - item.price * item.negociation/100) * item.quantity_hired): (item.price * item.quantity_hired)
+     let price = parseFloat(item.price)
+     let negociation = parseFloat(item.negociation)
+     let quantity_hired = parseInt(item.quantity_hired)
+      return sum + (negociation > 0 ? ((price - price * negociation/100) * quantity_hired): (price * quantity_hired))
     }, 0)
-    
-    let discount_proposal = gross_value * standardDiscount / 100
+     let discount_proposal = gross_value * standardDiscount / 100
     let net_proposal = gross_value - discount_proposal
     setGrossValueProposal(gross_value)
     setStandardDiscountProposal(discount_proposal)
@@ -347,6 +349,7 @@ export default function ProposalForm({ values, setPage, getData }) {
     let products_filter = productsSelected.filter((p) => p.key != id_product);
     products_filter.map((p, i) => p.key = i)
     setProductsSelected(products_filter);
+    updateValues();
   };
 
   const onSubmit = () => {
@@ -469,7 +472,7 @@ export default function ProposalForm({ values, setPage, getData }) {
                   <input name = "product_name" onChange={(evt) => changeProduct('name', i, evt.target.value)} value = {p.name}></input>
                   </td>
                   <td className="table_input"><input name="objective_" onChange={(evt) => changeProduct("objective", i, evt.target.value)} value={p.objective}></input></td>
-                  <td className="table_input"><input name="price_" onChange={(evt) => changeProduct("price", i, evt.target.value)} value={p.price}></input></td>
+                  <td className="table_input"><input type="number" step = "any" name="price_" onChange={(evt) => changeProduct("price", i, evt.target.value)} value={p.price}></input></td>
                   <td className="table_input"><input name="quantity_hired_" onChange={(evt) => changeProduct("quantity_hired", i, evt.target.value)} value={p.quantity_hired}></input></td>
                   <td className="table_input"><input name="negociation_" onChange={(evt) => changeProduct("negociation", i, evt.target.value)} value={p.negociation}></input></td>
                   <td className="table_input"><input type="date" name="dt_start_" onChange={(evt) => changeProduct("dt_start", i, evt.target.value)} value={p.dt_start}></input></td>
