@@ -235,11 +235,11 @@ export default function ProposalList(props) {
           },
           {
             label: 'Razão Social: ',
-            value: proposal.fk_id_client ?  clients_.filter(c => c.id_client == proposal.fk_id_client)[0].company_name :''
+            value: proposal.fk_id_client ? clients_.filter(c => c.id_client == proposal.fk_id_client)[0].company_name : ''
           },
           {
             label: 'CNPJ: ',
-            value: proposal.fk_id_client ?  clients_.filter(c => c.id_client == proposal.fk_id_client)[0].cnpj : ''
+            value: proposal.fk_id_client ? clients_.filter(c => c.id_client == proposal.fk_id_client)[0].cnpj : ''
           }
 
         ]
@@ -254,7 +254,7 @@ export default function ProposalList(props) {
           },
           {
             label: 'Razão Social: ',
-            value:  proposal.fk_id_agency ? agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].company_name : ''
+            value: proposal.fk_id_agency ? agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].company_name : ''
           },
           {
             label: 'CNPJ: ',
@@ -272,11 +272,11 @@ export default function ProposalList(props) {
           },
           {
             label: 'Razão Social: ',
-            value:  proposal.fk_id_vehicle ? vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].company_name : ''
+            value: proposal.fk_id_vehicle ? vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].company_name : ''
           },
           {
             label: 'CNPJ: ',
-            value:  proposal.fk_id_vehicle ? vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].cnpj : ''
+            value: proposal.fk_id_vehicle ? vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].cnpj : ''
           }
         ]
       },
@@ -402,6 +402,7 @@ export default function ProposalList(props) {
                   <th style={{ color: "black" }}>Negociação </th>
                   <th style={{ color: "black" }}>Dt. Inicial</th>
                   <th style={{ color: "black" }}>Dt. Final</th>
+                  <th style={{ color: "black" }}>Valor Final</th>
                 </tr>
               </thead>
 
@@ -410,21 +411,22 @@ export default function ProposalList(props) {
                   <tr key={p.fk_id_product} style={{ color: "black" }}>
                     <td className="table_td">{p.name}</td>
                     <td className="table_td">{p.objective}</td>
-                    <td className="table_td">{p.price}</td>
+                    <td className="table_td">{parseFloat(p.price).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</td>
                     <td className="table_td">{p.quantity_hired}</td>
                     <td className="table_td">{p.negociation}</td>
                     <td className="table_td">{moment(p.dt_start).format('DD/MM/YYYY')}</td>
                     <td className="table_td">{moment(p.dt_end).format('DD/MM/YYYY')}</td>
+                    <td className="table_td">{(p.negociation > 0 ? ((p.price - p.price * p.negociation/100) * p.quantity_hired): (p.price * p.quantity_hired)).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <div>
               <div style={{ width: '100%', display: 'flex', marginTop: 10 }}>
-                <label className="label_values title">Desc. Padrão%</label>
-                <label className="label_values title">Valor Bruto Aprovado</label>
-                <label className="label_values title">Desconto Padrão Aprovado</label>
-                <label className="label_values title">Valor Líquido Aprovado</label>
+                <label className="label_values" style={{fontWeight : 'bold'}}>Desc. Padrão%</label>
+                <label className="label_values" style={{fontWeight : 'bold'}}>Valor Bruto Aprovado</label>
+                <label className="label_values" style={{fontWeight : 'bold'}}>Desconto Padrão Aprovado</label>
+                <label className="label_values" style={{fontWeight : 'bold'}}>Valor Líquido Aprovado</label>
               </div>
               <div style={{ width: '100%', display: 'flex' }}>
                 <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].standard_discount : ''}%</label>
