@@ -51,7 +51,7 @@ export default function ProposalForm({ values, setPage, getData }) {
       .then((res) => {
         setAgencies(res.data[0])
       })
-      axios
+    axios
       .get(
         Constants.APIEndpoints.USER + "/getAllUsers")
       .then((res) => {
@@ -97,6 +97,7 @@ export default function ProposalForm({ values, setPage, getData }) {
 
     if (values.products) {
       setProductsSelected(values.products)
+      calcFinalValue()
     }
     if (values.proposal_values) {
       setGrossValueProposal(values.proposal_values[0].gross_value_proposal)
@@ -228,18 +229,18 @@ export default function ProposalForm({ values, setPage, getData }) {
   ];
 
   let fieldsProposal2 = [
-   {
-    col: 12,
-    type: "select",
-    name: "fk_id_responsable",
-    label: "Usuário Responsável",
-    options: users.filter(u => u.fk_id_role == 'admin' || u.fk_id_role == 'commercial' || u.fk_id_role == 'subadmin').map(v => {
-      return {
-        value: v.id_user,
-        label: v.name
-      }
-    }),
-   },
+    {
+      col: 12,
+      type: "select",
+      name: "fk_id_responsable",
+      label: "Usuário Responsável",
+      options: users.filter(u => u.fk_id_role == 'admin' || u.fk_id_role == 'commercial' || u.fk_id_role == 'subadmin').map(v => {
+        return {
+          value: v.id_user,
+          label: v.name
+        }
+      }),
+    },
     {
       col: 6,
       type: "file",
@@ -317,6 +318,7 @@ export default function ProposalForm({ values, setPage, getData }) {
 
   const addProduct = (product) => {
     product.key = productsSelected.length
+    product.final_value = product.negociation > 0 ? ((product.price - product.price * product.negociation / 100) * product.quantity_hired) : (product.price * product.quantity_hired)
     productsSelected.push(product);
     updateValues();
     setOpenModalProduct(false);
@@ -327,18 +329,26 @@ export default function ProposalForm({ values, setPage, getData }) {
   const changeProduct = (field, id_product, value) => {
     productsSelected.filter((p) => p.key == id_product).map((p) => p[field] = value);
     setProductsSelected([...productsSelected]);
+    calcFinalValue();
     updateValues();
   };
 
+  const calcFinalValue = () => {
+    productsSelected.map(product => {
+      let value = product.negociation > 0 ? ((product.price - product.price * product.negociation / 100) * product.quantity_hired) : (product.price * product.quantity_hired)
+      product.final_value = value
+    })
+    setProductsSelected([...productsSelected])
+    }
   const updateValues = () => {
-  
+
     let gross_value = productsSelected.reduce((sum, item) => {
-     let price = parseFloat(item.price)
-     let negociation = parseFloat(item.negociation)
-     let quantity_hired = parseInt(item.quantity_hired)
-      return sum + (negociation > 0 ? ((price - price * negociation/100) * quantity_hired): (price * quantity_hired))
+      let price = parseFloat(item.price)
+      let negociation = parseFloat(item.negociation)
+      let quantity_hired = parseInt(item.quantity_hired)
+      return sum + (negociation > 0 ? ((price - price * negociation / 100) * quantity_hired) : (price * quantity_hired))
     }, 0)
-     let discount_proposal = gross_value * standardDiscount / 100
+    let discount_proposal = gross_value * standardDiscount / 100
     let net_proposal = gross_value - discount_proposal
     setGrossValueProposal(gross_value)
     setStandardDiscountProposal(discount_proposal)
@@ -391,9 +401,9 @@ export default function ProposalForm({ values, setPage, getData }) {
     files.push(file)
     setFilesToRemove(files)
     valuesForm[field] = valuesForm[field].filter(v => v.id != file.id)
-     setValuesForm({...valuesForm})
-    }
-    return (
+    setValuesForm({ ...valuesForm })
+  }
+  return (
     <div ref={ref}>
       <CommonHeader title="Criar Proposta" onBack={() => setPage("list")}
         width={width}
@@ -461,6 +471,7 @@ export default function ProposalForm({ values, setPage, getData }) {
                 <th style={{ color: "black" }}>Negociação </th>
                 <th style={{ color: "black" }}>Dt. Inicial</th>
                 <th style={{ color: "black" }}>Dt. Final</th>
+                <th style={{ color: "black" }}>Valor Final</th>
                 <th style={{ color: "black" }}>Remover</th>
               </tr>
             </thead>
@@ -469,14 +480,15 @@ export default function ProposalForm({ values, setPage, getData }) {
               {productsSelected.map((p, i) => (
                 <tr key={p.fk_id_product} style={{ color: "black" }}>
                   <td className="table_input">
-                  <input name = "product_name" onChange={(evt) => changeProduct('name', i, evt.target.value)} value = {p.name}></input>
+                    <input name="product_name" onChange={(evt) => changeProduct('name', i, evt.target.value)} value={p.name}></input>
                   </td>
                   <td className="table_input"><input name="objective_" onChange={(evt) => changeProduct("objective", i, evt.target.value)} value={p.objective}></input></td>
-                  <td className="table_input"><input type="number" step = "any" name="price_" onChange={(evt) => changeProduct("price", i, evt.target.value)} value={p.price}></input></td>
+                  <td className="table_input"><input type="number" step="any" name="price_" onChange={(evt) => changeProduct("price", i, evt.target.value)} value={p.price}></input></td>
                   <td className="table_input"><input name="quantity_hired_" onChange={(evt) => changeProduct("quantity_hired", i, evt.target.value)} value={p.quantity_hired}></input></td>
                   <td className="table_input"><input name="negociation_" onChange={(evt) => changeProduct("negociation", i, evt.target.value)} value={p.negociation}></input></td>
                   <td className="table_input"><input type="date" name="dt_start_" onChange={(evt) => changeProduct("dt_start", i, evt.target.value)} value={p.dt_start}></input></td>
                   <td className="table_input"><input type="date" name="dt_end_" onChange={(evt) => changeProduct("dt_end", i, evt.target.value)} value={p.dt_end}></input></td>
+                  <td className="table_input"><input type="number" name="final_value" disabled value={p.final_value}></input></td>
                   <td className="button"><button onClick={() => removeProduct(i)}>X</button></td>
                 </tr>
               ))}
@@ -510,7 +522,7 @@ export default function ProposalForm({ values, setPage, getData }) {
           values[f.name] = v;
           setValuesForm(values);
         }}
-        removeFile = {removeFile}
+        removeFile={removeFile}
         onSubmit={onSubmit}
       />
 
