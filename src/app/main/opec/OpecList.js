@@ -41,84 +41,84 @@ export default function OpecList(props) {
   const [singleProposal, setSingleProposal] = useState([])
   const [singleProposal2, setSingleProposal2] = useState([])
   const [proposalDialog, setProposalDialog] = useState(false)
- 
+
   const monthList = [
-    "Janeiro" ,
-    "Fevereiro" ,
-    "Março" ,
-    "Abril" ,
-    "Maio" ,
-    "Junho" ,
-    "Julho" ,
-    "Agosto" ,
-    "Setembro" ,
-    "Outubro" ,
-     "Novembro" ,
-     "Dezembro" ,
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro",
   ];
 
-    useEffect(() => {
-      axios
+  useEffect(() => {
+    axios
       .get(
         Constants.APIEndpoints.AGENCY + "/getAllAgencies")
-       .then((res) => {
-         agencies_ = res.data[0]
+      .then((res) => {
+        agencies_ = res.data[0]
         setAgencies(res.data[0])
       })
-  
-      axios
+
+    axios
       .get(
         Constants.APIEndpoints.USER + "/getAllUsers")
-       .then((res) => {
-         users_ = res.data[0]
+      .then((res) => {
+        users_ = res.data[0]
       })
-  
-      axios
+
+    axios
       .get(
         Constants.APIEndpoints.PRODUCT + "/getAllProducts")
-       .then((res) => {
+      .then((res) => {
         setProducts(res.data[0])
       })
-      axios
+    axios
       .get(
         Constants.APIEndpoints.CLIENT + "/getAllClients")
-       .then((res) => {
+      .then((res) => {
         clients_ = res.data[0]
         setClients(res.data[0])
       })
-  
-      axios
+
+    axios
       .get(
         Constants.APIEndpoints.VEHICLE + "/getAllVehicles")
-       .then((res) => {
-         vehicles_ = res.data[0]
+      .then((res) => {
+        vehicles_ = res.data[0]
         setVehicles(res.data[0])
       })
-  
-      axios
+
+    axios
       .get(
         Constants.APIEndpoints.SQUARE + "/getAllSquares")
-       .then((res) => {
+      .then((res) => {
         setSquares(res.data[0])
       })
-  
-  
-  
-  
+
+
+
+
   }, [])
 
-useEffect(() => {
-  data.map(d => {
-    d.vehicle =vehicles.filter(v => v.id_vehicle == d.fk_id_vehicle)[0] ? vehicles.filter(v => v.id_vehicle ==  d.fk_id_vehicle)[0].fancy_name : '' 
-    d.client =clients.filter(v => v.id_client == d.fk_id_client)[0] ? clients.filter(v => v.id_client ==  d.fk_id_client)[0].fancy_name : '' 
-    d.agency =agencies.filter(v => v.id_agency == d.fk_id_agency)[0] ? agencies.filter(v => v.id_agency ==  d.fk_id_agency)[0].fancy_name : '' 
-    d.square =squares.filter(v => v.id_square == d.fk_id_square)[0] ? squares.filter(v => v.id_square ==  d.fk_id_square)[0].uf : '' 
-    d.month = monthList[d.month_sell]
-  })
-}, [data])
+  useEffect(() => {
+    data.map(d => {
+      d.vehicle = vehicles.filter(v => v.id_vehicle == d.fk_id_vehicle)[0] ? vehicles.filter(v => v.id_vehicle == d.fk_id_vehicle)[0].fancy_name : ''
+      d.client = clients.filter(v => v.id_client == d.fk_id_client)[0] ? clients.filter(v => v.id_client == d.fk_id_client)[0].fancy_name : ''
+      d.agency = agencies.filter(v => v.id_agency == d.fk_id_agency)[0] ? agencies.filter(v => v.id_agency == d.fk_id_agency)[0].fancy_name : ''
+      d.square = squares.filter(v => v.id_square == d.fk_id_square)[0] ? squares.filter(v => v.id_square == d.fk_id_square)[0].uf : ''
+      d.month = monthList[d.month_sell]
+    })
+  }, [data])
   const columns = useMemo(
     () => [
-      
+
       {
         Header: "Campanha",
         accessor: "campaign",
@@ -156,41 +156,20 @@ useEffect(() => {
         sortable: false,
         Cell: ({ row }) => (
           <div className="flex items-center">
-       <IconButton
+            <IconButton
               onClick={(ev) => {
                 setProposalSelected(row.original)
                 viewProposal(row.original);
-              
+
               }}
             >
               <Icon>remove_red_eye</Icon>
             </IconButton>
 
 
-                          {!['opec', 'subadmin' ].includes(logged_user.role) ? (   
 
-            <IconButton
-              onClick={(ev) => {
-                setValues(row.original)
-                setPage('add')
-              }}
-            >
-              <Icon>edit</Icon>
-            </IconButton>
-                          ):null}
-                                        {!['checking', 'opec', 'financeiro', 'subadmin' ].includes(logged_user.role) ? (   
 
-<IconButton
-
-            onClick={(ev) => {
-              setProposalSelected(row.original)
-              setDeleteDialog(true)
-             }}
-            >
-              <Icon>delete</Icon>
-            </IconButton>
-                                        ):null}
-</div>
+          </div>
         ),
       },
     ],
@@ -207,7 +186,7 @@ useEffect(() => {
   }, []);
 
   const deleteProposal = (id) => {
-    const data = {id_proposals : proposalSelected.id_proposals}
+    const data = { id_proposals: proposalSelected.id_proposals }
 
     axios.post(Constants.APIEndpoints.PROPOSAL + "/deleteProposal", data).then((res) => {
       getData();
@@ -219,118 +198,137 @@ useEffect(() => {
     setProposalDialog(true)
     let data = [
       {
-        isMulti : true,
+        isMulti: true,
         col: 3,
-        values : [
+        values: [
           {
-          label :'Cliente: ',
-          value : clients_.filter(c => c.id_client == proposal.fk_id_client)[0].fancy_name
+            label: 'Cliente: ',
+            value: clients_.filter(c => c.id_client == proposal.fk_id_client)[0].fancy_name
           },
           {
-          label :'Razão Social: ',
-          value : clients_.filter(c => c.id_client == proposal.fk_id_client)[0].company_name
+            label: 'Razão Social: ',
+            value: clients_.filter(c => c.id_client == proposal.fk_id_client)[0].company_name
           },
           {
-            label :'CNPJ: ',
-            value : clients_.filter(c => c.id_client == proposal.fk_id_client)[0].cnpj
+            label: 'CNPJ: ',
+            value: clients_.filter(c => c.id_client == proposal.fk_id_client)[0].cnpj
           }
-          
+
         ]
-       },
-       {
-        isMulti : true,
-        col: 3,
-        values : [
-          {
-          label :'Agência: ',
-          value : agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].fancy_name
-          },
-          {
-          label :'Razão Social: ',
-          value : agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].company_name
-          },
-          {
-            label :'CNPJ: ',
-            value : agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].cnpj
-          }
-        ]
-       },
-       {
-        isMulti : true,
-        col: 3,
-        values : [
-          {
-          label :'Veículo: ',
-          value : vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].fancy_name
-          },
-          {
-          label :'Razão Social: ',
-          value : vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].company_name
-          },
-          {
-            label :'CNPJ: ',
-            value : vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].cnpj
-          }
-        ]
-       },
-       {
-        isMulti : true,
-        col: 3,
-        values : [
-          {
-          label :'N° PI/PP : ',
-          value : proposal.number
-          },
-          {
-          label :'Dt. Emissão: ',
-          value : moment(proposal.dt_emission).format('DD/MM/YYYY')
-          },
-          {
-            label :'Dt. Criação: ',
-            value : moment(proposal.dt_cad).format('DD/MM/YYYY')
-            },
-           
-        ]
-       },
-       {
-         col : 3,
-        label : 'Campanha',
-        value : proposal.campaign
-      },
-       {
-        col : 3,
-       label : 'Praça',
-       value : proposal.square
-      },
-     {
-      col : 3,
-      label : 'Mês',
-       value : proposal.month
       },
       {
-      col : 3,
-      label : 'N° Proposta',
-      value : proposal.id_proposals
+        isMulti: true,
+        col: 3,
+        values: [
+          {
+            label: 'Agência: ',
+            value: agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].fancy_name
+          },
+          {
+            label: 'Razão Social: ',
+            value: agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].company_name
+          },
+          {
+            label: 'CNPJ: ',
+            value: agencies_.filter(c => c.id_agency == proposal.fk_id_agency)[0].cnpj
+          }
+        ]
       },
- 
-      ]
-    
+      {
+        isMulti: true,
+        col: 3,
+        values: [
+          {
+            label: 'Veículo: ',
+            value: vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].fancy_name
+          },
+          {
+            label: 'Razão Social: ',
+            value: vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].company_name
+          },
+          {
+            label: 'CNPJ: ',
+            value: vehicles_.filter(c => c.id_vehicle == proposal.fk_id_vehicle)[0].cnpj
+          }
+        ]
+      },
+      {
+        isMulti: true,
+        col: 3,
+        values: [
+          {
+            label: 'N° PI/PP : ',
+            value: proposal.number
+          },
+          {
+            label: 'Dt. Emissão: ',
+            value: moment(proposal.dt_emission).format('DD/MM/YYYY')
+          },
+          {
+            label: 'Dt. Criação: ',
+            value: moment(proposal.dt_cad).format('DD/MM/YYYY')
+          },
+
+        ]
+      },
+      {
+        col: 3,
+        label: 'Campanha',
+        value: proposal.campaign
+      },
+      {
+        col: 3,
+        label: 'Praça',
+        value: proposal.square
+      },
+      {
+        col: 3,
+        label: 'Mês',
+        value: proposal.month
+      },
+      {
+        col: 3,
+        label: 'N° Proposta',
+        value: proposal.id_proposals
+      },
+
+    ]
+
     setSingleProposal(data)
-      let data2 = [
-        {
-          col : 12,
-          label : 'Usuário',
-          value : users_.filter(c => c.id_user == proposal.fk_id_user)[0].name
-        },
-        {
-          col : 12,
-          label : 'Anotações',
-          value : proposal.observation,
-          isHTML: true
-        },
-    
-      ]
-      setSingleProposal2(data2)
+    let data2 = [
+      {
+        col: 6,
+        label: 'Usuário',
+        value: proposal.fk_id_user ? users_.filter(c => c.id_user == proposal.fk_id_user)[0].name : ''
+      },
+      {
+        col: 6,
+        label: 'Responsável',
+        value: proposal.fk_id_responsable ? users_.filter(c => c.id_user == proposal.fk_id_responsable)[0].name : ''
+      },
+      {
+        col: 12,
+        label: 'Anotações',
+        value: proposal.observation,
+        isHTML: true
+
+      },
+      {
+        col: 12,
+        label: 'Arquivos Material',
+        values: proposal.file_material || [],
+        isFile: true,
+      },
+      {
+        col: 12,
+        label: 'Arquivos PI/PP',
+        values: proposal.file_pp || [],
+        isFile: true,
+
+      }
+
+    ]
+    setSingleProposal2(data2)
 
   }
 
@@ -339,7 +337,9 @@ useEffect(() => {
 
   const getData = () => {
     axios.get(Constants.APIEndpoints.PROPOSAL + "/getAllProposals").then((res) => {
-      setData(res.data[0]);
+      console.log('rrrr,', res.data[0])
+      let proposals = res.data[0].filter(p => p.status_name == "APROVADA")
+      setData(proposals);
     });
   };
 
@@ -348,67 +348,71 @@ useEffect(() => {
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
     >
-{deleteDialog ? (
-  <ConfirmDialog  title = "Deseja deletar essa Opec?" cancel={() => setDeleteDialog(false)} confirm={deleteProposal} />
-):null}
+      {deleteDialog ? (
+        <ConfirmDialog title="Deseja deletar essa Opec?" cancel={() => setDeleteDialog(false)} confirm={deleteProposal} />
+      ) : null}
 
-<CommonDialog
+      <CommonDialog
         open={proposalDialog}
         onClose={() => setProposalDialog(false)}
         title="Ver Opec"
-        width = "xl"
-        print = {true}
+        width="xl"
+        print={true}
       >
-        <CommonView  dialog = {true} data = {singleProposal} title = "Ver Opec" onBack = {() => setPage('list')}/>
+        <CommonView dialog={true} data={singleProposal} title="Ver Opec" onBack={() => setPage('list')} />
 
         {proposalSelected.products && proposalSelected.products.length > 0 ? (
-        <div style={{ padding: 20 }}>
-          <table style={{ width: "100%" }}>
-            <thead
-              style={{ backgroundColor: "var(--purple)", marginBottom: 10 }}
-            >
-              <tr style={{ color: "black" }}>
-                <th style={{ color: "black" }}>Produto</th>
-                <th style={{ color: "black" }}>Objetivo</th>
-                <th style={{ color: "black" }}>Preço</th>
-                <th style={{ color: "black" }}>Qtd. Contratada</th>
-                <th style={{ color: "black" }}>Negociação </th>
-                <th style={{ color: "black" }}>Dt. Inicial</th>
-                <th style={{ color: "black" }}>Dt. Final</th>
-              </tr>
-            </thead>
+          <div style={{ padding: 20 }}>
+            <table style={{ width: "100%" }}>
+              <thead
+                style={{ backgroundColor: "var(--purple)", marginBottom: 10 }}
+              >
+                <tr style={{ color: "black" }}>
+                  <th style={{ color: "black" }}>Produto</th>
+                  <th style={{ color: "black" }}>Objetivo</th>
+                  <th style={{ color: "black" }}>Preço</th>
+                  <th style={{ color: "black" }}>Qtd. Contratada</th>
+                  <th style={{ color: "black" }}>Negociação </th>
+                  <th style={{ color: "black" }}>Dt. Inicial</th>
+                  <th style={{ color: "black" }}>Dt. Final</th>
+                  <th style={{ color: "black" }}>Valor Final</th>
 
-            <tbody style={{ backgroundColor: "var(--purple)", width: "100%" }}>
-              {proposalSelected.products.map((p) => (
-                <tr key = {p.fk_id_product} style={{ color: "black" }}>
-                  <td className="table_td">{products.length > 0 && products.filter(pr => pr.id_product == p.fk_id_product)[0].name}</td>
-                  <td className="table_td">{p.objective}</td>
-                  <td className="table_td">{p.price}</td>
-                  <td className="table_td">{p.quantity_hired}</td>
-                  <td className="table_td">{p.negociation}</td>
-                  <td className="table_td">{moment(p.dt_start).format('DD/MM/YYYY')}</td>
-                  <td className="table_td">{moment(p.dt_end).format('DD/MM/YYYY')}</td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-         <div>
-          <div style={{width: '100%', display: 'flex', marginTop: 10}}>
-            <label className="label_values title">Desc. Padrão%</label>
-            <label className="label_values title">Valor Bruto Aprovado</label>
-            <label className="label_values title">Desconto Padrão Aprovado</label>
-            <label  className="label_values title">Valor Líquido Aprovado</label>
+              </thead>
+
+              <tbody style={{ backgroundColor: "var(--purple)", width: "100%" }}>
+                {proposalSelected.products.map((p) => (
+                  <tr key={p.fk_id_product} style={{ color: "black" }}>
+                    <td className="table_td">{products.length > 0 && products.filter(pr => pr.id_product == p.fk_id_product)[0].name}</td>
+                    <td className="table_td">{p.objective}</td>
+                    <td className="table_td">{p.price}</td>
+                    <td className="table_td">{p.quantity_hired}</td>
+                    <td className="table_td">{p.negociation}</td>
+                    <td className="table_td">{moment(p.dt_start).format('DD/MM/YYYY')}</td>
+                    <td className="table_td">{moment(p.dt_end).format('DD/MM/YYYY')}</td>
+                    <td className="table_td">{(p.negociation > 0 ? ((p.price - p.price * p.negociation/100) * p.quantity_hired): (p.price * p.quantity_hired)).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</td>
+
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div>
+              <div style={{ width: '100%', display: 'flex', marginTop: 10 }}>
+                <label className="label_values" style={{fontWeight : 'bold'}}>Desc. Padrão%</label>
+                <label className="label_values" style={{fontWeight : 'bold'}}>Valor Bruto Aprovado</label>
+                <label className="label_values" style={{fontWeight : 'bold'}}>Desconto Padrão Aprovado</label>
+                <label className="label_values" style={{fontWeight : 'bold'}}>Valor Líquido Aprovado</label>
+              </div>
+              <div style={{ width: '100%', display: 'flex' }}>
+                <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].standard_discount : ''}%</label>
+                <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].gross_value_proposal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) : ''}</label>
+                <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].standard_discount_proposal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) : ''}</label>
+                <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].net_value_proposal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) : ''} </label>
+              </div>
+            </div>
           </div>
-         <div style={{width: '100%', display: 'flex'}}>
-           <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].standard_discount : ''}%</label>
-            <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].gross_value_proposal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) : ''}</label>
-            <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].standard_discount_proposal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) : ''}</label>
-            <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].net_value_proposal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}): ''} </label>
-          </div>
-          </div>
-        </div>
-      ) : null}
-          <CommonView  dialog = {true} data = {singleProposal2} />
+        ) : null}
+        <CommonView dialog={true} data={singleProposal2} />
 
       </CommonDialog>
 
@@ -419,9 +423,7 @@ useEffect(() => {
           columns={columns}
           data={data}
           icon="people"
-          newText="Adicionar Nova Opec"
-          onAdd={!['opec'].includes(logged_user.role) ? onAdd : null}
-          headerTitle = "Opecs"
+           headerTitle="PI/PP"
           onRowClick={(ev, row) => {
             if (row) {
               //            dispatch(openEditContactDialog(row.original));
@@ -433,5 +435,5 @@ useEffect(() => {
       )}
     </motion.div>
   );
-  }
+}
 
