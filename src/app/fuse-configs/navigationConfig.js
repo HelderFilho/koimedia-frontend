@@ -156,7 +156,7 @@ const navigationConfig = [
           translate: 'PI/PP',
           type: 'item',
           icon: 'plumbing',
-          url: '/opecs',
+          url: '/pipp',
         } : {},
       {
         id: 'financeiro',

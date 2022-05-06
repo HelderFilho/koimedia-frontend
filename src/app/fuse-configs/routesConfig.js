@@ -118,7 +118,7 @@ const routes = [
   },
 
   {
-    path: '/opecs',
+    path: '/pipp',
     exact: true,
     component: () => loggedIn ? <OpecList /> : <Redirect to = "/login" />,
   },
