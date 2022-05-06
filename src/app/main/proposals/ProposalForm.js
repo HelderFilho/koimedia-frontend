@@ -96,8 +96,7 @@ export default function ProposalForm({ values, setPage, getData }) {
       })
 
     if (values.products) {
-      setProductsSelected(values.products)
-      calcFinalValue()
+      handleProducts(values.products)
     }
     if (values.proposal_values) {
       setGrossValueProposal(values.proposal_values[0].gross_value_proposal)
@@ -113,6 +112,7 @@ export default function ProposalForm({ values, setPage, getData }) {
     }
 
   }, [])
+
   const monthList = [
     { value: 0, label: "Janeiro" },
     { value: 1, label: "Fevereiro" },
@@ -316,6 +316,17 @@ export default function ProposalForm({ values, setPage, getData }) {
     },
   ];
 
+  const handleProducts = (products) => {
+    products.map((product, i) => {
+        let value = product.negociation > 0 ? ((product.price - product.price * product.negociation / 100) * product.quantity_hired) : (product.price * product.quantity_hired)
+        product.key = i
+        product.final_value = value
+      })
+   
+    
+    setProductsSelected([...products])
+  }
+
   const addProduct = (product) => {
     product.key = productsSelected.length
     product.final_value = product.negociation > 0 ? ((product.price - product.price * product.negociation / 100) * product.quantity_hired) : (product.price * product.quantity_hired)
@@ -334,12 +345,13 @@ export default function ProposalForm({ values, setPage, getData }) {
   };
 
   const calcFinalValue = () => {
+
     productsSelected.map(product => {
       let value = product.negociation > 0 ? ((product.price - product.price * product.negociation / 100) * product.quantity_hired) : (product.price * product.quantity_hired)
       product.final_value = value
     })
     setProductsSelected([...productsSelected])
-    }
+  }
   const updateValues = () => {
 
     let gross_value = productsSelected.reduce((sum, item) => {
@@ -488,7 +500,7 @@ export default function ProposalForm({ values, setPage, getData }) {
                   <td className="table_input"><input name="negociation_" onChange={(evt) => changeProduct("negociation", i, evt.target.value)} value={p.negociation}></input></td>
                   <td className="table_input"><input type="date" name="dt_start_" onChange={(evt) => changeProduct("dt_start", i, evt.target.value)} value={p.dt_start}></input></td>
                   <td className="table_input"><input type="date" name="dt_end_" onChange={(evt) => changeProduct("dt_end", i, evt.target.value)} value={p.dt_end}></input></td>
-                  <td className="table_input"><input type="number" name="final_value" disabled value={p.final_value}></input></td>
+                  <td className="table_input"><input type="number" name="final_value" disabled value={p.final_value.toFixed(2)}></input></td>
                   <td className="button"><button onClick={() => removeProduct(i)}>X</button></td>
                 </tr>
               ))}
