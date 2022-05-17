@@ -36,6 +36,7 @@ import CheckingList from 'app/main/checking/CheckingList';
 import OpecList from 'app/main/opec/OpecList';
 
 import Dashboard from 'app/main/dashboard/DashboardForm'
+import Home from 'app/main/home/home'
 
 import Store from 'app/utils/Store'
 
@@ -53,7 +54,7 @@ const routes = [
   {
     exact: true,
     path: '/',
-    component: () => loggedIn ? <Dashboard/> : <Redirect to="/login" />,
+    component: () => loggedIn ? <Home/> : <Redirect to="/login" />,
   },
   {
     path: '/loading',
@@ -127,6 +128,12 @@ const routes = [
     path: '/checkings',
     exact: true,
     component: () => loggedIn ? <CheckingList /> : <Redirect to = "/login" />,
+  },
+  
+  {
+    path: '/home',
+    exact: true,
+    component: () => loggedIn ? <Home /> : <Redirect to = "/login" />,
   },
   {
     path: '/404',

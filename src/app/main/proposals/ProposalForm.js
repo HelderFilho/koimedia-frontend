@@ -316,6 +316,7 @@ export default function ProposalForm({ values, setPage, getData }) {
     },
   ];
 
+
   const handleProducts = (products) => {
     products.map((product, i) => {
         let value = product.negociation > 0 ? ((product.price - product.price * product.negociation / 100) * product.quantity_hired) : (product.price * product.quantity_hired)
@@ -374,6 +375,8 @@ export default function ProposalForm({ values, setPage, getData }) {
     updateValues();
   };
 
+
+
   const onSubmit = () => {
     let valuesProposal = {
       standardDiscount: standardDiscount,
@@ -384,6 +387,7 @@ export default function ProposalForm({ values, setPage, getData }) {
       standardDiscountApproved: standardDiscountApproved,
       netValueApproved: netValueApproved
     }
+    
     valuesForm.fk_id_user = logged_user.id_user
     let values = [valuesForm, productsSelected, valuesProposal, filesToRemove, logged_user
     ]
@@ -407,7 +411,6 @@ export default function ProposalForm({ values, setPage, getData }) {
   const gross = (v) => {
     setGrossValueProposal(v)
   }
-
   const removeFile = (field, file) => {
     let files = filesToRemove
     files.push(file)

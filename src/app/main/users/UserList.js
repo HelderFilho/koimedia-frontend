@@ -202,11 +202,8 @@ function UserList(props) {
   };
 
   const resetPassword = (password) => {
-    console.log(password)
-    console.log(userSelected)
     const values = {id_user : userSelected.id_user, password : password.password}
     axios.post(Constants.APIEndpoints.USER + '/resetPassword', values).then(res => {
-      console.log('resdata', res.data)
       setResetPassDialog(false)
     })
   }

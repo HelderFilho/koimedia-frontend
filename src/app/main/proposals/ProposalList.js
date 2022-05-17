@@ -162,8 +162,6 @@ export default function ProposalList(props) {
           <div className="flex items-center">
             <IconButton
               onClick={(ev) => {
-                console.log(typeof (row.original.products))
-                console.log(row.original)
                 setProposalSelected(row.original)
                 viewProposal(row.original);
 

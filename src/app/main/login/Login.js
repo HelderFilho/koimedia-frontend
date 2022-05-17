@@ -57,7 +57,6 @@ function Login() {
 
   function onSubmit() {
 
-    console.log('CONSTANST: ', Constants.APIEndpoints)
     let email = control.fieldsRef.current.email._f.value
     let pass = control.fieldsRef.current.password._f.value
     let user = {
