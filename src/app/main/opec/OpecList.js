@@ -14,7 +14,6 @@ import CommonDialog from "app/components/dialog/CommonDialog";
 import moment from "moment";
 import "./Opec.css";
 import ConfirmDialog from "app/components/dialog/ConfirmDialog";
-import {execute} from 'app/utils/Actions'
 let logged_user = Store.USER
 export default function OpecList(props) {
   const dispatch = useDispatch();
@@ -333,9 +332,7 @@ export default function OpecList(props) {
   }
 
   const getData = () => {
-   execute('get',Constants.APIEndpoints.PROPOSAL + "/getAllProposals", '' ).then(res => {
-   })
-   
+ 
     axios.get(Constants.APIEndpoints.PROPOSAL + "/getAllProposals").then((res) => {
       let proposals = res.data[0].filter(p => p.status_name == "APROVADA")
       setData(proposals);
