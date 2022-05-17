@@ -13,7 +13,8 @@ const ENDPOINTS = {
     PROPOSAL : ROOT + 'proposal',
     AUTH : ROOT + 'login',
     NOTIFICATION : ROOT + 'notification',
-    FILES : ROOT + 'files'
+    FILES : ROOT + 'files',
+    KANBAN : ROOT + 'kanban'
 }
 
 export default {
