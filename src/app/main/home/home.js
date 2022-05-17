@@ -36,7 +36,7 @@ export default function Home() {
 
     const getData = () => {
         axios.post(Constants.APIEndpoints.KANBAN + "/getKanban", { user: logged_user.id_user }).then(res => {
-            console.log('ress', res.data[0])
+            console.log('ress', res.data)
             setKanban(res.data[0])
         })
     }
