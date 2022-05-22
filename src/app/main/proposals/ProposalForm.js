@@ -361,10 +361,15 @@ export default function ProposalForm({ values, setPage, getData }) {
       let quantity_hired = parseInt(item.quantity_hired)
       return sum + (negociation > 0 ? ((price - price * negociation / 100) * quantity_hired) : (price * quantity_hired))
     }, 0)
-    let discount_proposal = gross_value * standardDiscount / 100
+    let discount_proposal = (gross_value * standardDiscount / 100).toFixed(2).replace('.',',')
     let net_proposal = gross_value - discount_proposal
     setGrossValueProposal(gross_value)
+    setApprovedGrossValue(gross_value)
+
     setStandardDiscountProposal(discount_proposal)
+    setStandardDiscountApproved(discount_proposal)
+
+    setNetValueApproved(net_proposal)
     setNetValueProposal(net_proposal)
   }
 
@@ -375,6 +380,22 @@ export default function ProposalForm({ values, setPage, getData }) {
     updateValues();
   };
 
+  useEffect(() => {
+     let gross_value = grossValueProposal ? grossValueProposal.toString().replace('R$', '').replaceAll('.','').replace(',','.') :0
+     let standard_discount = (grossValueProposal * standardDiscount / 100).toFixed(2)
+    let net_proposal = (grossValueProposal - standard_discount).toFixed(2)
+    setStandardDiscountProposal(standard_discount.replace('.', ','))
+    setNetValueProposal(net_proposal.replace('.', ','))
+   
+   
+    let approved_value = approvedGrossValue ? (approvedGrossValue.toString().replace('R$', '').replaceAll('.','').replace(',','.')) :0
+    let discount_approved = (approvedGrossValue * standardDiscount / 100).toFixed(2)
+    let net_approved = (approvedGrossValue - discount_approved).toFixed(2)
+
+    setStandardDiscountApproved(discount_approved.replace('.', ','))
+    setNetValueApproved(net_approved.replace('.', ','))
+
+  }, [grossValueProposal, approvedGrossValue])
 
 
   const onSubmit = () => {
@@ -389,13 +410,12 @@ export default function ProposalForm({ values, setPage, getData }) {
     }
     
     valuesForm.fk_id_user = logged_user.id_user
-    let values = [valuesForm, productsSelected, valuesProposal, filesToRemove, logged_user
-    ]
-
-    axios
+    let values = [valuesForm, productsSelected, valuesProposal, filesToRemove, logged_user]
+    
+  axios
       .post(
         Constants.APIEndpoints.PROPOSAL +
-        (valuesForm.id_proposals ? "/updateProposal" : "/createProposal"),
+        (valuesForm.id_proposals && !valuesForm.duplicate ? "/updateProposal" : "/createProposal"),
         values
       )
       .then((res) => {
@@ -408,9 +428,7 @@ export default function ProposalForm({ values, setPage, getData }) {
       });
   };
 
-  const gross = (v) => {
-    setGrossValueProposal(v)
-  }
+ 
   const removeFile = (field, file) => {
     let files = filesToRemove
     files.push(file)
@@ -514,18 +532,18 @@ export default function ProposalForm({ values, setPage, getData }) {
       <div style={{ padding: 20, width: '100%' }}>
         <div style={{ display: 'inline-flex', width: '100%' }}>
           <Input label="Desconto padrão" value={standardDiscount} onchange={(evt) => setStandardDiscount(evt.target.value)} />
-          <Input label="Valor Bruto Proposta" money={true} value={(grossValueProposal || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => gross(evt.target.value)} />
-          <Input label="Desconto Padrão Proposta" money={true} value={(standardDiscountProposal || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => setStandardDiscountProposal(evt.target.value)} />
-          <Input label="Valor Líquido Proposta" money={true} value={(netValueProposal || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => setNetValueProposal(evt.target.value)} />
+          <Input label="Valor Bruto Proposta" money={true} value={grossValueProposal} onchange={(evt) => setGrossValueProposal(evt.target.value)} />
+          <Input label="Desconto Padrão Proposta" money={true} value={standardDiscountProposal} onchange={(evt) => setStandardDiscountProposal(evt.target.value)} />
+          <Input label="Valor Líquido Proposta" money={true} value={netValueProposal} onchange={(evt) => setNetValueProposal(evt.target.value)} />
 
         </div>
         <div style={{ display: 'inline-flex', width: '100%' }}>
 
           <Input hidden={true} />
 
-          <Input label="Valor Bruto Aprovado" money={true} value={(approvedGrossValue || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => setApprovedGrossValue(evt.target.value)} />
-          <Input label="Desconto Padrão Aprovado" money={true} value={(standardDiscountApproved || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => setStandardDiscountApproved(evt.target.value)} />
-          <Input label="Valor Líquido Aprovado" money={true} value={(netValueApproved || 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} onchange={(evt) => setNetValueApproved(evt.target.value)} />
+          <Input label="Valor Bruto Aprovado" money = {true} value={approvedGrossValue} onchange={(evt) => setApprovedGrossValue(evt.target.value)} />
+          <Input label="Desconto Padrão Aprovado" money={true} value={standardDiscountApproved} onchange={(evt) => setStandardDiscountApproved(evt.target.value)} />
+          <Input label="Valor Líquido Aprovado" money={true} value={netValueApproved} onchange={(evt) => setNetValueApproved(evt.target.value)} />
 
         </div>
 

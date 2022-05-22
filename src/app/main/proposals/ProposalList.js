@@ -170,7 +170,19 @@ export default function ProposalList(props) {
               <Icon>remove_red_eye</Icon>
             </IconButton>
 
+            {!['opec', 'subadmin'].includes(logged_user.role) ? (
 
+              <IconButton
+                onClick={(ev) => {
+                  let v_ = row.original
+                  v_.duplicate = true
+                  setValues(v_)
+                  setPage('add')
+                }}
+              >
+                <Icon>content_copy</Icon>
+              </IconButton>
+            ) : null}
             {!['opec', 'subadmin'].includes(logged_user.role) ? (
 
               <IconButton
@@ -414,17 +426,17 @@ export default function ProposalList(props) {
                     <td className="table_td">{p.negociation}</td>
                     <td className="table_td">{moment(p.dt_start).format('DD/MM/YYYY')}</td>
                     <td className="table_td">{moment(p.dt_end).format('DD/MM/YYYY')}</td>
-                    <td className="table_td">{(p.negociation > 0 ? ((p.price - p.price * p.negociation/100) * p.quantity_hired): (p.price * p.quantity_hired)).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</td>
+                    <td className="table_td">{(p.negociation > 0 ? ((p.price - p.price * p.negociation / 100) * p.quantity_hired) : (p.price * p.quantity_hired)).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <div>
               <div style={{ width: '100%', display: 'flex', marginTop: 10 }}>
-                <label className="label_values" style={{fontWeight : 'bold'}}>Desc. Padrão%</label>
-                <label className="label_values" style={{fontWeight : 'bold'}}>Valor Bruto Aprovado</label>
-                <label className="label_values" style={{fontWeight : 'bold'}}>Desconto Padrão Aprovado</label>
-                <label className="label_values" style={{fontWeight : 'bold'}}>Valor Líquido Aprovado</label>
+                <label className="label_values" style={{ fontWeight: 'bold' }}>Desc. Padrão%</label>
+                <label className="label_values" style={{ fontWeight: 'bold' }}>Valor Bruto Aprovado</label>
+                <label className="label_values" style={{ fontWeight: 'bold' }}>Desconto Padrão Aprovado</label>
+                <label className="label_values" style={{ fontWeight: 'bold' }}>Valor Líquido Aprovado</label>
               </div>
               <div style={{ width: '100%', display: 'flex' }}>
                 <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].standard_discount : ''}%</label>
