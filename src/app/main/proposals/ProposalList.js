@@ -187,7 +187,10 @@ export default function ProposalList(props) {
 
               <IconButton
                 onClick={(ev) => {
-                  setValues(row.original)
+                  let v_ = row.original
+                  v_.duplicate = false
+                
+                  setValues(v_)
                   setPage('add')
                 }}
               >

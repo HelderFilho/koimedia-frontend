@@ -436,9 +436,10 @@ export default function ProposalForm({ values, setPage, getData }) {
     valuesForm[field] = valuesForm[field].filter(v => v.id != file.id)
     setValuesForm({ ...valuesForm })
   }
+  console.log('values', values)
   return (
     <div ref={ref}>
-      <CommonHeader title="Criar Proposta" onBack={() => setPage("list")}
+      <CommonHeader title={values.id_proposals && values.duplicate == true ? "Duplicar Proposta" : values.id_proposals && values.duplicate  == false? "Editar Proposta" : "Criar Proposta"} onBack={() => setPage("list")}
         width={width}
       />
       <CommonForm
