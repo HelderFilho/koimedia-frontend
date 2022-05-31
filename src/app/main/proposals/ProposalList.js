@@ -189,7 +189,7 @@ export default function ProposalList(props) {
                 onClick={(ev) => {
                   let v_ = row.original
                   v_.duplicate = false
-                
+
                   setValues(v_)
                   setPage('add')
                 }}
@@ -437,15 +437,29 @@ export default function ProposalList(props) {
             <div>
               <div style={{ width: '100%', display: 'flex', marginTop: 10 }}>
                 <label className="label_values" style={{ fontWeight: 'bold' }}>Desc. Padrão%</label>
-                <label className="label_values" style={{ fontWeight: 'bold' }}>Valor Bruto Aprovado</label>
-                <label className="label_values" style={{ fontWeight: 'bold' }}>Desconto Padrão Aprovado</label>
-                <label className="label_values" style={{ fontWeight: 'bold' }}>Valor Líquido Aprovado</label>
+                <label className="label_values" style={{ fontWeight: 'bold' }}>Valor Bruto Proposta</label>
+                <label className="label_values" style={{ fontWeight: 'bold' }}>Desconto Padrão Proposta</label>
+                <label className="label_values" style={{ fontWeight: 'bold' }}>Valor Líquido Proposta</label>
               </div>
               <div style={{ width: '100%', display: 'flex' }}>
                 <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].standard_discount : ''}%</label>
                 <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].gross_value_proposal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) : ''}</label>
                 <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].standard_discount_proposal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) : ''}</label>
                 <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].net_value_proposal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) : ''} </label>
+              </div>
+            </div>
+            <div>
+              <div style={{ width: '100%', display: 'flex', marginTop: 10 }}>
+                <label className="label_values" style={{ fontWeight: 'bold' }}></label>
+                <label className="label_values" style={{ fontWeight: 'bold' }}>Valor Bruto Aprovado</label>
+                <label className="label_values" style={{ fontWeight: 'bold' }}>Desconto Padrão Aprovado</label>
+                <label className="label_values" style={{ fontWeight: 'bold' }}>Valor Líquido Aprovado</label>
+              </div>
+              <div style={{ width: '100%', display: 'flex' }}>
+                <label className="label_values"></label>
+                <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].approved_gross_value.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) : ''}</label>
+                <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].standard_discount_approved.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) : ''}</label>
+                <label className="label_values">{proposalSelected.proposal_values ? proposalSelected.proposal_values[0].net_value_approved.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) : ''} </label>
               </div>
             </div>
           </div>
