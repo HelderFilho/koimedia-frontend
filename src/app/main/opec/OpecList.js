@@ -117,7 +117,12 @@ export default function OpecList(props) {
   }, [data])
   const columns = useMemo(
     () => [
-
+      {
+        Header: 'Nº PI/PP',
+        accessor: "number",
+        className: "font-medium",
+        sortable: true,
+      },
       {
         Header: "Campanha",
         accessor: "campaign",
