@@ -10,6 +10,10 @@ import Input from 'app/components/input/Input'
 import Store from 'app/utils/Store'
 import moment from 'moment'
 import { useResizeDetector } from 'react-resize-detector';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 export default function ProposalForm({ values, setPage, getData }) {
   let logged_user = Store.USER
@@ -319,12 +323,12 @@ export default function ProposalForm({ values, setPage, getData }) {
 
   const handleProducts = (products) => {
     products.map((product, i) => {
-        let value = product.negociation > 0 ? ((product.price - product.price * product.negociation / 100) * product.quantity_hired) : (product.price * product.quantity_hired)
-        product.key = i
-        product.final_value = value
-      })
-   
-    
+      let value = product.negociation > 0 ? ((product.price - product.price * product.negociation / 100) * product.quantity_hired) : (product.price * product.quantity_hired)
+      product.key = i
+      product.final_value = value
+    })
+
+
     setProductsSelected([...products])
   }
 
@@ -361,7 +365,7 @@ export default function ProposalForm({ values, setPage, getData }) {
       let quantity_hired = parseInt(item.quantity_hired)
       return sum + (negociation > 0 ? ((price - price * negociation / 100) * quantity_hired) : (price * quantity_hired))
     }, 0)
-    let discount_proposal = (gross_value * standardDiscount / 100).toFixed(2).replace('.',',')
+    let discount_proposal = (gross_value * standardDiscount / 100).toFixed(2).replace('.', ',')
     let net_proposal = gross_value - discount_proposal
     setGrossValueProposal(gross_value)
     setApprovedGrossValue(gross_value)
@@ -381,14 +385,14 @@ export default function ProposalForm({ values, setPage, getData }) {
   };
 
   useEffect(() => {
-     let gross_value = grossValueProposal ? grossValueProposal.toString().replace('R$', '').replaceAll('.','').replace(',','.') :0
-     let standard_discount = (grossValueProposal * standardDiscount / 100).toFixed(2)
+    let gross_value = grossValueProposal ? grossValueProposal.toString().replace('R$', '').replaceAll('.', '').replace(',', '.') : 0
+    let standard_discount = (grossValueProposal * standardDiscount / 100).toFixed(2)
     let net_proposal = (grossValueProposal - standard_discount).toFixed(2)
     setStandardDiscountProposal(standard_discount.replace('.', ','))
     setNetValueProposal(net_proposal.replace('.', ','))
-   
-   
-    let approved_value = approvedGrossValue ? (approvedGrossValue.toString().replace('R$', '').replaceAll('.','').replace(',','.')) :0
+
+
+    let approved_value = approvedGrossValue ? (approvedGrossValue.toString().replace('R$', '').replaceAll('.', '').replace(',', '.')) : 0
     let discount_approved = (approvedGrossValue * standardDiscount / 100).toFixed(2)
     let net_approved = (approvedGrossValue - discount_approved).toFixed(2)
 
@@ -399,6 +403,8 @@ export default function ProposalForm({ values, setPage, getData }) {
 
 
   const onSubmit = () => {
+    const notification = toast("Salvando dados");
+
     let valuesProposal = {
       standardDiscount: standardDiscount,
       grossValueProposal: grossValueProposal,
@@ -408,27 +414,31 @@ export default function ProposalForm({ values, setPage, getData }) {
       standardDiscountApproved: standardDiscountApproved,
       netValueApproved: netValueApproved
     }
-    
+
     valuesForm.fk_id_user = logged_user.id_user
     let values = [valuesForm, productsSelected, valuesProposal, filesToRemove, logged_user]
-    
-  axios
+
+    axios
       .post(
         Constants.APIEndpoints.PROPOSAL +
         (valuesForm.id_proposals && !valuesForm.duplicate ? "/updateProposal" : "/createProposal"),
         values
       )
       .then((res) => {
-        setPage("list");
-        getData();
+        toast.update(notification, { render: "Dados salvos com sucesso", type: toast.TYPE.SUCCESS, isLoading: false });
+        setTimeout(function () {
+          setPage("list");
+          getData();
+        }, 2000)
+       
       })
       .catch((error) => {
-        setPage("list");
-        console.log(error);
+        toast.update(notification, { render: "Erro ao salvar dos dados", type: toast.TYPE.ERROR, isLoading: false });
+
       });
   };
 
- 
+
   const removeFile = (field, file) => {
     let files = filesToRemove
     files.push(file)
@@ -439,7 +449,7 @@ export default function ProposalForm({ values, setPage, getData }) {
   console.log('values', values)
   return (
     <div ref={ref}>
-      <CommonHeader title={values.id_proposals && values.duplicate == true ? "Duplicar Proposta" : values.id_proposals && values.duplicate  == false? "Editar Proposta" : "Criar Proposta"} onBack={() => setPage("list")}
+      <CommonHeader title={values.id_proposals && values.duplicate == true ? "Duplicar Proposta" : values.id_proposals && values.duplicate == false ? "Editar Proposta" : "Criar Proposta"} onBack={() => setPage("list")}
         width={width}
       />
       <CommonForm
@@ -542,7 +552,7 @@ export default function ProposalForm({ values, setPage, getData }) {
 
           <Input hidden={true} />
 
-          <Input label="Valor Bruto Aprovado" money = {true} value={approvedGrossValue} onchange={(evt) => setApprovedGrossValue(evt.target.value)} />
+          <Input label="Valor Bruto Aprovado" money={true} value={approvedGrossValue} onchange={(evt) => setApprovedGrossValue(evt.target.value)} />
           <Input label="Desconto Padrão Aprovado" money={true} value={standardDiscountApproved} onchange={(evt) => setStandardDiscountApproved(evt.target.value)} />
           <Input label="Valor Líquido Aprovado" money={true} value={netValueApproved} onchange={(evt) => setNetValueApproved(evt.target.value)} />
 
@@ -559,7 +569,17 @@ export default function ProposalForm({ values, setPage, getData }) {
         removeFile={removeFile}
         onSubmit={onSubmit}
       />
-
+      <ToastContainer
+        position="bottom-right"
+        autoClose={4500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+      />
     </div>
   );
 }

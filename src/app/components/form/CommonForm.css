@@ -51,3 +51,14 @@
 .labelFile {
     cursor: pointer;
 }
+
+.buttonSubmit {
+    border-radius: 20px !important;
+    width: 120px;
+    height: 30px;
+    font-weight: bolder;
+    background-color: #1b2330;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}

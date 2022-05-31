@@ -89,9 +89,7 @@ a[role=button] {
     }
 }
 
-form label {
-    z-index: 99;
-}
+
 
 body.no-animate *,
 body.no-animate *::before,

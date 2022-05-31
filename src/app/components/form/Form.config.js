@@ -113,8 +113,8 @@ export default forwardRef(
               }}
               disabled = {field.disabled}
               value={values[field.name] || ""} // recomendo colocar o ||<formato do campo -> string|array|boolean/> caso contrário esse componente pode apresentar falhas; errado: value={values[field.name]}; certo: value={values[field.name] || []}
-
-              />
+              onChange= {(evt) => {changeValue(field.name, evt)}}
+              /> 
               <span style={{ color: "red" }}>{errors[field.name]}</span>
             </div>
           ),
@@ -188,7 +188,7 @@ export default forwardRef(
           ),
         },
       ],
-      button: <button onClick={submit}> Salvar </button>,
+      button: <button className="buttonSubmit" onClick={submit}> Salvar </button>,
     })
   )
 );
