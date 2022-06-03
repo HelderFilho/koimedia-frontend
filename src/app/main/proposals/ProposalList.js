@@ -30,6 +30,9 @@ export default function ProposalList(props) {
   const [vehicles, setVehicles] = useState([])
   const [squares, setSquares] = useState([])
 
+  const [allRealized, setAllRealized] = useState(0)
+  const [allApproved, setAllAproved] = useState(0)
+
   let agencies_ = []
   let clients_ = []
   let vehicles_ = []
@@ -382,6 +385,27 @@ export default function ProposalList(props) {
     });
   };
 
+  const updateRealizedApprovedTotal = (data) => {
+    let allRealized_ = data && data.reduce((current, next) => {
+      let value = next.proposal_values != null && next.proposal_values[0] ? next.proposal_values[0].gross_value_proposal : 0
+      return current + value
+    }, 0)
+
+    let allApproved_ = data && data.reduce((current, next) => {
+      let value = next.proposal_values != null && next.proposal_values[0] ? next.proposal_values[0].approved_gross_value : 0
+      return current + value
+    }, 0)
+    setAllAproved(allApproved_)
+    setAllRealized(allRealized_)
+  }
+
+
+  const underHeader = (
+    <div style={{ padding: 10 }}>
+      <p style={{ fontSize: 14 }}>Total Aprovado: <strong>{allApproved.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</strong></p>
+      <p style={{ fontSize: 14 }}>Total Realizado: <strong>{allRealized.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</strong></p>
+    </div>
+  )
   return (
     <motion.div
       initial={{ y: 20, opacity: 0 }}
@@ -471,19 +495,23 @@ export default function ProposalList(props) {
 
 
       {page == "list" ? (
-        <CommonTable
-          columns={columns}
-          data={data}
-          icon="people"
-          newText="Adicionar Nova Proposta"
-          onAdd={!['opec'].includes(logged_user.role) ? onAdd : null}
-          headerTitle="Propostas"
-          onRowClick={(ev, row) => {
-            if (row) {
-              //            dispatch(openEditContactDialog(row.original));
-            }
-          }}
-        />
+        <div>
+          <CommonTable
+            underHeader={underHeader}
+            columns={columns}
+            data={data}
+            icon="people"
+            updateValues={updateRealizedApprovedTotal}
+            newText="Adicionar Nova Proposta"
+            onAdd={!['opec'].includes(logged_user.role) ? onAdd : null}
+            headerTitle="Propostas"
+            onRowClick={(ev, row) => {
+              if (row) {
+                //            dispatch(openEditContactDialog(row.original));
+              }
+            }}
+          />
+        </div>
       ) : (
         <ProductForm values={values} setPage={setPage} getData={getData} />
       )}
