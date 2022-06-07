@@ -16,6 +16,9 @@ import "./Proposal.css";
 import Button from "@material-ui/core/Button";
 import ConfirmDialog from "app/components/dialog/ConfirmDialog";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 let logged_user = Store.USER
 export default function ProposalList(props) {
   const dispatch = useDispatch();
@@ -165,9 +168,8 @@ export default function ProposalList(props) {
           <div className="flex items-center">
             <IconButton
               onClick={(ev) => {
-                setProposalSelected(row.original)
-                viewProposal(row.original);
-
+                openView(row.original.id_proposals)
+          
               }}
             >
               <Icon>remove_red_eye</Icon>
@@ -177,10 +179,7 @@ export default function ProposalList(props) {
 
               <IconButton
                 onClick={(ev) => {
-                  let v_ = row.original
-                  v_.duplicate = true
-                  setValues(v_)
-                  setPage('add')
+                  openEdit(row.original.id_proposals, true)
                 }}
               >
                 <Icon>content_copy</Icon>
@@ -190,11 +189,7 @@ export default function ProposalList(props) {
 
               <IconButton
                 onClick={(ev) => {
-                  let v_ = row.original
-                  v_.duplicate = false
-
-                  setValues(v_)
-                  setPage('add')
+                  openEdit(row.original.id_proposals, false)
                 }}
               >
                 <Icon>edit</Icon>
@@ -223,6 +218,29 @@ export default function ProposalList(props) {
     setValues({})
     setPage("add");
   };
+
+  const openView = (id_proposals)=> {
+    const notification = toast("Buscando informações");
+
+    axios.post(Constants.APIEndpoints.PROPOSAL + '/getSingleProposal', {id_proposals : id_proposals}).then(res => {
+      toast.dismiss(notification)
+      setProposalSelected(res.data)
+      viewProposal(res.data);
+    })
+  }
+
+  const openEdit = (id_proposals, duplicate)=> {
+    const notification = toast("Buscando informações");
+
+    axios.post(Constants.APIEndpoints.PROPOSAL + '/getSingleProposal', {id_proposals : id_proposals}).then(res => {
+    
+      toast.dismiss(notification)
+      let values = res.data
+      values.duplicate = duplicate
+      setValues(res.data)
+      setPage('add')
+      })
+  }
 
   useEffect(() => {
     getData();
@@ -515,6 +533,17 @@ export default function ProposalList(props) {
       ) : (
         <ProductForm values={values} setPage={setPage} getData={getData} />
       )}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={4500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+      />
     </motion.div>
   );
 }
