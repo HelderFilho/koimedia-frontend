@@ -169,7 +169,7 @@ export default function ProposalList(props) {
             <IconButton
               onClick={(ev) => {
                 openView(row.original.id_proposals)
-          
+
               }}
             >
               <Icon>remove_red_eye</Icon>
@@ -219,27 +219,27 @@ export default function ProposalList(props) {
     setPage("add");
   };
 
-  const openView = (id_proposals)=> {
+  const openView = (id_proposals) => {
     const notification = toast("Buscando informações");
 
-    axios.post(Constants.APIEndpoints.PROPOSAL + '/getSingleProposal', {id_proposals : id_proposals}).then(res => {
+    axios.post(Constants.APIEndpoints.PROPOSAL + '/getSingleProposal', { id_proposals: id_proposals }).then(res => {
       toast.dismiss(notification)
       setProposalSelected(res.data)
       viewProposal(res.data);
     })
   }
 
-  const openEdit = (id_proposals, duplicate)=> {
+  const openEdit = (id_proposals, duplicate) => {
     const notification = toast("Buscando informações");
 
-    axios.post(Constants.APIEndpoints.PROPOSAL + '/getSingleProposal', {id_proposals : id_proposals}).then(res => {
-    
+    axios.post(Constants.APIEndpoints.PROPOSAL + '/getSingleProposal', { id_proposals: id_proposals }).then(res => {
+
       toast.dismiss(notification)
       let values = res.data
       values.duplicate = duplicate
       setValues(res.data)
       setPage('add')
-      })
+    })
   }
 
   useEffect(() => {
@@ -420,8 +420,8 @@ export default function ProposalList(props) {
 
   const underHeader = (
     <div style={{ padding: 10 }}>
+      <p style={{ fontSize: 14 }}>Total das Propostas: <strong>{allRealized.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</strong></p>
       <p style={{ fontSize: 14 }}>Total Aprovado: <strong>{allApproved.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</strong></p>
-      <p style={{ fontSize: 14 }}>Total Realizado: <strong>{allRealized.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</strong></p>
     </div>
   )
   return (
