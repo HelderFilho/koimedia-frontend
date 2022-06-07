@@ -98,7 +98,9 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
   }, [data])
 
   useEffect(() => {
-    updateValues(dataTable)
+    if (updateValues) {
+      updateValues(dataTable)
+    }
   }, [dataTable])
 
   const handleChangePage = (event, newPage) => {
@@ -120,7 +122,7 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
     filters[column] = text
     setFilters(filters)
 
-    const newData = data.filter(function(element) {
+    const newData = data.filter(function (element) {
       return Object.keys(filters).every(filter => {
         return element[filter] && element[filter].toString().toLowerCase().includes(filters[filter] && filters[filter].toLowerCase())
       })
@@ -129,8 +131,8 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
     setDataTable(newData)
   }
   return (
-    <div       ref={ref}>
-    
+    <div ref={ref}>
+
       <CommonHeader
         title={headerTitle}
         filterData={filteringData}
@@ -139,12 +141,12 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
         icon={icon}
         newText={newText}
         isList={true}
-        onBack={onBack} 
-        width = {width}
-          />
- 
+        onBack={onBack}
+        width={width}
+      />
+
       <div className="flex flex-col min-h-full sm:border-1 sm:rounded-16 overflow-hidden table">
-    {underHeader ? underHeader : null}
+        {underHeader ? underHeader : null}
         <TableContainer className="flex flex-1">
           <Table
             {...getTableProps()}
@@ -157,35 +159,35 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
                   {headerGroup.headers.map((column) => (
                     <td>
                       <TableCell
-                      className="whitespace-nowrap p-4 md:p-12"
-                      {...(!column.sortable
-                        ? column.getHeaderProps()
-                        : column.getHeaderProps(column.getSortByToggleProps()))}
-                      style={{ fontSize: 18, fontWeight: 'bold' }}
-                    >
-                    {column.render("Header")}
-                      {column.sortable ? (
-                        <TableSortLabel
-                          active={column.isSorted}
-                          // react-table has a unsorted state which is not treated here
-                          direction={column.isSortedDesc ? "desc" : "asc"}
+                        className="whitespace-nowrap p-4 md:p-12"
+                        {...(!column.sortable
+                          ? column.getHeaderProps()
+                          : column.getHeaderProps(column.getSortByToggleProps()))}
+                        style={{ fontSize: 18, fontWeight: 'bold' }}
+                      >
+                        {column.render("Header")}
+                        {column.sortable ? (
+                          <TableSortLabel
+                            active={column.isSorted}
+                            // react-table has a unsorted state which is not treated here
+                            direction={column.isSortedDesc ? "desc" : "asc"}
+                          />
+                        ) : null}
+                      </TableCell>
+                      {!['selection', 'action'].includes(column.id) ? (
+                        <Input
+                          placeholder="Buscar"
+                          className="flex flex-1 px-16 searchColumn"
+                          disableUnderline
+                          fullWidth
+                          //  value={searchText}
+                          inputProps={{
+                            "aria-label": "Search",
+                          }}
+                          onChange={(evt) => filterColumn(column.id, evt.target.value)}
                         />
                       ) : null}
-                   </TableCell>
-                   {!['selection', 'action'].includes(column.id) ? (
-                      <Input
-                        placeholder="Buscar"
-                        className="flex flex-1 px-16 searchColumn"
-                        disableUnderline
-                        fullWidth
-                        //  value={searchText}
-                        inputProps={{
-                          "aria-label": "Search",
-                        }}
-                        onChange={(evt) => filterColumn(column.id, evt.target.value)}
-                      />
-                     ): null}
-                     </td>
+                    </td>
                   ))}
                 </TableRow>
               ))}
