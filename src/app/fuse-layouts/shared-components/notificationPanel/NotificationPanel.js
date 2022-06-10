@@ -85,7 +85,7 @@ function NotificationPanel(props) {
 
 
   setInterval(function () {
-    axios.post(Constants.APIEndpoints.NOTIFICATION + '/getNotificationsByUser', { id_user: logged_user? logged_user.id_user : 0, notified: false }).then(res => {
+    axios.post(Constants.APIEndpoints.NOTIFICATION + '/getNotificationsByUser', { id_user: logged_user ? logged_user.id_user : 0, notified: false }).then(res => {
       res.data.map(not => {
         dispatch(addNotification(NotificationModel({
           message: not.text,
@@ -189,7 +189,7 @@ function NotificationPanel(props) {
     dispatch(closeNotificationPanel());
   }
 
-  function handleClick (notification) {
+  function handleClick(notification) {
     setMailingDialog(true)
     setFk_id_mailing(notification.fk_id_mailing)
   }
@@ -197,7 +197,7 @@ function NotificationPanel(props) {
   function handleDismiss(id) {
     let notifications_ = []
 
-    axios.post(Constants.APIEndpoints.NOTIFICATION + '/markNotificationAsRead', { id_user: logged_user? logged_user.id_user : 0, id_notification: id }).then(res => {
+    axios.post(Constants.APIEndpoints.NOTIFICATION + '/markNotificationAsRead', { id_user: logged_user ? logged_user.id_user : 0, id_notification: id }).then(res => {
       res.data.map(not => {
         notifications_.push({
           id: not.id_notification,
@@ -215,13 +215,12 @@ function NotificationPanel(props) {
   }
   function handleDismissAll() {
 
-    axios.post(Constants.APIEndpoints.NOTIFICATION + '/markNotificationAsRead', { id_user: logged_user? logged_user.id_user : 0, id_notification: 0 }).then(res => {
+    axios.post(Constants.APIEndpoints.NOTIFICATION + '/markNotificationAsRead', { id_user: logged_user ? logged_user.id_user : 0, id_notification: 0 }).then(res => {
       setNotifications([])
     })
 
 
   }
-
   return (
     <SwipeableDrawer
       classes={{ paper: clsx(classes.root) }}
@@ -232,16 +231,10 @@ function NotificationPanel(props) {
       disableSwipeToOpen
     >
 
-<CommonDialog
-        open={mailingDialog}
-        onClose={() => setMailingDialog(false)}
-        title="Ver Mailing"
-        width = "xl"
-      >
+      {mailingDialog ? (
 
-<MailingList fk_id_mailing = {fk_id_mailing} />
-      </CommonDialog>
-
+        <MailingList fk_id_mailing={fk_id_mailing} onClose = {() => setMailingDialog(false)}/>
+      ) : null}
 
       <IconButton className="m-4 absolute top-0 right-0 z-999" onClick={handleClose}>
         <Icon color="action">close</Icon>
@@ -265,7 +258,7 @@ function NotificationPanel(props) {
                 className="mb-16"
                 item={item}
                 onClose={handleDismiss}
-                onClick = {handleClick}
+                onClick={handleClick}
               />
             ))}
           </div>

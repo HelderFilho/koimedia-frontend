@@ -66,10 +66,8 @@ function Login() {
 
 
 
-
     
     axios.post(Constants.APIEndpoints.AUTH, user).then((res) => {
-
       if (res.data && res.data[0]) {
         // dispatch({type :'logou'})
         setWrongPass(false)

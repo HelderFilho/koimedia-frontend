@@ -23,7 +23,6 @@ export default function BoardList({ getData, list, key, index, usersOptions }) {
     const [openColumnEdit, setOpenColumnEdit] = useState(false)
     const [deleteDialog, setDeleteDialog] = useState(false)
  
-    console.log('list', list)
     const contentScrollEl = useRef(null);
     const createNewCard = (values) => {
         values.user_cad = logged_user.id_user

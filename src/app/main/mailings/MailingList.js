@@ -130,6 +130,7 @@ export default function MailingList(props) {
 
       axios.post(Constants.APIEndpoints.MAILING + "/getMailingById", data).then((res) => {
         viewMailing(res.data[0]);
+        setPage('view')
       });
     }
   }, []);
@@ -218,8 +219,12 @@ export default function MailingList(props) {
 
 <CommonDialog
         open={mailingDialog}
-        onClose={() => setMailingDialog(false)}
-        title="Ver Mailing"
+        onClose={() => {
+          props.onClose ? props.onClose() : () => {}
+          setMailingDialog(false)
+        }
+        }
+        title="Ver Mailing2"
         width = "xl"
         print = {true}
       >
@@ -228,7 +233,7 @@ export default function MailingList(props) {
 ):null}
 
 
-        <CommonView  dialog = {true} data = {singleMailing} title = "Ver Mailing" onBack = {() => setPage('list')}/>
+        <CommonView  dialog = {true} data = {singleMailing} title = "Ver Mailing1" onBack = {() => setPage('list')}/>
 
       </CommonDialog>
 
@@ -246,7 +251,7 @@ export default function MailingList(props) {
             }
           }}
         />
-      ) : (
+      ) :page == "view" ? null : (
         <MailingForm values={values} setPage={setPage} getData={getData} />
       )}
     </motion.div>
