@@ -191,6 +191,7 @@ function UserList(props) {
   const deleteUser = (id) => {
     const data = { id_user: userSelected.id_user }
     axios.post(Constants.APIEndpoints.USER + "/deleteUser", data).then((res) => {
+      setDeleteDialog(false)
       getData();
     });
   };

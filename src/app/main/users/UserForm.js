@@ -26,7 +26,11 @@ function UserForm({ values, setPage, getData }) {
 
 
   }, [])
-
+  let vehiclesOptions = []
+  vehiclesOptions.push({value : 0, label : '-----TODOS------'})
+  vehicles.map(v => {
+    vehiclesOptions.push({value : v.id_vehicle, label : v.fancy_name})
+  })
   let fields = [
     {
       col: 12,
@@ -60,7 +64,7 @@ function UserForm({ values, setPage, getData }) {
     {
       col: 4,
       type: "text",
-      name: "local",
+      name: "place",
       label: "Local",
     },
 
@@ -75,12 +79,7 @@ function UserForm({ values, setPage, getData }) {
       type: "multiselect",
       name: "fk_id_vehicle",
       label: "Veículos",
-      options: vehicles.map(v => {
-        return {
-          value: v.id_vehicle,
-          label: v.fancy_name
-        }
-      }),
+      options: vehiclesOptions
     },
     {
       col: 12,
@@ -101,12 +100,14 @@ function UserForm({ values, setPage, getData }) {
     },
 
 
+
     {
       col: 1,
       label: "Ativo",
       name: "active",
       type: "checkbox",
     },
+  
     {
       col: 12,
       label: "Foto",

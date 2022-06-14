@@ -34,6 +34,7 @@ export default function BoardCard({ getData, card, index, list, usersOptions }) 
             getData()
         })
     }
+    
     return (
         <div>
             <Draggable draggableId={'card' + card.id_kanban_card} index={index} type="card">

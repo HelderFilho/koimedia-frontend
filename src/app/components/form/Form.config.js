@@ -50,6 +50,27 @@ export default forwardRef(
           ),
         },
         {
+          type: "checkbox",
+          contentProps: {}, // passo props para a tag pai desse campo, nesse caso, é uma grid coluna
+          content: (field) => (
+            <Fragment>
+              <label>{field.label}</label>
+              <input
+                type={field.type}
+                checked={values[field.name] || false} // recomendo colocar o ||<formato do campo -> string|array|boolean/> caso contrário esse componente pode apresentar falhas; errado: value={values[field.name]}; certo: value={values[field.name] || []}
+                onChange={(evt) => {
+                  changeValue(field.name, evt.currentTarget.checked);
+                }}
+                name={field.name}
+                placeholder={field.placeholder}
+                style={{ width: "100%" }}
+                disabled= {field.disabled}
+/>
+              <span style={{ color: "red" }}>{errors[field.name]}</span>
+            </Fragment>
+          ),
+        },
+        {
           type : 'content',
           contentProps: {},
           content: (field) => (
