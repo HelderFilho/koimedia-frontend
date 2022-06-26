@@ -10,17 +10,20 @@ function UserForm({ values, setPage, getData }) {
   const [valuesForm, setValuesForm] = useState(values)
   const [vehicles, setVehicles] = useState([])
   const { width, height, ref } = useResizeDetector();
-
+  console.log('values', values)
   if (values) {
+    console.log('anoversário', values.dt_birthday)
     values.dt_birthday = values.dt_birthday ? moment(values.dt_birthday).format('YYYY-MM-DD') : ''
 
   }
 
   useEffect(() => {
+    console.log('getallvehicles')
     axios
       .get(
         Constants.APIEndpoints.VEHICLE + "/getAllVehicles")
       .then((res) => {
+        console.log('ressss', res.data[0])
         setVehicles(res.data[0])
       })
 
@@ -31,6 +34,7 @@ function UserForm({ values, setPage, getData }) {
   vehicles.map(v => {
     vehiclesOptions.push({value : v.id_vehicle, label : v.fancy_name})
   })
+  console.log('vechileop', vehiclesOptions)
   let fields = [
     {
       col: 12,

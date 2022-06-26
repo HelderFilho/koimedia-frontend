@@ -116,7 +116,7 @@ export default function ProposalForm({ values, setPage, getData }) {
     }
 
   }, [])
-
+console.log('ussers', users)
   const monthList = [
     { value: 0, label: "Janeiro" },
     { value: 1, label: "Fevereiro" },
@@ -238,7 +238,7 @@ export default function ProposalForm({ values, setPage, getData }) {
       type: "select",
       name: "fk_id_responsable",
       label: "Usuário Responsável",
-      options: users.filter(u => u.fk_id_role == 'admin' || u.fk_id_role == 'commercial' || u.fk_id_role == 'subadmin').map(v => {
+      options: users.filter(u => u.fk_id_role == 'admin' || u.fk_id_role == 'comercial' || u.fk_id_role == 'subadmin').map(v => {
         return {
           value: v.id_user,
           label: v.name
