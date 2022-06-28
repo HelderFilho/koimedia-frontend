@@ -111,7 +111,7 @@ export default function ProposalList(props) {
 
 
   }, [])
-
+console.log('data,', data)
   useEffect(() => {
     data.map(d => {
       d.vehicle = vehicles.filter(v => v.id_vehicle == d.fk_id_vehicle)[0] ? vehicles.filter(v => v.id_vehicle == d.fk_id_vehicle)[0].fancy_name : ''
@@ -151,8 +151,8 @@ export default function ProposalList(props) {
         sortable: true,
       },
       {
-        Header: "Praça",
-        accessor: "square",
+        Header: "Status",
+        accessor: "status_name",
         sortable: true,
       },
       {

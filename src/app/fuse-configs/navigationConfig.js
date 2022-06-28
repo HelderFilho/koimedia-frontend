@@ -46,7 +46,7 @@ const navigationConfig = [
               translate: 'Usuários',
               type: 'item',
               icon: 'person',
-              url: '/users',
+              url: '/usuarios',
               visible: false
             }
             : {},
@@ -89,7 +89,7 @@ const navigationConfig = [
               translate: 'Veículos',
               type: 'item',
               icon: 'directions_car',
-              url: '/vehicles',
+              url: '/veiculos',
             } : {},
           user && !['mailing'].includes(user.role) ?
             {
@@ -98,7 +98,7 @@ const navigationConfig = [
               translate: 'Clientes',
               type: 'item',
               icon: 'people',
-              url: '/clients',
+              url: '/clientes',
             } : {},
           user && !['mailing'].includes(user.role) ?
 
@@ -108,7 +108,7 @@ const navigationConfig = [
               translate: 'Agências',
               type: 'item',
               icon: 'people',
-              url: '/agencies',
+              url: '/agencias',
             } : {},
 
           user && !['mailing'].includes(user.role) ?
@@ -119,7 +119,7 @@ const navigationConfig = [
               translate: 'Produtos',
               type: 'item',
               icon: 'people',
-              url: '/products',
+              url: '/produtos',
             } : {},
           user && !['mailing', 'opec', 'financeiro'].includes(user.role) ?
             {
@@ -128,7 +128,7 @@ const navigationConfig = [
               translate: 'Praças',
               type: 'item',
               icon: 'people',
-              url: '/squares',
+              url: '/pracas',
             } : {},
 
 
@@ -154,7 +154,7 @@ const navigationConfig = [
           translate: 'Propostas',
           type: 'item',
           icon: 'handyman',
-          url: '/proposals',
+          url: '/propostas',
         } : {},
       user && !['mailing', 'subadmin', 'financeiro', 'comercial'].includes(user.role) ?
         {
@@ -171,7 +171,7 @@ const navigationConfig = [
         translate: 'Financeiro',
         type: 'item',
         icon: 'payment',
-        url: '/finances',
+        url: '/financeiro',
 
       }
     ],

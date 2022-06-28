@@ -174,7 +174,7 @@ const CommonTable = ({ columns, data, onRowClick, onAdd, icon, newText, onBack, 
                           />
                         ) : null}
                       </TableCell>
-                      {!['selection', 'action'].includes(column.id) ? (
+                      {!['selection', 'action'].includes(column.id) && column.noSearchable != true? (
                         <Input
                           placeholder="Buscar"
                           className="flex flex-1 px-16 searchColumn"

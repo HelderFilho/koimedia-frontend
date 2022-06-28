@@ -67,23 +67,23 @@ const routes = [
         component: () => loggedIn ? <Dashboard /> : <Redirect to = "/login" />,
   },
   {
-    path: '/users',
+    path: '/usuarios',
     exact: true,
         component: () => loggedIn ? <UsersList /> : <Redirect to = "/login" />,
   },
   {
-    path: '/vehicles',
+    path: '/veiculos',
     exact: true,
     component: () => loggedIn ? <VehicleList /> : <Redirect to = "/login" />,
   },
   {
-    path: '/clients',
+    path: '/clientes',
     exact: true,
     component: () => loggedIn ? <ClientList /> : <Redirect to = "/login" />,
   },
   
   {
-    path: '/agencies',
+    path: '/agencias',
     exact: true,
     component: () => loggedIn ? <AgencyList /> : <Redirect to = "/login" />,
   },
@@ -95,13 +95,13 @@ const routes = [
   },
   
   {
-    path: '/products',
+    path: '/produtos',
     exact: true,
     component: () => loggedIn ? <ProductList /> : <Redirect to = "/login" />,
   },
   
   {
-    path: '/squares',
+    path: '/pracas',
     exact: true,
     component: () => loggedIn ? <SquareList /> : <Redirect to = "/login" />,
   },
@@ -113,7 +113,7 @@ const routes = [
   },
   
   {
-    path: '/proposals',
+    path: '/propostas',
     exact: true,
     component: () => loggedIn ? <ProposalList /> : <Redirect to = "/login" />,
   },

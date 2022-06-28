@@ -7,15 +7,15 @@ import moment from 'moment'
 import { useResizeDetector } from 'react-resize-detector';
 
 function UserForm({ values, setPage, getData }) {
+  if (values) {
+    values.dt_birthday = values.dt_birthday ? moment(values.dt_birthday).format('YYYY-MM-DD') : ''
+    values.profile_pic = []
+
+  }
   const [valuesForm, setValuesForm] = useState(values)
   const [vehicles, setVehicles] = useState([])
   const { width, height, ref } = useResizeDetector();
-  console.log('values', values)
-  if (values) {
-    console.log('anoversário', values.dt_birthday)
-    values.dt_birthday = values.dt_birthday ? moment(values.dt_birthday).format('YYYY-MM-DD') : ''
 
-  }
 
   useEffect(() => {
     console.log('getallvehicles')
@@ -30,11 +30,10 @@ function UserForm({ values, setPage, getData }) {
 
   }, [])
   let vehiclesOptions = []
-  vehiclesOptions.push({value : 0, label : '-----TODOS------'})
+  vehiclesOptions.push({ value: 0, label: '-----TODOS------' })
   vehicles.map(v => {
-    vehiclesOptions.push({value : v.id_vehicle, label : v.fancy_name})
+    vehiclesOptions.push({ value: v.id_vehicle, label: v.fancy_name })
   })
-  console.log('vechileop', vehiclesOptions)
   let fields = [
     {
       col: 12,
@@ -111,7 +110,7 @@ function UserForm({ values, setPage, getData }) {
       name: "active",
       type: "checkbox",
     },
-  
+
     {
       col: 12,
       label: "Foto",
@@ -122,6 +121,7 @@ function UserForm({ values, setPage, getData }) {
 
 
   const onSubmit = () => {
+    console.log('valuesform', valuesForm)
     axios.post(Constants.APIEndpoints.USER + (values.id_user ? '/updateUser' : '/createUser'), valuesForm).then(res => {
       setPage('list')
       getData();
@@ -141,8 +141,9 @@ function UserForm({ values, setPage, getData }) {
         values={valuesForm}
         fields={fields}
         onChangeField={(f, v) => {
-          values[f.name] = v;
-          setValuesForm(values)
+          let v_ = {...values}
+          v_[f.name] = v;
+          setValuesForm(v_)
         }}
         onSubmit={onSubmit}
       />

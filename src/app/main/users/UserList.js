@@ -54,6 +54,7 @@ function UserList(props) {
         className: "justify-center",
         width: 64,
         sortable: false,
+        noSearchable : true
       },
       {
         Header: "Nome",
