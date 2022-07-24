@@ -18,15 +18,74 @@ import ConfirmDialog from "app/components/dialog/ConfirmDialog";
 
 import Icon from "@material-ui/core/Icon";
 import IconButton from "@material-ui/core/IconButton";
-export default function BoardList({ getData, list, key, index, usersOptions }) {
+export default function BoardList({ getData, list, key, index, usersOptions, cards }) {
     const [openCreateNewCard, setOpenCreateNewCard] = useState(false)
     const [openColumnEdit, setOpenColumnEdit] = useState(false)
     const [deleteDialog, setDeleteDialog] = useState(false)
- 
+
+    const [clients, setClients] = useState([])
+    const [agencies, setAgencies] = useState([])
+
+    const [kanban, setKanban] = useState([
+        {
+            id_column_card: 1,
+            name: 'RADAR',
+            user_cad: 0,
+            cards: []
+        },
+        {
+            id_column_card: 2,
+            name: 'CONTATO REALIZADO',
+            user_cad: 0,
+            cards: []
+        }, {
+            id_column_card: 3,
+            name: 'REUNIÃO',
+            user_cad: 0,
+            cards: []
+        }, {
+            id_column_card: 4,
+            name: 'BRIEFING/MEIOS',
+            user_cad: 0,
+            cards: []
+        }, {
+            id_column_card: 5,
+            name: 'PLANEJAMENTO/PROPOSTAS',
+            user_cad: 0,
+            cards: []
+        }, {
+            id_column_card: 6,
+            name: 'APROVAÇÃO',
+            user_cad: 0,
+            cards: []
+        },
+
+    ])
+
+    useEffect(() => {
+        getData();
+
+        axios
+            .get(
+                Constants.APIEndpoints.CLIENT + "/getAllClients")
+            .then((res) => {
+                setClients(res.data[0])
+            })
+
+        axios
+            .get(
+                Constants.APIEndpoints.AGENCY + "/getAllAgencies")
+            .then((res) => {
+                setAgencies(res.data[0])
+            })
+    }, [])
+    const totalGrossValueFromCards = cards.reduce((sum, nextCard) => {
+        return sum + parseFloat(nextCard.gross_value)
+    }, 0)
     const contentScrollEl = useRef(null);
     const createNewCard = (values) => {
         values.user_cad = logged_user.id_user
-        values.fk_id_kanban_column = list.id_kanban_column
+        values.id_column = list.id_column_card
         axios.post(Constants.APIEndpoints.KANBAN + "/createCard", values).then(res => {
             setOpenCreateNewCard(false)
             getData()
@@ -34,7 +93,7 @@ export default function BoardList({ getData, list, key, index, usersOptions }) {
     }
 
     const editColumn = (values) => {
-        values.fk_id_kanban_column = list.id_kanban_column
+        values.fk_id_kanban_column = list.id_column_card
         axios.post(Constants.APIEndpoints.KANBAN + "/updateColumn", values).then(res => {
             setOpenColumnEdit(false)
             getData()
@@ -42,13 +101,14 @@ export default function BoardList({ getData, list, key, index, usersOptions }) {
     }
 
     const deleteColumn = () => {
-        axios.post(Constants.APIEndpoints.KANBAN + "/deleteColumn", { fk_id_kanban_column: list.id_kanban_column }).then(res => {
+        axios.post(Constants.APIEndpoints.KANBAN + "/deleteColumn", { fk_id_kanban_column: list.id_column_card }).then(res => {
             getData()
         })
     }
     return (
         <div>
-            <Draggable draggableId={'column' + list.id_kanban_column} index={index} type="list">
+
+            <Draggable draggableId={list.id_column_card} index={index} type="list">
                 {(provided, snapshot) => (
                     <div ref={provided.innerRef} {...provided.draggableProps}>
                         <Card
@@ -58,38 +118,18 @@ export default function BoardList({ getData, list, key, index, usersOptions }) {
                             )}
                             square
                         >
-                            <div style={{ display: 'flex' }}>
+                            <Typography className="titleColumn">{list.name}</Typography>
 
-                                <Typography className="titleColumn">{list.name}</Typography>
-                                {list.user_cad == logged_user.id_user && (
-                                    <IconButton
-                                        onClick={(ev) => {
-                                            setOpenColumnEdit(true)
-                                        }}
-                                    >
-                                        <Icon style={{ color: 'black' }}>edit</Icon>
-                                    </IconButton>
-                                )}
-
-                                {list.user_cad == logged_user.id_user && (
-                                    <IconButton
-                                        onClick={(ev) => {
-                                            setDeleteDialog(true)
-                                        }}
-                                    >
-                                        <Icon style={{ color: 'black' }}>delete</Icon>
-                                    </IconButton>
-                                )}
-                            </div>
+                            <Typography className="cardTotalValueAndBusiness">{`${totalGrossValueFromCards.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} - ${cards.length} negócios`}</Typography>
 
                             <RootRef rootRef={contentScrollEl}>
                                 <CardContent className="flex flex-col flex-1 flex-auto h-full min-h-0 w-full p-0 overflow-auto">
-                                    <Droppable droppableId={'column' + list.id_kanban_column} type="card" direction="vertical">
+                                    <Droppable droppableId={list.id_column_card} type="card" direction="vertical">
                                         {(_provided) => (
                                             <div ref={_provided.innerRef} className="flex flex-col w-full h-full p-16">
 
 
-                                                {Array.from(list.cards || []).map((card, index) => (
+                                                {Array.from(cards || []).map((card, index) => (
                                                     <BoardCard getData={getData} card={card} index={index} list={list} usersOptions={usersOptions} />
                                                 ))}
                                                 {_provided.placeholder}
@@ -117,25 +157,62 @@ export default function BoardList({ getData, list, key, index, usersOptions }) {
                 <CommonForm
                     fields={[
                         {
-                            col: 12,
+                            col: 6,
                             name: 'subject',
-                            label: 'Assunto',
+                            label: 'Título',
+                            type: 'text',
+                            required: true
+                        }, {
+                            col: 6,
+                            name: 'contact',
+                            label: 'Contato',
+                            type: 'text',
+                            required: true
+                        }, {
+                            col: 6,
+                            name: 'fk_id_client',
+                            label: 'Cliente',
+                            type: 'select',
+                            options: clients.map(c => ({ value: c.id_client, label: c.fancy_name })),
+                            required: true
+                        }, {
+                            col: 6,
+                            name: 'fk_id_agency',
+                            label: 'Agência',
+                            type: 'select',
+                            options: agencies.map(a => ({ value: a.id_agency, label: a.fancy_name })),
+                            required: true
+                        }, {
+                            col: 12,
+                            name: 'gross_value',
+                            label: 'Valor Bruto',
+                            type: 'number',
+                            required: true
+                        }, {
+                            col: 6,
+                            name: 'dt_start',
+                            label: 'Data de início',
+                            type: 'date',
+                            required: true
+                        }, {
+                            col: 6,
+                            name: 'dt_end',
+                            label: 'Data de Fechamento',
+                            type: 'date',
+                            required: true
+                        }, {
+                            col: 12,
+                            name: 'place_sell',
+                            label: 'Local de venda',
                             type: 'text',
                             required: true
                         },
                         {
                             col: 12,
-                            name: 'description',
-                            label: 'Descrição',
-                            type: 'textarea',
-                        }, {
-                            col: 12,
-                            name: 'users',
-                            label: 'Outras pessoas que verão o card',
-                            type: 'multiselect',
-                            options: usersOptions,
-                        },
-
+                            name: 'observation',
+                            label : 'Observações',
+                            type : 'textarea'
+                        }
                     ]}
                     onSubmit={createNewCard}
 
